@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Articulo = sequelize.define("Articulo", {
-    username: DataTypes.STRING,
+    nombre: DataTypes.STRING,
     descripcion: DataTypes.TEXT,
     foto: DataTypes.STRING,
     precio: DataTypes.FLOAT,
@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Articulo.hasMany(models.Task)
+        Articulo.belongsTo(models.Tipo)
       }
     }
   });
