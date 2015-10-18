@@ -15,23 +15,32 @@ models.sequelize.sync({force:true}).then(function () {
   console.log('do it!!!!!!!!!!!!!!!!');
 });
 
+
+
+
+
 /* Rellenando BD */
 
 /*
 models.Articulo.create({
-    username: "aaa"
+    nombre: "aaa"
 }).then(function() {
     console.log('fiinininine!!!!!!!!!!!!!!!!');
-});*/
-
-/*
-models.Articulo.destroy({
-    where: {
-        username: 'aaa'
-    }
-}).models.Articulo.create({
-    username: "aaa"
-}).then(function() {
-    console.log('BD inicializada');
 });
-*/
+models.Tipo.create({
+    nombre: 'Cuerda'
+}).then(function() {
+    models.Tipo.create({
+        nombre: 'Viento'
+    }).then(function() {
+        console.log('Cat hecha');
+    });
+});
+models.Tipo.bulkCreate([
+		{nombre:'Cuerda'},
+		{nombre:'Viento'}
+]);
+models.Articulo.bulkCreate([
+		{nombre:'Guitarra', TipoId: 1},
+		{nombre:'Flauta', TipoId: 2}
+]);*/

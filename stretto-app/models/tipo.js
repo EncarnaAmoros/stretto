@@ -2,15 +2,18 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Tipo = sequelize.define("Tipo", {
-    nombre: DataTypes.STRING,
-  }, {
-    name:{singular:'Tipo', plural:'Tipos'}  
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    }
   }, {
     classMethods: {
       associate: function(models) {
-        Tipos.hasMany(models.Articulo)
+        Tipo.hasMany(models.Articulo)
       }
     }
+  }, {
+    name:{singular:'Tipo', plural:'Tipos'}  
   });
 
   return Tipo;

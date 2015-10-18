@@ -1,5 +1,7 @@
 "use strict";
 
+var models = require('../models');
+
 module.exports = function(sequelize, DataTypes) {
   var Articulo = sequelize.define("Articulo", {
     nombre: DataTypes.STRING,
@@ -8,14 +10,20 @@ module.exports = function(sequelize, DataTypes) {
     precio: DataTypes.FLOAT,
     valoracion: DataTypes.FLOAT
   }, {
-    name:{singular:'Articulo', plural:'Articulos'}  
-  }, {
     classMethods: {
       associate: function(models) {
-        Articulo.belongsTo(models.Tipo)
+         Articulo.belongsTo(models.Tipo, {
+          onDelete: "CASCADE",
+          constraints:false,
+          foreignKey: {
+            allowNull: false
+          }
+         });
       }
     }
+  }, {
+    name:{singular:'Articulo', plural:'Articulos'}  
   });
-
+    
   return Articulo;
 };

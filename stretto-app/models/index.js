@@ -24,6 +24,7 @@ fs
 
 Object.keys(db).forEach(function(modelName) {
   if ("associate" in db[modelName]) {
+      console.log("esta pasando ------------- mira: "+modelName);
     db[modelName].associate(db);
   }
 });
