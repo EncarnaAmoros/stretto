@@ -6,9 +6,23 @@ var models = require('../models');
 
 router.get('/', function(pet, resp){
 	models.Articulo.findAll().then(function(results){
-        console.log(results);
 		resp.send(results);
 	});
+})
+
+/* GET de un artículo */
+
+router.get('/:id', function(pet, resp){
+	models.Articulo.findById(pet.params.id).then(function(t){
+		return t;
+	}).then(function(result) {
+        resp.send(result);
+    });
+    /*models.Tipo.findById(pet.params.tipo).then(function(tip){
+		return tip.getArticulos();
+	}).then(function(results){
+		resp.send(results)
+	});*/ 
 })
 
 /* POST para crear artículos */
@@ -21,7 +35,7 @@ router.post('/', function(pet, resp){
         precio: pet.body.precio,
         TipoId: pet.body.tipo
     }).then(function(err) {
-        console.log('Artículo creado: '+pet.body.username);
+        console.log('Artículo creado: ' + pet.body.nombre);
         resp.status(200).jsonp("Bien");
     });
     
@@ -38,7 +52,7 @@ router.put('/:id', function(pet, resp){
         TipoId: pet.body.tipo
     }, { where: {id : pet.params.id}}
     ).then(function(err) {
-        console.log('Artículo actualizado: '+pet.body.username);
+        console.log('Artículo actualizado: ' + pet.body.nombre);
         resp.status(200).jsonp("Bien");
     });
     
@@ -51,9 +65,8 @@ router.delete('/:id', function(pet, resp){
         where: {
             id : pet.params.id
         }
-        //,truncate: true
     }).then(function(err) {
-        console.log('Artículo eliminado con id: '+pet.params.id);
+        console.log('Artículo eliminado id: ' + pet.params.id);
         resp.status(200).jsonp("Bien");
     });
     
