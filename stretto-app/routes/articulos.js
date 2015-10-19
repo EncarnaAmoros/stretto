@@ -13,6 +13,10 @@ router.get('/', function(pet, resp){
 /* GET de un artículo */
 
 router.get('/:id', function(pet, resp){
+	if(isNaN(Number(pet.params.id))) {
+		resp.status(400).jsonp('Identificador de artículo inválido.');
+		return;
+	}
 	models.Articulo.findById(pet.params.id).then(function(result){
 			if(result == undefined ) {
 				resp.status(404).jsonp('No existe el artículo referido.');
@@ -25,65 +29,74 @@ router.get('/:id', function(pet, resp){
 /* POST para crear artículos */
 
 router.post('/', function(pet, resp){       
-		models.Articulo.create({
-				nombre: pet.body.nombre,
-				descripcion: pet.body.descripcion,
-				foto: pet.body.foto,
-				precio: pet.body.precio,
-				TipoId: pet.body.tipo
-		}).then(function() {
-				resp.status(200).jsonp("Operación realizada con éxito.");
-		}).catch(function (err) {
-  		//Transaction has been rolled back
-			//err is whatever rejected the promise chain returned to the transaction callback
-				resp.status(400).jsonp(err.message);
-		});  
+	models.Articulo.create({
+			nombre: pet.body.nombre,
+			descripcion: pet.body.descripcion,
+			foto: pet.body.foto,
+			precio: pet.body.precio,
+			TipoId: pet.body.tipo
+	}).then(function() {
+			resp.status(200).jsonp("Operación realizada con éxito.");
+	}).catch(function (err) {
+		//Transaction has been rolled back
+		//err is whatever rejected the promise chain returned to the transaction callback
+			resp.status(400).jsonp(err.message);
+	});  
 })
 
 /* PUT para actualizar artículos */
 
 router.put('/:id', function(pet, resp){
-		models.Articulo.findById(pet.params.id).then(function(result){
-  		if(result == undefined ) {
-				resp.status(404).jsonp('No existe el artículo referido.');
-				return;
-			} 
-		}).then(function() {
-				models.Articulo.update({   
-						nombre: pet.body.nombre,
-						descripcion: pet.body.descripcion,
-						foto: pet.body.foto,
-						precio: pet.body.precio,
-						TipoId: pet.body.tipo
-				}, { where: {id : pet.params.id}}
-				).then(function() {
-						resp.status(200).jsonp("Operación realizada con éxito.");
-				}).catch(function (err) {
-						resp.status(400).jsonp(err.message);
-				});
-		});
+	if(isNaN(Number(pet.params.id))) {
+		resp.status(400).jsonp('Identificador de artículo inválido.');
+		return;
+	}
+	models.Articulo.findById(pet.params.id).then(function(result){
+		if(result == undefined ) {
+			resp.status(404).jsonp('No existe el artículo referido.');
+			return;
+		} 
+	}).then(function() {
+			models.Articulo.update({   
+				nombre: pet.body.nombre,
+				descripcion: pet.body.descripcion,
+				foto: pet.body.foto,
+				precio: pet.body.precio,
+				TipoId: pet.body.tipo
+			}, { 
+				where: {id : pet.params.id}
+			}
+			).then(function() {
+					resp.status(200).jsonp("Operación realizada con éxito.");
+			}).catch(function (err) {
+					resp.status(400).jsonp(err.message);
+			});
+	});
 })
 
 /* DELETE para eliminar artículos */
 
 router.delete('/:id', function(pet, resp){
-		models.Articulo.findById(pet.params.id).then(function(result){
-  		if(result == undefined ) {
-				resp.status(404).jsonp('No existe el artículo referido.');
-				return;
-			} 
-		}).then(function() {
-				models.Articulo.destroy({
-						where: {
-								id : pet.params.id
-						}
-				}).then(function() {
-						resp.status(200).jsonp("Operación realizada con éxito.");
-				}).catch(function (err) {
-						resp.status(400).jsonp(err.message);
-				});
-		});
-    
+	if(isNaN(Number(pet.params.id))) {
+		resp.status(400).jsonp('Identificador de artículo inválido.');
+		return;
+	}
+	models.Articulo.findById(pet.params.id).then(function(result){
+		if(result == undefined ) {
+			resp.status(404).jsonp('No existe el artículo referido.');
+			return;
+		} 
+	}).then(function() {
+			models.Articulo.destroy({
+					where: {
+							id : pet.params.id
+					}
+			}).then(function() {
+					resp.status(200).jsonp("Operación realizada con éxito.");
+			}).catch(function (err) {
+					resp.status(400).jsonp(err.message);
+			});
+	});    
 })
 
 module.exports = router;
