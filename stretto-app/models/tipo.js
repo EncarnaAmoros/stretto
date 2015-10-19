@@ -15,6 +15,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     name:{singular:'Tipo', plural:'Tipos'}  
   });
-
+	
   return Tipo;
 };
