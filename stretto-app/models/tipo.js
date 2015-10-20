@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Tipo = sequelize.define("Tipo", {
-    id: {
+    nombre: {
       type: DataTypes.STRING,
       primaryKey: true
     }

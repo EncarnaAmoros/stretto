@@ -23,9 +23,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/articulos', articulosApp);
-app.use('/tipos', tiposApp);
+app.use('/stretto/', routes);
+app.use('/stretto/articulos', articulosApp);
+app.use('/stretto/tipos', tiposApp);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

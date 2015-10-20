@@ -9,15 +9,48 @@ app.set('port', process.env.PORT || 3000);
 /* Llamada al modelo */
 
 models.sequelize.sync({force:true}).then(function () {
-  var server = app.listen(app.get('port'), function() {
+	var server = app.listen(app.get('port'), function() {
     debug('Express server listening on port ' + server.address().port);
   });
-  console.log('¡API funcionado! :D');
+  
+	console.log('¡API funcionado! :D');
+
+	/* Rellenando BD */
+	
+	models.Tipo.bulkCreate([
+		{nombre:'cuerda'},
+		{nombre:'viento'},
+		{nombre:'percusion'}
+	]).then(function() {
+		models.Articulo.bulkCreate([
+			{
+				nombre:'Guitarra', 
+				descripcion: 'La mejor guitarra que puedas ver',
+				foto: 'www.url.com',
+				precio: 134.65,
+				TipoNombre: 'cuerda'
+			}, {
+				nombre:'Bajo', 
+				descripcion: 'El mejor bajo que puedas ver',
+				foto: 'www.url.com',
+				precio: 174.65,
+				TipoNombre: 'cuerda'
+			}, {
+				nombre:'Saxofon', 
+				descripcion: 'El mejor saxo que puedas ver',
+				foto: 'www.url.com',
+				precio: 334.65,
+				TipoNombre: 'viento'
+			}, {
+				nombre:'Bateria', 
+				descripcion: 'La mejor bateria que puedas ver',
+				foto: 'www.url.com',
+				precio: 934.65,
+				TipoNombre: 'percusion'
+		}]);
+	});
+	
 });
 
 
 
-
-
-/* Rellenando BD */
-//Aqui se ve que lo hace pero luego desaparecen xD

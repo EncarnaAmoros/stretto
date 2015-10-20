@@ -7,16 +7,16 @@ var models = require('../models');
 router.get('/:param_tipo/articulos', function(pet, resp){
 	models.Tipo.findById(pet.params.param_tipo).then(function(result){
 		if(result == undefined ) {
-			resp.status(404).jsonp('No existe el tipo referido.');
+			resp.status(404).send('No existe el tipo referido.');
 			return;
 		} 
 	}).then(function() {	
 			models.Articulo.findAll({
 			where: {
-				TipoId: pet.params.param_tipo
+				TipoNombre: pet.params.param_tipo
 			}
 			}).then(function(results){
-				resp.send(results);
+				resp.status(200).send(results);
 			});
 			//Otra forma
 			/*models.Tipo.findById(pet.params.tipo).then(function(tip){
@@ -32,21 +32,9 @@ router.get('/:param_tipo/articulos', function(pet, resp){
 
 router.get('/', function(pet, resp) {
 	models.Tipo.findAll().then(function(results){
-		resp.status = 200;
-		resp.send(results);
+		resp.status(200).send(results);
 	});
 })
 
-/* POST para creación temporal de tipos para probar API */
-
-router.post('/', function(pet, resp) {     
-	models.Tipo.create({
-			id: pet.body.nombre
-	}).then(function() {
-			resp.status(200).jsonp("Operación realizada con éxito.");
-	}).catch(function (err) {
-			resp.status(400).jsonp(err.message);
-	});
-})
 
 module.exports = router;
