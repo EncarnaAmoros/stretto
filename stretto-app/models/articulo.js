@@ -19,6 +19,13 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
           }
          });
+				Articulo.belongsTo(models.Usuario, {
+          onDelete: "CASCADE",
+          constraints:false,
+          foreignKey: {
+            allowNull: false
+          }
+         });
       }
     }
   }, {
