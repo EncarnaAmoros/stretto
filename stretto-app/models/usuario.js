@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
          Usuario.hasMany(models.Articulo)
+				 Usuario.belongsToMany(models.Articulo , {through: 'UsuarioArticulo'});
       }
     }
   }, {

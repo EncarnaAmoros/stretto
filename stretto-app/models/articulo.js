@@ -26,6 +26,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
           }
          });
+				Articulo.belongsToMany(models.Usuario, {through: 'UsuarioArticulo'});
       }
     }
   }, {
