@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
+var check = require('./checkAuth');
 
 /* GET lista de artículos */
 
-router.get('/', function(pet, resp){
+router.get('/', check.checkAuth, function(pet, resp){
 	models.Articulo.findAll().then(function(results){
 		resp.status(200).send(results);
 	});
@@ -25,7 +26,7 @@ router.get('/:id', function(pet, resp){
 
 /* POST para crear artículos */
 
-router.post('/', function(pet, resp){       
+router.post('/', check.checkAuth, function(pet, resp){
 	models.Articulo.create({
 			nombre: pet.body.nombre,
 			descripcion: pet.body.descripcion,
@@ -44,7 +45,7 @@ router.post('/', function(pet, resp){
 
 /* PUT para actualizar artículos */
 
-router.put('/:id', function(pet, resp){
+router.put('/:id', check.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		resp.status(400).send('Identificador de artículo inválido.').end();
 	models.Articulo.findById(pet.params.id).then(function(result){
@@ -69,7 +70,7 @@ router.put('/:id', function(pet, resp){
 
 /* DELETE para eliminar artículos */
 
-router.delete('/:id', function(pet, resp){
+router.delete('/:id', check.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		resp.status(400).send('Identificador de artículo inválido.').end();
 	models.Articulo.findById(pet.params.id).then(function(result){

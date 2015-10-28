@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 
-/* GET lista de tipos según tipo */
+/* GET lista de articulos según tipo */
 
 router.get('/:param_tipo/articulos', function(pet, resp){
 	models.Tipo.findById(pet.params.param_tipo).then(function(tipo){

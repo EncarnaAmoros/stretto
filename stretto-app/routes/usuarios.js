@@ -1,44 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-
-/* Login de usuario */
-
-router.get('/login', function(pet, resp){
-	var loginstr=new Buffer(pet.headers.authorization.split(' ')[1], 'base64')
-													.toString('ascii').split(':');
-	models.Usuario.findAll({
-		where: {
-				email: loginstr[0],
-				password: loginstr[1]
-			}
-		}).then(function(result) {
-				console.log("mira: "+loginstr[0]+" y "+loginstr[1]);
-				if(result==undefined)
-					resp.status(404).send("Email o contraseña incorrectos.").end();
-				else
-					resp.status(404).send("Hola "+loginstr[0]).end();
-	//});
-	//var result = findUsuarioByLoginPass(loginstr[0], loginstr[1])//
-			});
-});
-
-/* Logout de usuario */
-
-/* Ver si hay un usuario con dicho email y password */
-
-function findUsuarioByLoginPass(emaill, pass) {
-	models.Usuario.findAll({
-		where: {
-				email: emaill,
-				password: pass
-			}
-		});
-}
+var check = require('./checkAuth');
 
 /* GET lista de usuarios */
 
-router.get('/', function(pet, resp){
+router.get('/', function(pet, resp, err){
 	models.Usuario.findAll().then(function(results){
 		resp.status(200).send(results);
 	});
@@ -93,7 +60,7 @@ router.post('/', function(pet, resp){
 
 /* PUT para actualizar usuario */
 
-router.put('/:id', function(pet, resp){
+router.put('/:id', check.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id).then(function(result){
@@ -118,9 +85,9 @@ router.put('/:id', function(pet, resp){
 });
 
 		
-/* DELETE para eliminar artículos */
+/* DELETE para eliminar usuarios */
 
-router.delete('/:id', function(pet, resp){
+router.delete('/:id', check.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id).then(function(result){
