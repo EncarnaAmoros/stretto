@@ -94,7 +94,7 @@ router.post('/', function(pet, resp){
 /* PUT para actualizar usuario */
 
 router.put('/:id', function(pet, resp){
-	if(isNaN(Number(pet.params.id))) {
+	if(isNaN(Number(pet.params.id)))
 		resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id).then(function(result){
 		if(result == undefined )
@@ -117,6 +117,7 @@ router.put('/:id', function(pet, resp){
 	});
 });
 
+		
 /* DELETE para eliminar artículos */
 
 router.delete('/:id', function(pet, resp){
