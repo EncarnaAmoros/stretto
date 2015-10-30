@@ -33,15 +33,15 @@ router.get('/:id_u/articulos', function(pet, resp){
 		if(usuario == undefined )
 			resp.status(404).send('No existe el usuario referido.').end();
 		usuario.getArticulos().then(function(results){
-			resp.status(200).send(results);
+			resp.status(200).send(results).end();
 		});
 	});
 });
 
-/* POST para crear artículos */
+/* POST para crear usuarios */
 
 router.post('/', function(pet, resp){ 
-	if(pet.body.email=='')
+	if(pet.body.email==undefined || pet.body.email=='')
 		resp.status(400).send('El email es obligatorio.').end();
 	models.Usuario.create({
 		email: pet.body.email,
@@ -51,10 +51,10 @@ router.post('/', function(pet, resp){
 		tlf: pet.body.tlf
 	}).then(function(resultado) {
 			resp.location('http://localhost:3000/stretto/Usuarios/' + resultado.id);
-			resp.status(201).send("Operación realizada con éxito.");
+			resp.status(201).send("Operación realizada con éxito.").end();
 	}).catch(function (err) {
 			//err is whatever rejected the promise chain returned to the transaction callback
-			resp.status(400).send(err.message);
+			resp.status(400).send(err.message).end();
 	});
 });
 
@@ -64,23 +64,25 @@ router.put('/:id', check.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id).then(function(result){
-		if(result == undefined )
+		if(result == undefined ) {
 			resp.status(404).send('No existe el usuario referido.').end();
-		if(pet.body.email=='')
-			resp.status(400).send('El email es obligatorio.').end();
-		models.Usuario.update({   
-			email: pet.body.email,
-			password: pet.body.password,
-			valoracion: pet.body.valoracion,
-			nombre: pet.body.nombre,
-			tlf: pet.body.tlf
-		}, { 
-			where: {id : pet.params.id}
-		}).then(function() {
-				resp.status(204).send("Operación realizada con éxito.");
-		}).catch(function (err) {
-				resp.status(400).send(err.message);
-		});
+		} else {
+			if(pet.body.email==undefined || pet.body.email=='')
+				resp.status(400).send('El email es obligatorio.').end();
+			models.Usuario.update({   
+				email: pet.body.email,
+				password: pet.body.password,
+				valoracion: pet.body.valoracion,
+				nombre: pet.body.nombre,
+				tlf: pet.body.tlf
+			}, { 
+				where: {id : pet.params.id}
+			}).then(function() {
+					resp.status(204).send("Operación realizada con éxito.").end();
+			}).catch(function (err) {
+					resp.status(400).send(err.message).end();
+			});
+		}
 	});
 });
 
