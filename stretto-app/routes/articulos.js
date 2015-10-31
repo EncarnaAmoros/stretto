@@ -15,13 +15,12 @@ router.get('/', function(pet, resp){
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
-		resp.status(400).send('Identificador de artículo inválido.').end();
+		return resp.status(400).send('Identificador de artículo inválido.').end();
 	models.Articulo.findById(pet.params.id).then(function(result){
 		if(result == undefined )
-			resp.status(404).send('No existe el artículo referido.').end();
+			return resp.status(404).send('No existe el artículo referido.').end();
 		resp.status(200).send(result);
-	});
-	
+	});	
 });
 
 /* POST para crear artículos */
@@ -38,8 +37,18 @@ router.post('/', check.checkAuth, function(pet, resp){
 			resp.location('http://localhost:3000/stretto/articulos/' + resultado.id);
 			resp.status(201).send("Operación realizada con éxito.");
 	}).catch(function (err) {
-			//err is whatever rejected the promise chain returned to the transaction callback
-			resp.status(400).send('Tipo y usuario deben rellenarse');
+			if(pet.body.tipo=='' || pet.body.tipo==undefined || pet.body.usuario=='' || pet.body.usuario==undefined)	
+				return resp.status(400).send('Tipo y usuario deben rellenarse.').end;
+			models.Tipo.findAll({
+				where : {
+					nombre: pet.body.tipo
+				}
+			}).then(function(results){
+				if(results[0]==undefined)
+					resp.status(400).send('El tipo de instrumento no se reconoce.');
+				else
+					resp.status(400).send('El usuario introducido no se reconoce.');
+			});
 	});  
 })
 

@@ -4,102 +4,92 @@ var assert = require('assert');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-describe('test de la app web usuarios', function(){
-	it('GET / devuelve los usuarios', function(done){
-		//this.timeout(15000)
-		//Al objeto supertest le pasamos la app de usuarios
+describe('test de la app web articulos', function(){
+	it('GET / devuelve los artículos', function(done){
 		supertest(app)
-		
-		//Hacemos una petición HTTP
-		.get('/stretto/usuarios')
-		//Supertest incluye sus propias aserciones con 'expect'
-		//Cuando ponemos un entero estamos verificando el status HTTP
+		.get('/stretto/articulos')
 		.expect(200)
-		//Cuando ponemos dos String estamos verificando una cabecera HTTP
-		//.expect('X‐Mi‐Cabecera', 'hola')
 		.expect(function(res) {
-			//Si ponemos un string estamos verificando el cuerpo de la respuesta
-			//Como esta ya es la última expectativa, pasamos el 'done'. Supertest lo llamará
-			//Cualquier 'expect' admite el 'done' como último parámetro
-			assert(res.text.indexOf('Ana') != -1);
-			assert(res.text.indexOf('Lucas') != -1);
-			assert(res.text.indexOf('lucas@gm.com') != -1);
+			assert(res.text.indexOf('1') != -1);
+			assert(res.text.indexOf('2') != -1);
+			assert(res.text.indexOf('3') != -1);
+			assert(res.text.indexOf('4') != -1);
+			assert(res.text.indexOf('Guitarra') != -1);
+			assert(res.text.indexOf('Bajo') != -1);
+			assert(res.text.indexOf('Saxofon') != -1);
+			assert(res.text.indexOf('Bateria') != -1);
 		})
 		.end(done);		
 	});
 	
-	it('GET / devuelve 404 no es ruta definida', function(done){
+	it('GET / devuelve 400 al buscar un artículo con id no numérico', function(done){
 		supertest(app)
-		.get('/stretto/usuariosss')
-		.expect(404)
-		.expect(function(res) {
-			assert(res.text.indexOf('No encontrado.') != -1);
-		})
-		.end(done);
-	});
-	
-	it('GET / devuelve los datos de un usuario', function(done){
-		supertest(app)
-		.get('/stretto/usuarios/1')
-		.expect(200)
-		.expect(function(res) {
-			assert(res.text.indexOf('1') != -1);
-			assert(res.text.indexOf('8') != -1);
-			assert(res.text.indexOf('lucas@gm.com') != -1);
-			assert(res.text.indexOf('665372812') != -1);
-		})
-		.end(done);
-	});
-	
-	it('GET / devuelve 400 al buscar usuario con id no numérico', function(done){
-		supertest(app)
-		.get('/stretto/usuarios/aa')
+		.get('/stretto/articulos/aa')
 		.expect(400)
-		.expect('Identificador de usuario inválido.', done);
+		.expect('Identificador de artículo inválido.', done);		
 	});
 	
-	it('GET / devuelve 404 al buscar usuario inexistente', function(done){
+	it('GET / devuelve 404 al buscar un artículo inexistente', function(done){
 		supertest(app)
-		.get('/stretto/usuarios/99999')
+		.get('/stretto/articulos/99999')
 		.expect(404)
-		.expect('No existe el usuario referido.', done);
+		.expect('No existe el artículo referido.', done);		
 	});
 	
-	it('GET / devuelve 200 al buscar artículos de un usuario', function(done){
+	it('GET / devuelve un artículo', function(done){
 		supertest(app)
-		.get('/stretto/usuarios/1/articulos')
+		.get('/stretto/articulos/1')
 		.expect(200)
 		.expect(function(res) {
 			assert(res.text.indexOf('1') != -1);
 			assert(res.text.indexOf('Guitarra') != -1);
-			assert(res.text.indexOf('3') != -1);
-			assert(res.text.indexOf('Saxofon') != -1);
+			assert(res.text.indexOf('La mejor guitarra que puedas ver') != -1);
+			assert(res.text.indexOf('cuerda') != -1);
 		})
-		.end(done);
+		.end(done);		
 	});
 	
-	it('GET / devuelve 400 al buscar artículos de usuario con id no numérico', function(done){
+	it('POST / devuelve 400 al crear artículo con Tipo vacio', function(done) {
+		var articulo = { nombre : 'banjo', tipo : '', usuario : '1' };
 		supertest(app)
-		.get('/stretto/usuarios/aa/articulos')
+		.post('/stretto/articulos')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
 		.expect(400)
-		.expect('Identificador de usuario inválido.', done);
+		.expect('Tipo y usuario deben rellenarse.', done);
 	});
 	
-	it('GET / devuelve 404 al buscar artículos de usuario inexistente', function(done){
+	it('POST / devuelve 400 al crear artículo con Usuario vacio', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '' };
 		supertest(app)
-		.get('/stretto/usuarios/99999/articulos')
-		.expect(404)
-		.expect('No existe el usuario referido.', done);
-	});
-	
-	it('POST / devuelve 400 al crear usuario con email vacio', function(done) {
-		var usuario = { nombre : 'usuario', email : ''};
-		supertest(app)
-		.post('/stretto/usuarios')
-		.send(usuario)
+		.post('/stretto/articulos')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
 		.expect(400)
-		.expect('El email es obligatorio.', done);
+		.expect('Tipo y usuario deben rellenarse.', done);
 	});
+	
+	it('POST / devuelve 400 al crear artículo con tipo inexistente', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'Cuerda', usuario : '1' };
+		supertest(app)
+		.post('/stretto/articulos')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
+		.expect(400)
+		.expect('El tipo de instrumento no se reconoce.', done);
+	});
+	
+	it('POST / devuelve 400 al crear artículo con usuario inexistente', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '99999' };
+		supertest(app)
+		.post('/stretto/articulos')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
+		.expect(400)
+		.expect('El usuario introducido no se reconoce.', done);
+	});
+	
+/*	
 	
 	it('POST / devuelve 201 al crea usuario', function(done) {
 		var usuario = { nombre : 'usuario', email : 'usuario@gm.com'};
@@ -109,6 +99,15 @@ describe('test de la app web usuarios', function(){
 		.send(usuario)
 		.expect(201)
 		.expect('Operación realizada con éxito.', done);
+	});
+	
+	it('POST / devuelve 400 al crear usuario con email vacio', function(done) {
+		var usuario = { nombre : 'usuario', email : ''};
+		supertest(app)
+		.post('/stretto/usuarios')
+		.send(usuario)
+		.expect(400)
+		.expect('El email es obligatorio.', done);
 	});
 	
 	it('PUT / devuelve 400 al actualizar usuario con id no numérico', function(done){
@@ -171,6 +170,6 @@ describe('test de la app web usuarios', function(){
 		.delete('/stretto/usuarios/3')
 		.auth('juan@gm.com', 'j')
 		.expect(204, done);
-	});
+	});*/
 	
 });
