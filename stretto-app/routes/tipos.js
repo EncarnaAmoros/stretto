@@ -7,7 +7,7 @@ var models = require('../models');
 router.get('/:param_tipo/articulos', function(pet, resp){
 	models.Tipo.findById(pet.params.param_tipo).then(function(tipo){
 		if(tipo == undefined )
-			resp.status(404).send('No existe el tipo referido.').end();
+			return resp.status(404).send('No existe el tipo referido.').end();
 			/*//Otra forma
 			models.Articulo.findAll({
 			where: {

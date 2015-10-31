@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     precio: DataTypes.FLOAT,
     valoracion: DataTypes.FLOAT
   }, {
+		name:{singular:'Articulo', plural:'Articulos'},
     classMethods: {
       associate: function(models) {
          Articulo.belongsTo(models.Tipo, {
@@ -29,8 +30,6 @@ module.exports = function(sequelize, DataTypes) {
 				Articulo.belongsToMany(models.Usuario, {through: 'UsuarioArticulo'});
       }
     }
-  }, {
-    name:{singular:'Articulo', plural:'Articulos'}  
   });
     
   return Articulo;

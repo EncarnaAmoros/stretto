@@ -10,14 +10,13 @@ module.exports = function(sequelize, DataTypes) {
     nombre: DataTypes.TEXT,
     tlf: DataTypes.INTEGER
   }, {
+		name:{singular:'Usuario', plural:'Usuarios'},
     classMethods: {
       associate: function(models) {
-         Usuario.hasMany(models.Articulo)
+         Usuario.hasMany(models.Articulo);
 				 Usuario.belongsToMany(models.Articulo , {through: 'UsuarioArticulo'});
       }
     }
-  }, {
-    name:{singular:'Usuario', plural:'Usuarios'}  
   });
     
   return Usuario;

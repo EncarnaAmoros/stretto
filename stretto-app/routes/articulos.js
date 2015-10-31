@@ -5,7 +5,7 @@ var check = require('./checkAuth');
 
 /* GET lista de artículos */
 
-router.get('/', check.checkAuth, function(pet, resp){
+router.get('/', function(pet, resp){
 	models.Articulo.findAll().then(function(results){
 		resp.status(200).send(results);
 	});

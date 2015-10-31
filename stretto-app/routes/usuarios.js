@@ -15,7 +15,7 @@ router.get('/', function(pet, resp, err){
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
-		resp.status(400).send('Identificador de usuario inválido.').end();
+		return resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id).then(function(result){
 		if(result == undefined )
 			resp.status(404).send('No existe el usuario referido.').end();
@@ -28,13 +28,21 @@ router.get('/:id', function(pet, resp){
 
 router.get('/:id_u/articulos', function(pet, resp){
 	if(isNaN(Number(pet.params.id_u)))
-		resp.status(400).send('Identificador de usuario inválido.').end();
+		return resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id_u).then(function(usuario){
 		if(usuario == undefined )
-			resp.status(404).send('No existe el usuario referido.').end();
+			return resp.status(404).send('No existe el usuario referido.').end();
+		models.Articulo.findAll({
+			where: {
+					UsuarioId: pet.params.id_u
+				}
+			}).then(function(results){
+				resp.status(200).send(results).end();
+			});
+		/*Otra forma no va porquee
 		usuario.getArticulos().then(function(results){
 			resp.status(200).send(results).end();
-		});
+		});*/
 	});
 });
 
@@ -42,7 +50,7 @@ router.get('/:id_u/articulos', function(pet, resp){
 
 router.post('/', function(pet, resp){ 
 	if(pet.body.email==undefined || pet.body.email=='')
-		resp.status(400).send('El email es obligatorio.').end();
+		return resp.status(400).send('El email es obligatorio.').end();
 	models.Usuario.create({
 		email: pet.body.email,
 		password: pet.body.password,
@@ -62,13 +70,12 @@ router.post('/', function(pet, resp){
 
 router.put('/:id', check.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
-		resp.status(400).send('Identificador de usuario inválido.').end();
+		return resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id).then(function(result){
-		if(result == undefined ) {
-			resp.status(404).send('No existe el usuario referido.').end();
-		} else {
+		if(result == undefined )
+			return resp.status(404).send('No existe el usuario referido.').end();
 			if(pet.body.email==undefined || pet.body.email=='')
-				resp.status(400).send('El email es obligatorio.').end();
+				return resp.status(400).send('El email es obligatorio.').end();
 			models.Usuario.update({   
 				email: pet.body.email,
 				password: pet.body.password,
@@ -82,7 +89,6 @@ router.put('/:id', check.checkAuth, function(pet, resp){
 			}).catch(function (err) {
 					resp.status(400).send(err.message).end();
 			});
-		}
 	});
 });
 
@@ -91,10 +97,10 @@ router.put('/:id', check.checkAuth, function(pet, resp){
 
 router.delete('/:id', check.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
-		resp.status(400).send('Identificador de usuario inválido.').end();
+		return resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id).then(function(result){
 		if(result == undefined )
-			resp.status(404).send('No existe el usuario referido.').end();
+			return resp.status(404).send('No existe el usuario referido.').end();
 		models.Usuario.destroy({
 				where: { id : pet.params.id }
 		}).then(function() {
