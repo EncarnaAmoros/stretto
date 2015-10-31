@@ -49,7 +49,7 @@ describe('test de la app web articulos', function(){
 		.end(done);		
 	});
 	
-	it('POST / devuelve 400 al crear artículo con Tipo vacio', function(done) {
+	it('POST / devuelve 400 al crear artículo con tipo vacio', function(done) {
 		var articulo = { nombre : 'banjo', tipo : '', usuario : '1' };
 		supertest(app)
 		.post('/stretto/articulos')
@@ -59,7 +59,7 @@ describe('test de la app web articulos', function(){
 		.expect('Tipo y usuario deben rellenarse.', done);
 	});
 	
-	it('POST / devuelve 400 al crear artículo con Usuario vacio', function(done) {
+	it('POST / devuelve 400 al crear artículo con usuario vacio', function(done) {
 		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '' };
 		supertest(app)
 		.post('/stretto/articulos')
@@ -89,87 +89,108 @@ describe('test de la app web articulos', function(){
 		.expect('El usuario introducido no se reconoce.', done);
 	});
 	
-/*	
-	
-	it('POST / devuelve 201 al crea usuario', function(done) {
-		var usuario = { nombre : 'usuario', email : 'usuario@gm.com'};
+	it('POST / devuelve 201 al crear un artículo', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '1' };
 		supertest(app)
-		.post('/stretto/usuarios')
-		//.field('email', 'email') No va :(
-		.send(usuario)
+		.post('/stretto/articulos')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
 		.expect(201)
 		.expect('Operación realizada con éxito.', done);
 	});
 	
-	it('POST / devuelve 400 al crear usuario con email vacio', function(done) {
-		var usuario = { nombre : 'usuario', email : ''};
+	it('PUT / devuelve 400 al modificar artículo con id no numérico', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '1' };
 		supertest(app)
-		.post('/stretto/usuarios')
-		.send(usuario)
+		.put('/stretto/articulos/aa')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
 		.expect(400)
-		.expect('El email es obligatorio.', done);
+		.expect('Identificador de artículo inválido.', done);
 	});
 	
-	it('PUT / devuelve 400 al actualizar usuario con id no numérico', function(done){
-		var usuario = { nombre : 'usuario', email : 'usuario@gm.com'};
+	it('PUT / devuelve 404 al modificar artículo inexistente', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '1' };
 		supertest(app)
-		.put('/stretto/usuarios/aa')
+		.put('/stretto/articulos/99999')
 		.auth('lucas@gm.com', 'l')
-		.send(usuario)
-		.expect(400)
-		.expect('Identificador de usuario inválido.', done);
-	});
-	
-	it('PUT / devuelve 404 al actualizar usuario inexistente', function(done){
-		var usuario = { nombre : 'usuario', email : 'usuario@gm.com'};
-		supertest(app)
-		.put('/stretto/usuarios/99999')
-		.auth('lucas@gm.com', 'l')
-		.send(usuario)
+		.send(articulo)
 		.expect(404)
-		.expect('No existe el usuario referido.', done);
+		.expect('No existe el artículo referido.', done);
 	});
 	
-	it('PUT / devuelve 400 al actualizar usuario con email vacio', function(done){
-		var usuario = { nombre : 'usuario', email : ''};
+	it('PUT / devuelve 400 al modificar artículo con tipo vacio', function(done) {
+		var articulo = { nombre : 'banjo', tipo : '', usuario : '1' };
 		supertest(app)
-		.put('/stretto/usuarios/2')
+		.put('/stretto/articulos/3')
 		.auth('lucas@gm.com', 'l')
-		.send(usuario)
+		.send(articulo)
 		.expect(400)
-		.expect('El email es obligatorio.', done);
+		.expect('Tipo y usuario deben rellenarse.', done);
 	});
 	
-	it('PUT / devuelve 204 al actualizar usuario existente', function(done){
-		var usuario = { nombre : 'Ana', email : 'anaNuevoEmail@gm.com'};
+	it('PUT / devuelve 400 al modificar artículo con Usuario vacio', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '' };
 		supertest(app)
-		.put('/stretto/usuarios/2')
+		.put('/stretto/articulos/3')
 		.auth('lucas@gm.com', 'l')
-		.send(usuario)
+		.send(articulo)
+		.expect(400)
+		.expect('Tipo y usuario deben rellenarse.', done);
+	});
+	
+	it('PUT / devuelve 400 al modificar artículo con tipo inexistente', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'Cuerda', usuario : '1' };
+		supertest(app)
+		.put('/stretto/articulos/3')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
+		.expect(400)
+		.expect('El tipo de instrumento no se reconoce.', done);
+	});
+	
+	it('PUT / devuelve 400 al modificar artículo con usuario inexistente', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '99999' };
+		supertest(app)
+		.put('/stretto/articulos/3')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
+		.expect(400)
+		.expect('El usuario introducido no se reconoce.', done);
+	});
+	
+	
+	
+	it('PUT / devuelve 204 al modificar un artículo', function(done) {
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '1' };
+		supertest(app)
+		.put('/stretto/articulos/3')
+		.auth('lucas@gm.com', 'l')
+		.send(articulo)
 		.expect(204, done);
 	});
 	
-	it('DELETE / devuelve 400 al eliminar usuario con id no numérico', function(done){
+	it('DELETE / devuelve 400 al eliminar artículo con id no numérico', function(done){
 		supertest(app)
-		.delete('/stretto/usuarios/aa')
-		.auth('juan@gm.com', 'j')
+		.delete('/stretto/articulos/aa')
+		.auth('ana@gm.com', 'a')
 		.expect(400)
-		.expect('Identificador de usuario inválido.', done);
+		.expect('Identificador de artículo inválido.', done);
 	});
 	
-	it('DELETE / devuelve 404 al eliminar usuario inexistente', function(done){
+	it('DELETE / devuelve 404 al eliminar artículo inexistente', function(done){
 		supertest(app)
-		.delete('/stretto/usuarios/99999')
-		.auth('juan@gm.com', 'j')
+		.delete('/stretto/articulos/99999')
+		.auth('ana@gm.com', 'a')
 		.expect(404)
-		.expect('No existe el usuario referido.', done);
+		.expect('No existe el artículo referido.', done);
 	});
 	
-	it('DELETE / devuelve 204 al eliminar usuario', function(done){
+	it('DELETE / devuelve 204 al eliminar artículo', function(done){
 		supertest(app)
-		.delete('/stretto/usuarios/3')
-		.auth('juan@gm.com', 'j')
+		.delete('/stretto/articulos/2')
+		.auth('ana@gm.com', 'a')
 		.expect(204, done);
-	});*/
+	});
 	
 });
