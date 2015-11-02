@@ -12,6 +12,7 @@ router.get('/', function(pet, resp){
 });
 
 /* GET de un artículo */
+/* Mostraremos los datos de un artículo y su tipo */
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
