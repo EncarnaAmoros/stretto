@@ -6,13 +6,50 @@ var check = require('./checkAuth');
 /* GET lista de artículos */
 
 router.get('/', function(pet, resp){
-	models.Articulo.findAll().then(function(results){
+	models.Articulo.findAll(
+		{limit: 10 }
+	).then(function(results){
+		var links = '';
 		resp.status(200).send(results);
 	});
 });
 
+/*
+// Skip 8 instances/rows
+Project.findAll({ offset: 8 })
+// Skip 5 instances and fetch the 5 after that
+Project.findAll({ offset: 5, limit: 5 })
+
+"_links": {
+"self": {
+"href": "http://example.org/api/books?page=3"
+},
+"first": {
+"href": "http://example.org/api/books"
+},
+"prev": {
+"href": "http://example.org/api/books?page=2"
+},
+"next": {
+"href": "http://example.org/api/books?page=4"
+},
+"last": {
+"href": "http://example.org/api/books?page=133"
+}
+}
+"count": 2,
+"total": 498,
+"data": {
+{ title: "A Song of Ice and Fire", author: "George R.R. Martin"}
+{ title: "To Your Scattered Bodies Go", author: "Philip J. Farmer"}
+}
+}*/
+
+
 /* GET de un artículo */
-/* Mostraremos los datos de un artículo y su tipo */
+// Mostraremos los datos de un artículo:
+// nombre, descipción, foro, precio, valoración 
+// y el usuario que lo pone en venta.
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
@@ -27,31 +64,28 @@ router.get('/:id', function(pet, resp){
 /* POST para crear artículos */
 
 router.post('/', check.checkAuth, function(pet, resp){
-	models.Articulo.create({
-			nombre: pet.body.nombre,
-			descripcion: pet.body.descripcion,
-			foto: pet.body.foto,
-			precio: pet.body.precio,
-			TipoNombre: pet.body.tipo,
-			UsuarioId: pet.body.usuario
-	}).then(function(resultado) {
-			resp.location('http://localhost:3000/stretto/articulos/' + resultado.id);
-			resp.status(201).send("Operación realizada con éxito.");
-	}).catch(function (err) {
-			if(pet.body.tipo=='' || pet.body.tipo==undefined || pet.body.usuario=='' || pet.body.usuario==undefined)	
-				return resp.status(400).send('Tipo y usuario deben rellenarse.').end;
-			models.Tipo.findAll({
-				where : {
-					nombre: pet.body.tipo
-				}
-			}).then(function(results){
-				if(results[0]==undefined)
-					resp.status(400).send('El tipo de instrumento no se reconoce.');
+	var loginstr=new Buffer(pet.headers.authorization.split(' ')[1], 'base64').toString('ascii').split(':');
+	models.Usuario.findAll ({
+		where: { email: loginstr[0] }
+	}).then(function(usuarios) {
+		models.Articulo.create({
+				nombre: pet.body.nombre,
+				descripcion: pet.body.descripcion,
+				foto: pet.body.foto,
+				precio: pet.body.precio,
+				TipoNombre: pet.body.tipo,
+				UsuarioId: usuarios[0].id
+		}).then(function(resultado) {
+				resp.location('http://localhost:3000/stretto/articulos/' + resultado.id);
+				resp.status(201).send("Operación realizada con éxito.");
+		}).catch(function (err) {
+				if(pet.body.tipo=='' || pet.body.tipo==undefined)	
+					return resp.status(400).send('El tipo debe rellenarse.').end;
 				else
-					resp.status(400).send('El usuario introducido no se reconoce.');
-			});
-	});  
-})
+						resp.status(400).send('El tipo de instrumento no se reconoce.');
+		});
+	});
+});
 
 /* PUT para actualizar artículos */
 
@@ -61,29 +95,26 @@ router.put('/:id', check.checkAuth, function(pet, resp){
 	models.Articulo.findById(pet.params.id).then(function(result){
 		if(result == undefined)
 			return resp.status(404).send('No existe el artículo referido.').end();
-		models.Articulo.update({
-			nombre: pet.body.nombre,
-			descripcion: pet.body.descripcion,
-			foto: pet.body.foto,
-			precio: pet.body.precio,
-			TipoNombre: pet.body.tipo,
-			UsuarioId: pet.body.usuario
-		}, { 
-			where: {id : pet.params.id}
-		}).then(function() {
-				resp.status(204).send("Operación realizada con éxito.");
-		}).catch(function (err) {
-				if(pet.body.tipo=='' || pet.body.tipo==undefined || pet.body.usuario=='' || pet.body.usuario==undefined)	
-					return resp.status(400).send('Tipo y usuario deben rellenarse.').end;
-				models.Tipo.findAll({
-					where : {
-						nombre: pet.body.tipo
-					}
-				}).then(function(results){
-					if(results[0]==undefined)
-						resp.status(400).send('El tipo de instrumento no se reconoce.');
-					else
-						resp.status(400).send('El usuario introducido no se reconoce.');
+		var loginstr=new Buffer(pet.headers.authorization.split(' ')[1], 'base64').toString('ascii').split(':');
+		models.Usuario.findAll ({
+			where: { email: loginstr[0] }
+		}).then(function(usuarios) {
+				models.Articulo.update({
+					nombre: pet.body.nombre,
+					descripcion: pet.body.descripcion,
+					foto: pet.body.foto,
+					precio: pet.body.precio,
+					TipoNombre: pet.body.tipo,
+					UsuarioId: usuarios[0].id
+				}, { 
+					where: {id : pet.params.id}
+				}).then(function() {
+						resp.status(204).send("Operación realizada con éxito.");
+				}).catch(function (err) {
+						if(pet.body.tipo=='' || pet.body.tipo==undefined)	
+							return resp.status(400).send('El tipo debe rellenarse.').end;
+						else
+								resp.status(400).send('El tipo de instrumento no se reconoce.');
 				});
 		});
 	});

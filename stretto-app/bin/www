@@ -51,7 +51,63 @@ models.sequelize.sync({force:true}).then(function () {
 						precio: 934.65,
 						TipoNombre: 'percusion',
 						UsuarioId: 3
-				}]);
+				}, {
+						nombre:'Flauta', 
+						descripcion: 'La mejor guitarra que puedas ver',
+						foto: 'www.url.com',
+						precio: 134.65,
+						TipoNombre: 'viento',
+						UsuarioId: 2
+					}, {
+						nombre:'Oboe', 
+						descripcion: 'La mejor guitarra que puedas ver',
+						foto: 'www.url.com',
+						precio: 134.65,
+						TipoNombre: 'viento',
+						UsuarioId: 3
+					}, {
+						nombre:'Violonchelo', 
+						descripcion: 'La mejor guitarra que puedas ver',
+						foto: 'www.url.com',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 1
+					}, {
+						nombre:'Violin', 
+						descripcion: 'La mejor guitarra que puedas ver',
+						foto: 'www.url.com',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 2
+					}, {
+						nombre:'Baquetas', 
+						descripcion: 'La mejor guitarra que puedas ver',
+						foto: 'www.url.com',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Maracas', 
+						descripcion: 'La mejor guitarra que puedas ver',
+						foto: 'www.url.com',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Caja', 
+						descripcion: 'La mejor guitarra que puedas ver',
+						foto: 'www.url.com',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Bandurria', 
+						descripcion: 'La mejor guitarra que puedas ver',
+						foto: 'www.url.com',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 2
+					}]);
 			});
 	})
 	/* Servidor en funcionamiento */

@@ -50,27 +50,17 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('POST / devuelve 400 al crear artículo con tipo vacio', function(done) {
-		var articulo = { nombre : 'banjo', tipo : '', usuario : '1' };
+		var articulo = { nombre : 'banjo', tipo : '' };
 		supertest(app)
 		.post('/stretto/articulos')
 		.auth('lucas@gm.com', 'l')
 		.send(articulo)
 		.expect(400)
-		.expect('Tipo y usuario deben rellenarse.', done);
-	});
-	
-	it('POST / devuelve 400 al crear artículo con usuario vacio', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '' };
-		supertest(app)
-		.post('/stretto/articulos')
-		.auth('lucas@gm.com', 'l')
-		.send(articulo)
-		.expect(400)
-		.expect('Tipo y usuario deben rellenarse.', done);
+		.expect('El tipo debe rellenarse.', done);
 	});
 	
 	it('POST / devuelve 400 al crear artículo con tipo inexistente', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'Cuerda', usuario : '1' };
+		var articulo = { nombre : 'banjo', tipo : 'Cuerda' };
 		supertest(app)
 		.post('/stretto/articulos')
 		.auth('lucas@gm.com', 'l')
@@ -79,18 +69,8 @@ describe('test de la app web articulos', function(){
 		.expect('El tipo de instrumento no se reconoce.', done);
 	});
 	
-	it('POST / devuelve 400 al crear artículo con usuario inexistente', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '99999' };
-		supertest(app)
-		.post('/stretto/articulos')
-		.auth('lucas@gm.com', 'l')
-		.send(articulo)
-		.expect(400)
-		.expect('El usuario introducido no se reconoce.', done);
-	});
-	
 	it('POST / devuelve 201 al crear un artículo', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '1' };
+		var articulo = { nombre : 'banjo', tipo : 'cuerda' };
 		supertest(app)
 		.post('/stretto/articulos')
 		.auth('lucas@gm.com', 'l')
@@ -100,7 +80,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('PUT / devuelve 400 al modificar artículo con id no numérico', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '1' };
+		var articulo = { nombre : 'banjo', tipo : 'cuerda' };
 		supertest(app)
 		.put('/stretto/articulos/aa')
 		.auth('lucas@gm.com', 'l')
@@ -110,7 +90,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('PUT / devuelve 404 al modificar artículo inexistente', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '1' };
+		var articulo = { nombre : 'banjo', tipo : 'cuerda' };
 		supertest(app)
 		.put('/stretto/articulos/99999')
 		.auth('lucas@gm.com', 'l')
@@ -120,23 +100,13 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('PUT / devuelve 400 al modificar artículo con tipo vacio', function(done) {
-		var articulo = { nombre : 'banjo', tipo : '', usuario : '1' };
+		var articulo = { nombre : 'banjo', tipo : '' };
 		supertest(app)
 		.put('/stretto/articulos/3')
 		.auth('lucas@gm.com', 'l')
 		.send(articulo)
 		.expect(400)
-		.expect('Tipo y usuario deben rellenarse.', done);
-	});
-	
-	it('PUT / devuelve 400 al modificar artículo con Usuario vacio', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '' };
-		supertest(app)
-		.put('/stretto/articulos/3')
-		.auth('lucas@gm.com', 'l')
-		.send(articulo)
-		.expect(400)
-		.expect('Tipo y usuario deben rellenarse.', done);
+		.expect('El tipo debe rellenarse.', done);
 	});
 	
 	it('PUT / devuelve 400 al modificar artículo con tipo inexistente', function(done) {
@@ -147,22 +117,10 @@ describe('test de la app web articulos', function(){
 		.send(articulo)
 		.expect(400)
 		.expect('El tipo de instrumento no se reconoce.', done);
-	});
-	
-	it('PUT / devuelve 400 al modificar artículo con usuario inexistente', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '99999' };
-		supertest(app)
-		.put('/stretto/articulos/3')
-		.auth('lucas@gm.com', 'l')
-		.send(articulo)
-		.expect(400)
-		.expect('El usuario introducido no se reconoce.', done);
-	});
-	
-	
+	});	
 	
 	it('PUT / devuelve 204 al modificar un artículo', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda', usuario : '1' };
+		var articulo = { nombre : 'banjo', tipo : 'cuerda' };
 		supertest(app)
 		.put('/stretto/articulos/3')
 		.auth('lucas@gm.com', 'l')

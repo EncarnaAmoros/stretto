@@ -12,6 +12,8 @@ router.get('/', function(pet, resp, err){
 });
 
 /* GET de un usuario */
+// Mostramos un usuario con sus siguientes datos:
+// email, password, valoracion, nombre y tlf.
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
