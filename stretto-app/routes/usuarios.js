@@ -28,6 +28,8 @@ router.get('/', function(pet, resp, err){
 		}).then(function(cantidad){
 				//Obtenemos las variables para el paginado
 				paginar.inicializarVariables("?page=", pet, cantidad, numUsuariosPag);
+				//Si ya no hay artículos en página indicada
+				if(paginar.error()==true) return resp.status(200).send("Recurso no encontrado").end();
 				var self = paginar.self();
 				var prev = paginar.prev();
 				var next = paginar.next();

@@ -2,12 +2,9 @@ var express = require('express');
 var selff, prevv, nextt, lastt, errorr;
 
 exports.inicializarVariables = function (urlpage, pet, cantidad, numItems) {
-	//Si busca un número de página donde ya no hay artículos -> 404
-	if(pet.query.page>parseInt(cantidad/numItems)) {
-		console.log("hay error");
-		this.error = true;
-		return;
-	}
+	//Si busca un número de página donde ya no hay artículos -> 404	
+	if(pet.query.page>(parseInt(cantidad/numItems)+1))
+		return this.errorr = true;
 	var self, prev, next, last;
 	//Si no hay datos es la misma url siempre
 	if(cantidad==0) {
