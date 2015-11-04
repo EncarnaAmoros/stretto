@@ -62,6 +62,9 @@ router.get('/', function(pet, resp, err){
 });
 
 /* GET de un usuario */
+/* Cuando mostramos un usuario mostramos sus últimos 5 artículos puestos en venta. Es	*/
+/* una forma de mostrar un resumen de los artículos que ha puesto en venta. Para ver	*/
+/* todos sus artículos se utilizará otra petición (GET usuarios/id/articulos) 				*/
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))

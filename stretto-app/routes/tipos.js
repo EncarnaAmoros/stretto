@@ -21,6 +21,9 @@ router.get('/:param_tipo/articulos', function(pet, resp){
 });
 
 /* GET de tipos */
+/* Usaremos el get de tipos a la hora de crear un artículo */
+/* para que el usuario que va a poner en venta un artículo */
+/* escoja entre los tipos mostrados, no necesitamos más		 */
 
 router.get('/', function(pet, resp) {
 	models.Tipo.findAll().then(function(results){

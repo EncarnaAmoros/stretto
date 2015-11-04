@@ -55,6 +55,9 @@ router.get('/', function(pet, resp){
 });
 
 /* GET de un artículo */
+/* Mostramos los datos del artículo y los datos relevantes del usuario que */
+/* lo ha puesto en venta, es decir, su nombre e e-mail. El tipo lo sabemos */
+/* pues la clave primaria está en el artículo y es el nombre (ej: cuerda)  */
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
@@ -62,7 +65,15 @@ router.get('/:id', function(pet, resp){
 	models.Articulo.findById(pet.params.id).then(function(result){
 		if(result == undefined )
 			return resp.status(404).send('No existe el artículo referido.').end();
-		resp.status(200).send(result);
+		models.Usuario.findById(result.UsuarioId).then(function(usuario) {
+			resp.status(200).send({
+				data: result,
+				usuario: {
+					nombre: usuario.nombre,
+					email: usuario.email
+				}
+			});
+		});
 	});	
 });
 
