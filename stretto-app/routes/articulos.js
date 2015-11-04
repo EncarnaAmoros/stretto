@@ -3,48 +3,75 @@ var router = express.Router();
 var models = require('../models');
 var check = require('./checkAuth');
 
-/* GET lista de artículos */
+var numArticulosInicio = 10;
+
+/* GET lista de artículos con paginado */
 
 router.get('/', function(pet, resp){
-	models.Articulo.findAll(
-		{limit: 10 }
-	).then(function(results){
-		var links = '';
-		resp.status(200).send(results);
+	//Parte variable de la url
+	var urlpage="?page=";
+	//Si estamos en la primera página self = primera pagina
+	//Si no, self es el numero de página de la url
+	if(pet.query.page==undefined) {
+		var pag = 1;
+		var self = "";
+	} else {
+		var pag = parseInt(pet.query.page);
+		var self = urlpage + pag;
+	}
+	//Número artículo desde el que empezamos a mirar
+	var from = ((pag-1)*numArticulosInicio);
+	//Buscamos en la BD y devolvemos el resultado paginado
+	models.Articulo.findAll({
+		offset: from,
+		limit: numArticulosInicio
+	}).then(function(articulos){
+		models.Articulo.count().then(function(cantidad){
+			//Si solo existe una página next=last y prev=last
+			if(cantidad<numArticulosInicio) {
+				var last, next, prev = "";
+			} else {
+				//Ultima página = cantidad art/cuantos art caben por pag +1
+				if(cantidad%numArticulosInicio!=0) var last = urlpage + (Math.floor(cantidad/numArticulosInicio)+1);
+				else var last = urlpage + (Math.floor(cantidad/numArticulosInicio));
+				//Si busca un número de página donde ya no hay artículos -> 404
+				if(pet.query.page>last.replace(urlpage,""))
+					return resp.status(404).send('Recurso no encontrado').end();
+				//Si estamos en la primera página prev igual a ella
+				//Si no igual a pagina url - 1
+				if(pag==1) prev = "";
+				else prev = urlpage + (pag - 1);
+				//Si estamos en la ultima página next igual a ella
+				//Si no igual a pagina url + 1
+				if(pag==last.replace(urlpage,"")) next = urlpage + last.replace(urlpage,"");
+				else next = urlpage + (pag + 1);
+			}
+			//Enviamos la respuesta con paginado
+			resp.status(200).send({
+				_links: {
+					self: {
+						href: "http://localhost:3000/stretto/articulos"+self
+					},
+					first: {
+						href: "http://localhost:3000/stretto/articulos"
+					},
+					prev: {
+						href: "http://localhost:3000/stretto/articulos"+prev
+					},
+					next: {
+						href: "http://localhost:3000/stretto/articulos"+next
+					},
+					last: {
+						href: "http://localhost:3000/stretto/articulos"+last
+					}
+				},
+				count: articulos.length,
+				total: cantidad,
+				data: articulos
+			});
+  	});
 	});
 });
-
-/*
-// Skip 8 instances/rows
-Project.findAll({ offset: 8 })
-// Skip 5 instances and fetch the 5 after that
-Project.findAll({ offset: 5, limit: 5 })
-
-"_links": {
-"self": {
-"href": "http://example.org/api/books?page=3"
-},
-"first": {
-"href": "http://example.org/api/books"
-},
-"prev": {
-"href": "http://example.org/api/books?page=2"
-},
-"next": {
-"href": "http://example.org/api/books?page=4"
-},
-"last": {
-"href": "http://example.org/api/books?page=133"
-}
-}
-"count": 2,
-"total": 498,
-"data": {
-{ title: "A Song of Ice and Fire", author: "George R.R. Martin"}
-{ title: "To Your Scattered Bodies Go", author: "Philip J. Farmer"}
-}
-}*/
-
 
 /* GET de un artículo */
 // Mostraremos los datos de un artículo:
