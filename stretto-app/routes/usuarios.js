@@ -10,13 +10,52 @@ var paginar = require('./paginar');
 var numArticulosPag = 10;
 //Artículos en página del usuario
 var numArticulosUsuario = 5;
+//Usuarios por página
+var numUsuariosPag = 15;
 
 
 /* GET lista de usuarios */
 
 router.get('/', function(pet, resp, err){
-	models.Usuario.findAll().then(function(results){
-		resp.status(200).send(results);
+	//Buscamos en la BD
+	models.Usuario.findAll({
+		offset: ((pet.query.page-1)*numUsuariosPag),
+		limit: numUsuariosPag,
+		order: [['nombre', 'ASC']]
+	}).then(function(usuarios){
+		models.Usuario.count({
+			order: [['nombre', 'ASC']]
+		}).then(function(cantidad){
+				//Obtenemos las variables para el paginado
+				paginar.inicializarVariables("?page=", pet, cantidad, numUsuariosPag);
+				var self = paginar.self();
+				var prev = paginar.prev();
+				var next = paginar.next();
+				var last = paginar.last();
+				//Enviamos la respuesta con paginado
+				resp.status(200).send({
+					_links: {
+						self: {
+							href: "http://localhost:3000/stretto/usuarios"+self
+						},
+						first: {
+							href: "http://localhost:3000/stretto/usuarios"
+						},
+						prev: {
+							href: "http://localhost:3000/stretto/usuarios"+prev
+						},
+						next: {
+							href: "http://localhost:3000/stretto/usuarios"+next
+						},
+						last: {
+							href: "http://localhost:3000/stretto/usuarios"+last
+						}
+					},
+					count: usuarios.length,
+					total: cantidad,
+					data: usuarios
+				});
+  		});
 	});
 });
 
@@ -56,36 +95,36 @@ router.get('/:id_u/articulos', function(pet, resp){
 			models.Articulo.count({
 				where: { UsuarioId: pet.params.id_u }
 			}).then(function(cantidad){
-			//Obtenemos las variables para el paginado
-			paginar.inicializarVariables("?page=", pet, cantidad, numArticulosPag);
-			var self = paginar.self();
-			var prev = paginar.prev();
-			var next = paginar.next();
-			var last = paginar.last();
-			//Enviamos la respuesta con paginado
-			resp.status(200).send({
-				_links: {
-					self: {
-						href: "http://localhost:3000/stretto/articulos"+self
+				//Obtenemos las variables para el paginado
+				paginar.inicializarVariables("?page=", pet, cantidad, numArticulosPag);
+				var self = paginar.self();
+				var prev = paginar.prev();
+				var next = paginar.next();
+				var last = paginar.last();
+				//Enviamos la respuesta con paginado
+				resp.status(200).send({
+					_links: {
+						self: {
+							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"+self
+						},
+						first: {
+							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"
+						},
+						prev: {
+							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"+prev
+						},
+						next: {
+							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"+next
+						},
+						last: {
+							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"+last
+						}
 					},
-					first: {
-						href: "http://localhost:3000/stretto/articulos"
-					},
-					prev: {
-						href: "http://localhost:3000/stretto/articulos"+prev
-					},
-					next: {
-						href: "http://localhost:3000/stretto/articulos"+next
-					},
-					last: {
-						href: "http://localhost:3000/stretto/articulos"+last
-					}
-				},
-				count: articulos.length,
-				total: cantidad,
-				data: articulos
-			});
-  	});
+					count: articulos.length,
+					total: cantidad,
+					data: articulos
+				});
+  		});
 		});
 	});
 });
