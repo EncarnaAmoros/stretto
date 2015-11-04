@@ -1,7 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
+
+//Comprobar autorización
 var check = require('./checkAuth');
+//Variables para paginar
+var paginar = require('./paginar');
+//Artículos por página
+var numArticulosPag = 10;
+//Artículos en página del usuario
+var numArticulosUsuario = 5;
+
 
 /* GET lista de usuarios */
 
@@ -12,17 +21,22 @@ router.get('/', function(pet, resp, err){
 });
 
 /* GET de un usuario */
-// Mostramos un usuario con sus siguientes datos:
-// email, password, valoracion, nombre y tlf.
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		return resp.status(400).send('Identificador de usuario inválido.').end();
-	models.Usuario.findById(pet.params.id).then(function(result){
-		if(result == undefined )
-			resp.status(404).send('No existe el usuario referido.').end();
-		else
-			resp.status(200).send(result).end();
+	models.Usuario.findById(pet.params.id).then(function(usuario){
+		if(usuario == undefined )
+			return resp.status(404).send('No existe el usuario referido.').end();
+		models.Articulo.findAll({
+			where: { UsuarioId: pet.params.id },
+			limit: numArticulosUsuario
+		}).then(function(articulos){
+			resp.status(200).send({
+				data: usuario,
+				articulos: articulos
+			});
+		});
 	});
 });
 
@@ -35,16 +49,44 @@ router.get('/:id_u/articulos', function(pet, resp){
 		if(usuario == undefined )
 			return resp.status(404).send('No existe el usuario referido.').end();
 		models.Articulo.findAll({
-			where: {
-					UsuarioId: pet.params.id_u
-				}
-			}).then(function(results){
-				resp.status(200).send(results).end();
+			where: { UsuarioId: pet.params.id_u },
+			offset: ((pet.query.page-1)*numArticulosPag),
+			limit: numArticulosPag
+		}).then(function(articulos){
+			models.Articulo.count({
+				where: { UsuarioId: pet.params.id_u }
+			}).then(function(cantidad){
+			//Obtenemos las variables para el paginado
+			paginar.inicializarVariables("?page=", pet, cantidad, numArticulosPag);
+			var self = paginar.self();
+			var prev = paginar.prev();
+			var next = paginar.next();
+			var last = paginar.last();
+			//Enviamos la respuesta con paginado
+			resp.status(200).send({
+				_links: {
+					self: {
+						href: "http://localhost:3000/stretto/articulos"+self
+					},
+					first: {
+						href: "http://localhost:3000/stretto/articulos"
+					},
+					prev: {
+						href: "http://localhost:3000/stretto/articulos"+prev
+					},
+					next: {
+						href: "http://localhost:3000/stretto/articulos"+next
+					},
+					last: {
+						href: "http://localhost:3000/stretto/articulos"+last
+					}
+				},
+				count: articulos.length,
+				total: cantidad,
+				data: articulos
 			});
-		/*Otra forma no va porquee
-		usuario.getArticulos().then(function(results){
-			resp.status(200).send(results).end();
-		});*/
+  	});
+		});
 	});
 });
 
