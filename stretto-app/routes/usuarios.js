@@ -17,6 +17,8 @@ var numUsuariosPag = 15;
 /* GET lista de usuarios */
 
 router.get('/', function(pet, resp, err){
+	if(pet.query.page==undefined && pet.url!="/")
+		return resp.status(400).send("Falta el parámetro page en la petición").end();
 	//Buscamos en la BD
 	models.Usuario.findAll({
 		offset: ((pet.query.page-1)*numUsuariosPag),
@@ -27,7 +29,9 @@ router.get('/', function(pet, resp, err){
 			order: [['nombre', 'ASC']]
 		}).then(function(cantidad){
 				//Obtenemos las variables para el paginado
-				paginar.inicializarVariables("?page=", pet, cantidad, numUsuariosPag);
+				var url = "http://localhost:3000/stretto/usuarios";
+				var partevariable = "?page=";
+				paginar.inicializarVariables(url, partevariable, pet, cantidad, numUsuariosPag);
 				//Si ya no hay artículos en página indicada
 				if(paginar.error()==true) return resp.status(200).send("Recurso no encontrado").end();
 				var self = paginar.self();
@@ -38,19 +42,19 @@ router.get('/', function(pet, resp, err){
 				resp.status(200).send({
 					_links: {
 						self: {
-							href: "http://localhost:3000/stretto/usuarios"+self
+							href: self
 						},
 						first: {
-							href: "http://localhost:3000/stretto/usuarios"
+							href: url
 						},
 						prev: {
-							href: "http://localhost:3000/stretto/usuarios"+prev
+							href: prev
 						},
 						next: {
-							href: "http://localhost:3000/stretto/usuarios"+next
+							href: next
 						},
 						last: {
-							href: "http://localhost:3000/stretto/usuarios"+last
+							href: last
 						}
 					},
 					count: usuarios.length,
@@ -87,11 +91,14 @@ router.get('/:id', function(pet, resp){
 /* GET lista de artículos según usuario */
 
 router.get('/:id_u/articulos', function(pet, resp){
+	if(pet.query.page==undefined && pet.url!="/"+pet.params.id_u+"/articulos")
+		return resp.status(400).send("Falta el parámetro page en la petición").end();
 	if(isNaN(Number(pet.params.id_u)))
 		return resp.status(400).send('Identificador de usuario inválido.').end();
 	models.Usuario.findById(pet.params.id_u).then(function(usuario){
 		if(usuario == undefined )
 			return resp.status(404).send('No existe el usuario referido.').end();
+		//Buscamos en la BD y devolvemos el resultado paginado
 		models.Articulo.findAll({
 			where: { UsuarioId: pet.params.id_u },
 			offset: ((pet.query.page-1)*numArticulosPag),
@@ -101,7 +108,11 @@ router.get('/:id_u/articulos', function(pet, resp){
 				where: { UsuarioId: pet.params.id_u }
 			}).then(function(cantidad){
 				//Obtenemos las variables para el paginado
-				paginar.inicializarVariables("?page=", pet, cantidad, numArticulosPag);
+				var url = "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos";
+				var partevariable = "?page=";
+				paginar.inicializarVariables(url, partevariable, pet, cantidad, numArticulosPag);
+				//Si ya no hay artículos en página indicada
+				if(paginar.error()==true) return resp.status(200).send("Recurso no encontrado").end();
 				var self = paginar.self();
 				var prev = paginar.prev();
 				var next = paginar.next();
@@ -110,19 +121,19 @@ router.get('/:id_u/articulos', function(pet, resp){
 				resp.status(200).send({
 					_links: {
 						self: {
-							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"+self
+							href: self
 						},
 						first: {
-							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"
+							href: url
 						},
 						prev: {
-							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"+prev
+							href: prev
 						},
 						next: {
-							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"+next
+							href: next
 						},
 						last: {
-							href: "http://localhost:3000/stretto/usuarios/"+pet.params.id_u+"/articulos"+last
+							href: last
 						}
 					},
 					count: articulos.length,

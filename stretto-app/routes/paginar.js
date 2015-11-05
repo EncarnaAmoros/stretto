@@ -1,17 +1,17 @@
 var express = require('express');
 var selff, prevv, nextt, lastt, errorr;
 
-exports.inicializarVariables = function (urlpage, pet, cantidad, numItems) {
+exports.inicializarVariables = function (url, urlpage, pet, cantidad, numItems) {
 	//Si busca un número de página donde ya no hay artículos -> 404	
 	if(pet.query.page>(parseInt(cantidad/numItems)+1))
 		return this.errorr = true;
 	var self, prev, next, last;
 	//Si no hay datos es la misma url siempre
 	if(cantidad==0) {
-		this.selff = "";
-		this.prevv = "";
-		this.nextt = "";
-		this.lastt = "";
+		this.selff = url+"";
+		this.prevv = url+"";
+		this.nextt = url+"";
+		this.lastt = url+"";
 		return;
 	}
 	//Parte variable de la url
@@ -40,10 +40,10 @@ exports.inicializarVariables = function (urlpage, pet, cantidad, numItems) {
 		if(pag==last.replace(urlpage,"")) next = urlpage + last.replace(urlpage,"");
 		else next = urlpage + (pag + 1);
 	}
-	this.selff = self;
-	this.prevv = prev;
-	this.nextt = next;
-	this.lastt = last;
+	this.selff = url+self;
+	this.prevv = url+prev;
+	this.nextt = url+next;
+	this.lastt = url+last;
 }
 
 //Para poder obtener las variables desde fuera
@@ -51,4 +51,10 @@ exports.self = function() { return this.selff; }
 exports.prev = function() { return this.prevv; }
 exports.next = function() { return this.nextt; }
 exports.last = function() { return this.lastt; }
-exports.error = function() { return this.errorr; }
+//Debemos volver a dejar el error como false
+//Solo volverá a true si en la función se asigna
+exports.error = function() { 
+	var resultado = this.errorr;
+	this.errorr = false;
+	return resultado; 
+}
