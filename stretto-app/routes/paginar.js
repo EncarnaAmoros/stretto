@@ -40,9 +40,15 @@ exports.inicializarVariables = function (url, urlpage, pet, cantidad, numItems) 
 		if(pag==last.replace(urlpage,"")) next = urlpage + last.replace(urlpage,"");
 		else next = urlpage + (pag + 1);
 	}
+	
+	//Si estamos en la primera página no habrá enlace prev
+	if(prev=="") this.prevv = prev = "";
+	else if(prev==urlpage+1) this.prevv = prev = url
+	else this.prevv = url+prev;
+	//Si estamos en la ultima página no habrá enlace next
+	if(next==self && next==last) this.nextt = next = "";
+	else this.nextt = url+next;
 	this.selff = url+self;
-	this.prevv = url+prev;
-	this.nextt = url+next;
 	this.lastt = url+last;
 }
 
