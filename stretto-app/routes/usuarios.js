@@ -160,7 +160,8 @@ router.post('/', function(pet, resp){
 			resp.location('http://localhost:3000/stretto/Usuarios/' + usuario.id);
 			resp.status(201).send("Operación realizada con éxito.").end();
 	}).catch(function (err) {
-			//err is whatever rejected the promise chain returned to the transaction callback
+			if(err.message=="Validation error")
+				return resp.status(400).send("Ya hay un usuario con este email.").end();
 			resp.status(400).send(err.message).end();
 	});
 });
@@ -189,6 +190,8 @@ router.put('/:id', auth.checkAuth, function(pet, resp){
 						auth.deleteAuth(usuario.email);
 					resp.status(204).send("Operación realizada con éxito.").end();
 			}).catch(function (err) {
+					if(err.message=="Validation error")
+						return resp.status(400).send("Ya hay un usuario con este email.").end();
 					resp.status(400).send(err.message).end();
 			});
 	});

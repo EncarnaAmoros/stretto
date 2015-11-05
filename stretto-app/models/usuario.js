@@ -4,7 +4,10 @@ var models = require('../models');
 
 module.exports = function(sequelize, DataTypes) {
   var Usuario = sequelize.define("Usuario", {
-    email: DataTypes.TEXT,
+    email: {
+			type: DataTypes.TEXT,
+			unique: true
+		},
     password: DataTypes.TEXT,
     valoracion: DataTypes.FLOAT,
     nombre: DataTypes.TEXT,

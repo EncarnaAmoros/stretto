@@ -9,7 +9,6 @@ describe('test de la app web usuarios', function(){
 		//this.timeout(15000)
 		//Al objeto supertest le pasamos la app de usuarios
 		supertest(app)
-		
 		//Hacemos una petición HTTP
 		.get('/stretto/usuarios')
 		//Supertest incluye sus propias aserciones con 'expect'
@@ -101,11 +100,19 @@ describe('test de la app web usuarios', function(){
 		.expect('El email es obligatorio.', done);
 	});
 	
-	it('POST / devuelve 201 al crea usuario', function(done) {
-		var usuario = { nombre : 'usuario', email : 'usuario@gm.com'};
+	it('POST / devuelve 400 al crea usuario con email de otro usuario de la BD', function(done) {
+		var usuario = { nombre : 'usuario', email : 'lucas@gm.com'};
 		supertest(app)
 		.post('/stretto/usuarios')
-		//.field('email', 'email') No va :(
+		.send(usuario)
+		.expect(400)
+		.expect('Ya hay un usuario con este email.', done);
+	});
+	
+	it('POST / devuelve 201 al crea usuario', function(done) {
+		var usuario = { nombre : 'usuario', email : 'usuario2@gm.com'};
+		supertest(app)
+		.post('/stretto/usuarios')
 		.send(usuario)
 		.expect(201)
 		.expect('Operación realizada con éxito.', done);
@@ -139,6 +146,16 @@ describe('test de la app web usuarios', function(){
 		.send(usuario)
 		.expect(400)
 		.expect('El email es obligatorio.', done);
+	});
+	
+	it('PUT / devuelve 400 al modificar usuario con email de otro usuario de la BD', function(done) {
+		var usuario = { nombre : 'usuario', email : 'lucas@gm.com'};
+		supertest(app)
+		.put('/stretto/usuarios/2')
+		.auth('ana@gm.com', 'a')
+		.send(usuario)
+		.expect(400)
+		.expect('Ya hay un usuario con este email.', done);
 	});
 	
 	it('PUT / devuelve 204 al actualizar usuario existente', function(done){
