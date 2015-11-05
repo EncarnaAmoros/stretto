@@ -110,7 +110,7 @@ describe('test de la app web usuarios', function(){
 		.expect(201)
 		.expect('Operación realizada con éxito.', done);
 	});
-	
+		
 	it('PUT / devuelve 400 al actualizar usuario con id no numérico', function(done){
 		var usuario = { nombre : 'usuario', email : 'usuario@gm.com'};
 		supertest(app)
@@ -145,7 +145,7 @@ describe('test de la app web usuarios', function(){
 		var usuario = { nombre : 'Ana', email : 'anaNuevoEmail@gm.com'};
 		supertest(app)
 		.put('/stretto/usuarios/2')
-		.auth('lucas@gm.com', 'l')
+		.auth('ana@gm.com', 'a')
 		.send(usuario)
 		.expect(204, done);
 	});

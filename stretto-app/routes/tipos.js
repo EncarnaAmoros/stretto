@@ -14,8 +14,8 @@ router.get('/:param_tipo/articulos', function(pet, resp){
 					TipoNombre: pet.params.param_tipo
 				}
 			}).*/
-			tipo.getArticulos().then(function(results){
-				resp.status(200).send(results);
+			tipo.getArticulos().then(function(articulos){
+				resp.status(200).send(articulos);
 			});
 	});
 });
@@ -26,8 +26,8 @@ router.get('/:param_tipo/articulos', function(pet, resp){
 /* escoja entre los tipos mostrados, no necesitamos más		 */
 
 router.get('/', function(pet, resp) {
-	models.Tipo.findAll().then(function(results){
-		resp.status(200).send(results);
+	models.Tipo.findAll().then(function(tipos){
+		resp.status(200).send(tipos);
 	});
 });
 

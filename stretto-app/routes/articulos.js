@@ -3,7 +3,7 @@ var router = express.Router();
 var models = require('../models');
 
 //Comprobar autorización
-var check = require('./checkAuth');
+var auth = require('./checkAuth');
 //Variables para paginar
 var paginar = require('./paginar');
 //Artículos por página
@@ -62,12 +62,12 @@ router.get('/', function(pet, resp){
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		return resp.status(400).send('Identificador de artículo inválido.').end();
-	models.Articulo.findById(pet.params.id).then(function(result){
-		if(result == undefined )
+	models.Articulo.findById(pet.params.id).then(function(articulo){
+		if(articulo == undefined )
 			return resp.status(404).send('No existe el artículo referido.').end();
-		models.Usuario.findById(result.UsuarioId).then(function(usuario) {
+		models.Usuario.findById(articulo.UsuarioId).then(function(usuario) {
 			resp.status(200).send({
-				data: result,
+				data: articulo,
 				usuario: {
 					nombre: usuario.nombre,
 					email: usuario.email
@@ -79,7 +79,7 @@ router.get('/:id', function(pet, resp){
 
 /* POST para crear artículos */
 
-router.post('/', check.checkAuth, function(pet, resp){
+router.post('/', auth.checkAuth, function(pet, resp){
 	var loginstr=new Buffer(pet.headers.authorization.split(' ')[1], 'base64').toString('ascii').split(':');
 	models.Usuario.findAll ({
 		where: { email: loginstr[0] }
@@ -91,8 +91,8 @@ router.post('/', check.checkAuth, function(pet, resp){
 				precio: pet.body.precio,
 				TipoNombre: pet.body.tipo,
 				UsuarioId: usuarios[0].id
-		}).then(function(resultado) {
-				resp.location('http://localhost:3000/stretto/articulos/' + resultado.id);
+		}).then(function(articulo) {
+				resp.location('http://localhost:3000/stretto/articulos/' + articulo.id);
 				resp.status(201).send("Operación realizada con éxito.");
 		}).catch(function (err) {
 				if(pet.body.tipo=='' || pet.body.tipo==undefined)	
@@ -105,11 +105,11 @@ router.post('/', check.checkAuth, function(pet, resp){
 
 /* PUT para actualizar artículos */
 
-router.put('/:id', check.checkAuth, function(pet, resp){
+router.put('/:id', auth.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		return resp.status(400).send('Identificador de artículo inválido.').end();
-	models.Articulo.findById(pet.params.id).then(function(result){
-		if(result == undefined)
+	models.Articulo.findById(pet.params.id).then(function(articulo){
+		if(articulo == undefined)
 			return resp.status(404).send('No existe el artículo referido.').end();
 		var loginstr=new Buffer(pet.headers.authorization.split(' ')[1], 'base64').toString('ascii').split(':');
 		models.Usuario.findAll ({
@@ -138,11 +138,11 @@ router.put('/:id', check.checkAuth, function(pet, resp){
 
 /* DELETE para eliminar artículos */
 
-router.delete('/:id', check.checkAuth, function(pet, resp){
+router.delete('/:id', auth.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		return resp.status(400).send('Identificador de artículo inválido.').end();
-	models.Articulo.findById(pet.params.id).then(function(result){
-		if(result == undefined )
+	models.Articulo.findById(pet.params.id).then(function(articulo){
+		if(articulo == undefined )
 			return resp.status(404).send('No existe el artículo referido.').end();
 		models.Articulo.destroy({
 				where: {

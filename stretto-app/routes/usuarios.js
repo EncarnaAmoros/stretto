@@ -3,7 +3,7 @@ var router = express.Router();
 var models = require('../models');
 
 //Comprobar autorización
-var check = require('./checkAuth');
+var auth = require('./checkAuth');
 //Variables para paginar
 var paginar = require('./paginar');
 //Artículos por página
@@ -145,8 +145,8 @@ router.post('/', function(pet, resp){
 		valoracion: pet.body.valoracion,
 		nombre: pet.body.nombre,
 		tlf: pet.body.tlf
-	}).then(function(resultado) {
-			resp.location('http://localhost:3000/stretto/Usuarios/' + resultado.id);
+	}).then(function(usuario) {
+			resp.location('http://localhost:3000/stretto/Usuarios/' + usuario.id);
 			resp.status(201).send("Operación realizada con éxito.").end();
 	}).catch(function (err) {
 			//err is whatever rejected the promise chain returned to the transaction callback
@@ -156,14 +156,14 @@ router.post('/', function(pet, resp){
 
 /* PUT para actualizar usuario */
 
-router.put('/:id', check.checkAuth, function(pet, resp){
+router.put('/:id', auth.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		return resp.status(400).send('Identificador de usuario inválido.').end();
-	models.Usuario.findById(pet.params.id).then(function(result){
-		if(result == undefined )
+	models.Usuario.findById(pet.params.id).then(function(usuario){
+		if(usuario == undefined )
 			return resp.status(404).send('No existe el usuario referido.').end();
-			if(pet.body.email==undefined || pet.body.email=='')
-				return resp.status(400).send('El email es obligatorio.').end();
+		if(pet.body.email==undefined || pet.body.email=='')
+			return resp.status(400).send('El email es obligatorio.').end();
 			models.Usuario.update({   
 				email: pet.body.email,
 				password: pet.body.password,
@@ -173,6 +173,9 @@ router.put('/:id', check.checkAuth, function(pet, resp){
 			}, { 
 				where: {id : pet.params.id}
 			}).then(function() {
+					//Si ha cambiado su email o password lo eliminamos de redis
+					if(usuario.email!=pet.body.email || usuario.password!=pet.body.password)
+						auth.deleteAuth(usuario.email);
 					resp.status(204).send("Operación realizada con éxito.").end();
 			}).catch(function (err) {
 					resp.status(400).send(err.message).end();
@@ -183,11 +186,11 @@ router.put('/:id', check.checkAuth, function(pet, resp){
 		
 /* DELETE para eliminar usuarios */
 
-router.delete('/:id', check.checkAuth, function(pet, resp){
+router.delete('/:id', auth.checkAuth, function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
 		return resp.status(400).send('Identificador de usuario inválido.').end();
-	models.Usuario.findById(pet.params.id).then(function(result){
-		if(result == undefined )
+	models.Usuario.findById(pet.params.id).then(function(usuario){
+		if(usuario == undefined )
 			return resp.status(404).send('No existe el usuario referido.').end();
 		models.Usuario.destroy({
 				where: { id : pet.params.id }

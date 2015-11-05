@@ -2,28 +2,27 @@ var express = require('express');
 //var redis = require('redis');
 var models = require('../models');
 
+//comprueba la autorización
 exports.checkAuth = function (pet, resp, next) {
+	//Si el auth está vacio
 	if(pet.headers.authorization==undefined) {
 		resp.status(401)
 		resp.setHeader('WWW-Authenticate', 'Basic realm="Necesitas iniciar sesión"');
-		resp.send("Debes autentificarte").end();
+		resp.send("Debes autentificarte.").end();
 	}
 	else {
 		var redis  = require('redis'),
     client = redis.createClient(); // si IP o PUERTO cambian .createClient('127.0.0.1','3000');
+		//Si conecta bien procedemos
 		client.on("connect", function() {
+			//Obtenemos email y password del auth
 			var loginstr=new Buffer(pet.headers.authorization
 													.split(' ')[1], 'base64')
 													.toString('ascii').split(':');
 			console.log("Intenta entrar: "+loginstr[0]+" y: "+loginstr[1]);
-			//Si hay error al contectar con servidor redis
-			client.on("error", function (err) {
-				console.log("Ha habido este error \n " + err);
-			});
 			//Miramos si tenemos dicho email guardado en redis (o client.exists)
 			client.get(loginstr[0], function (err, reply) {
 				//Si está guardado es porque ya lo encontró antes en la BD y guardó en redis
-				console.log("Miraaa reply:"+reply);
 				if(reply!=null) {
 					console.log("Ya lo teníamos guardado en rendis");
 					next();
@@ -51,5 +50,25 @@ exports.checkAuth = function (pet, resp, next) {
 				}
 			});			
 		});	
+		//Si hay error al contectar con servidor redis
+		client.on("error", function (err) {
+			console.log("Ha habido este error \n " + err);
+		});
 	}	
+}
+
+//Elimina la clave pasada por parámetro y su valor
+exports.deleteAuth = function(email) {
+	var redis  = require('redis'),
+  client = redis.createClient();
+	//Si se conecta
+	client.on("connect", function() {
+		client.del(email, function(err, reply) {
+			console.log("Eliminado con éxito.");
+		});
+	});
+	//Si hay error al contectar con servidor redis
+	client.on("error", function (err) {
+		console.log("Ha habido este error \n " + err);
+	});
 }
