@@ -1,19 +1,22 @@
 var app = require('../app');
+var models = require('../models');
 var supertest = require('supertest');
 var assert = require('assert');
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
+var inicializarBD = require('./initializeBD');
 
 describe('test de la app web tipos', function(){
+	//Inicializamos la BD antes de ejecutar los test
+	before(function (done) {
+		inicializarBD.initialize().then(function() {
+			done();
+		});
+	});
 
-	it('GET / devuelve los datos de un usuario', function(done){
+	it('GET / devuelve todos los tipos de artículos', function(done){
 			supertest(app)
 			.get('/stretto/tipos')
 			.expect(200)
 			.expect(function(res) {
-				assert(res.text.indexOf('1') != -1);
-				assert(res.text.indexOf('2') != -1);
-				assert(res.text.indexOf('3') != -1);
 				assert(res.text.indexOf('cuerda') != -1);
 				assert(res.text.indexOf('viento') != -1);
 				assert(res.text.indexOf('percusion') != -1);

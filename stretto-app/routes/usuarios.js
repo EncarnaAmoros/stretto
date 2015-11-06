@@ -196,7 +196,6 @@ router.put('/:id', auth.checkAuth, function(pet, resp){
 			});
 	});
 });
-
 		
 /* DELETE para eliminar usuarios */
 

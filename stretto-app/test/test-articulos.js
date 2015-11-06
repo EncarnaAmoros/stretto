@@ -1,10 +1,17 @@
 var app = require('../app');
+var models = require('../models');
 var supertest = require('supertest');
 var assert = require('assert');
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
+var inicializarBD = require('./initializeBD');
 
 describe('test de la app web articulos', function(){
+	//Inicializamos la BD antes de ejecutar los test
+	before(function (done) {
+		inicializarBD.initialize().then(function() {
+			done();
+		});
+	});
+	
 	it('GET / devuelve los artículos', function(done){
 		supertest(app)
 		.get('/stretto/articulos')

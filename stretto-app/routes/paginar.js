@@ -14,8 +14,6 @@ exports.inicializarVariables = function (url, urlpage, pet, cantidad, numItems) 
 		this.lastt = url+"";
 		return;
 	}
-	//Parte variable de la url
-	var urlpage="?page=";
 	//Si estamos en 1ªpágina self = 1ªpagina, si no, self = numero pág url
 	if(pet.query.page==undefined) {
 		var pag = 1;

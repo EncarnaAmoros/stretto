@@ -1,12 +1,18 @@
 var app = require('../app');
+var models = require('../models');
 var supertest = require('supertest');
 var assert = require('assert');
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
+var inicializarBD = require('./initializeBD');
 
-describe('test de la app web usuarios', function(){
+describe('test de la app web usuarios', function(){	
+	//Inicializamos la BD antes de ejecutar los test
+	before(function (done) {
+		inicializarBD.initialize().then(function() {
+			done();
+		});
+	});
+	
 	it('GET / devuelve los usuarios', function(done){
-		//this.timeout(15000)
 		//Al objeto supertest le pasamos la app de usuarios
 		supertest(app)
 		//Hacemos una petición HTTP
