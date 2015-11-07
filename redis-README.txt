@@ -12,7 +12,8 @@ Pasos seguidos para utilizar redis en Windows:
 Ya tenemos el servidor redis en funcionamiento y esperando solicitudes.
 
 5. Utilizamos redis en el fichero ./routes/checkAuth.js de nuestro proyecto para guardar el email 
-   y password de un usuario que uitilice el API
+   y password de un usuario que uitilice el API y poder recuperarlos para futuras comprobaciones
+   de autorizaciones, para tener una mayor velocidad que cuando buscamos email y password en la BD
 
 6. Algunos métodos:
 	Teniendo -> var redis  = require('redis'), client = redis.createClient();
