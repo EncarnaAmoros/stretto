@@ -33,7 +33,7 @@ router.get('/', function(pet, resp, err){
 				var partevariable = "?page=";
 				paginar.inicializarVariables(url, partevariable, pet, cantidad, numUsuariosPag);
 				//Si ya no hay artículos en página indicada
-				if(paginar.error()==true) return resp.status(200).send("Recurso no encontrado").end();
+				if(paginar.error()==true) return resp.status(404).send("Recurso no encontrado").end();
 				var self = paginar.self();
 				var prev = paginar.prev();
 				var next = paginar.next();
@@ -112,7 +112,7 @@ router.get('/:id_u/articulos', function(pet, resp){
 				var partevariable = "?page=";
 				paginar.inicializarVariables(url, partevariable, pet, cantidad, numArticulosPag);
 				//Si ya no hay artículos en página indicada
-				if(paginar.error()==true) return resp.status(200).send("Recurso no encontrado").end();
+				if(paginar.error()==true) return resp.status(404).send("Recurso no encontrado").end();
 				var self = paginar.self();
 				var prev = paginar.prev();
 				var next = paginar.next();
