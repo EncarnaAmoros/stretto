@@ -29,6 +29,20 @@ describe('test de la app web articulos', function(){
 		.end(done);		
 	});
 	
+	it('GET / devuelve 404 no hay artículos en página 4', function(done){
+		supertest(app)
+		.get('/stretto/articulos?page=4')
+		.expect(404)
+		.expect('Recurso no encontrado', done);
+	});
+	
+	it('GET / devuelve 400 pues para el paginado se utiliza el atributo page', function(done){
+		supertest(app)
+		.get('/stretto/articulos?pag=2')
+		.expect(400)
+		.expect('Falta el parámetro page en la petición', done);
+	});
+	
 	it('GET / devuelve 400 al buscar un artículo con id no numérico', function(done){
 		supertest(app)
 		.get('/stretto/articulos/aa')

@@ -19,12 +19,10 @@ exports.checkAuth = function (pet, resp, next) {
 			var loginstr=new Buffer(pet.headers.authorization
 													.split(' ')[1], 'base64')
 													.toString('ascii').split(':');
-			console.log("Intenta entrar: "+loginstr[0]+" y: "+loginstr[1]);
 			//Miramos si tenemos dicho email guardado en redis (o client.exists)
 			client.get(loginstr[0], function (err, reply) {
 				//Si está guardado es porque ya lo encontró antes en la BD y guardó en redis
 				if(reply!=null) {
-					console.log("Ya lo teníamos guardado en rendis");
 					next();
 				} else {
 					//Si no lo tenemos guardado lo creamos si está en la BD
@@ -40,10 +38,7 @@ exports.checkAuth = function (pet, resp, next) {
 								resp.send("Email o contraseña incorrectos.").end();
 							} else {
 								//Si está en la BD lo guardamos en redis
-								console.log("No lo teníamos guardado en rendis, guardamos en la BD");
 								client.set(loginstr[0], loginstr[1]);
-								//Tiempo en que expira en redis = 5 segundos
-								//client.expire(loginstr[0], 5);
 								next();
 							}
 					});
@@ -52,7 +47,8 @@ exports.checkAuth = function (pet, resp, next) {
 		});	
 		//Si hay error al contectar con servidor redis
 		client.on("error", function (err) {
-			console.log("Ha habido este error \n " + err);
+			resp.status(500);
+			resp.send("Ha habido este error \n " + err).end();
 		});
 	}	
 }
@@ -61,14 +57,14 @@ exports.checkAuth = function (pet, resp, next) {
 exports.deleteAuth = function(email) {
 	var redis  = require('redis'),
   client = redis.createClient();
-	//Si se conecta
+	//Si se conecta eliminamos la clave-valor
 	client.on("connect", function() {
 		client.del(email, function(err, reply) {
-			console.log("Eliminado con éxito.");
 		});
 	});
 	//Si hay error al contectar con servidor redis
 	client.on("error", function (err) {
-		console.log("Ha habido este error \n " + err);
+		resp.status(500);
+		resp.send("Ha habido este error \n " + err).end();
 	});
 }

@@ -3,7 +3,7 @@ var models = require('../models');
 var app = require('../app');
 var debug = require('debug')('.bin:server');
 
-//Inicializa la BD creando usuarios, tipos y artículos
+//Inicializa la BD creando usuarios, tipos y artículos para los test
 exports.initialize = function() {
 	return models.sequelize.sync({force:true}).then(function () {
 		/* Rellenando BD */

@@ -21,4 +21,4 @@ Ya tenemos el servidor redis en funcionamiento y esperando solicitudes.
 	client.on("error", callback) -> para realizar acciones cuando hay error al conectar con redis
 	client.get(<clave>, callback) -> así podemos localizar una clave y su valor
 	client.set(<clave>, <valor>) -> para almacenar una clave y su valor
-	client.del(<clave>, <valor>) -> para eliminar una clave y su valor
+	client.del(<clave>, callback) -> para eliminar una clave y su valor
