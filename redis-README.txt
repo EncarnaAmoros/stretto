@@ -1,8 +1,9 @@
 Pasos seguidos para utilizar redis en Windows:
 
-1. Descargamos redis para Windows
+1. Descargamos redis para Windows y lo instalamos
 
-2. Instalamos redis
+2. Instalamos redis en la raiz del proyecto con el comando:
+	npm install redis --save
 
 3. Buscamos la carpeta donde se ha guardado redis y ejecutamos el servidor (un archivo .exe)
 
