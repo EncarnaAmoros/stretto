@@ -33,6 +33,20 @@ describe('test de la app web usuarios', function(){
 		.end(done);		
 	});
 	
+	it('GET / devuelve 404 no hay usuarios en página 3', function(done){
+		supertest(app)
+		.get('/stretto/usuarios?page=3')
+		.expect(404)
+		.expect('Recurso no encontrado', done);
+	});
+	
+	it('GET / devuelve 400 pues para el paginado se utiliza el atributo page', function(done){
+		supertest(app)
+		.get('/stretto/usuarios?pag=2')
+		.expect(400)
+		.expect('Falta el parámetro page en la petición', done);
+	});
+	
 	it('GET / devuelve 404 no es ruta definida', function(done){
 		supertest(app)
 		.get('/stretto/usuariosss')
@@ -68,6 +82,20 @@ describe('test de la app web usuarios', function(){
 		.get('/stretto/usuarios/99999')
 		.expect(404)
 		.expect('No existe el usuario referido.', done);
+	});
+	
+	it('GET / devuelve 404 no hay artículos del usuario 1 en página 4', function(done){
+		supertest(app)
+		.get('/stretto/usuarios/1/articulos?page=3')
+		.expect(404)
+		.expect('Recurso no encontrado', done);
+	});
+	
+	it('GET / devuelve 400 pues para el paginado se utiliza el atributo page', function(done){
+		supertest(app)
+		.get('/stretto/usuarios/1/articulos?pag=2')
+		.expect(400)
+		.expect('Falta el parámetro page en la petición', done);
 	});
 	
 	it('GET / devuelve 200 al buscar artículos de un usuario', function(done){

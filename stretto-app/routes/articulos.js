@@ -62,6 +62,7 @@ router.get('/', function(pet, resp){
 /* Mostramos los datos del artículo y los datos relevantes del usuario que */
 /* lo ha puesto en venta, es decir, su nombre e e-mail. El tipo lo sabemos */
 /* pues la clave primaria está en el artículo y es el nombre (ej: cuerda)  */
+/* Tampoco hace falta incluir su usuario entero, con nombre e email basta	 */
 
 router.get('/:id', function(pet, resp){
 	if(isNaN(Number(pet.params.id)))
