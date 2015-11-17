@@ -1,0 +1,12 @@
+{
+  "name": "lista_compra",
+  "version": "1.0.0",
+  "description": "Ejemplo de API REST de tipo CRUD con Node/Express",
+  "main": "app.js",
+  "author": "otto@dccia.ua.es",
+  "dependencies": {
+    "body-parser": "^1.13.1",
+    "cors": "^2.7.1",
+    "express": "^4.12.4"
+  }
+}

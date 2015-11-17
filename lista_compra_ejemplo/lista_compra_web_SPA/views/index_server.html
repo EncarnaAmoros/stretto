@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ejemplo de handlebars</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<h1>Tu lista de la compra, v.2</h1>
+	<div>La lista la <em>renderiza</em> inicialmente el servidor. Tras esto, se usa JS para todo lo demás</div>
+	<ul id="lista">
+		{{#items}}
+		<li id="id_{{id}}">
+		  {{nombre}}
+		   <a href="javascript:deleteItem({{id}})">Eliminar</a>
+           <a href="javascript:verDetalles({{id}})">Detalles</a> 
+		</li>
+		{{/items}}
+	</ul>
+	<h2>Nuevo item</h2>
+	<form>	
+		<input type="text" id="nuevo_item">
+		<input type="button" id="add_button" value="Añadir a la lista">
+	</form>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js"></script>	
+	<script src="web/js/lista_v2.js"></script>
+	<script>
+	document.getElementById('add_button').addEventListener('click', addItem);
+	</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Detalles del item</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<h1>Datos del item</h1>
+	<div id="item"> 
+
+	</div>
+	<script>
+	function getItem() {
+	  var xhr = new XMLHttpRequest();
+	  //forma NADA genérica de obtener el valor de un parámetro
+	  //solo va si únicamente hay un parámetro, y además está ignorando su nombre (:$)
+	  var id = location.search.split('=')[1];
+      xhr.open('GET', 'http://localhost:3000/api/items/'+id, true);
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState==4 && xhr.status==200) {
+            var item = JSON.parse(xhr.responseText);
+            document.getElementById('item').innerHTML = '<em> id:' + item.id + '</em>' 
+            		+ ' <strong> nombre: ' + item.nombre + '</strong>';
+
+          }
+      };
+      xhr.send();
+	}
+	document.addEventListener('DOMContentLoaded', getItem);
+	</script>
+</body>
+</html>
