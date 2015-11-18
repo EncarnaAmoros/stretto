@@ -17,7 +17,7 @@
       <ul class="articulos">
         <li ng-repeat="articulo in articulos | filter:query | orderBy:orderProp" class="thumbnail">
           <a href="#/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
-					<img src="http://mco-s2-p.mlstatic.com/electricas-marcas-guitarras-21621-MCO20214675287_122014-Y.jpg"></img>
+					<img src={{articulo.foto}}></img>
 					<p>{{articulo.precio}}</p>
 					<p>{{articulo.descripcion}}</p>
         </li>
