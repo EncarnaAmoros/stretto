@@ -3,11 +3,12 @@
     <div class="col-md-2">
       <!--Sidebar content-->
 
-      Search: <input ng-model="query">
-      Sort by:
-      <select ng-model="orderProp">
-        <option value="name">Alphabetical</option>
-        <option value="age">Newest</option>
+      Buscar por nombre: <input ng-model="query1">
+      Busca por tipo de instrumento:
+      <select ng-model="query2">
+        <option value="cuerda">Cuerda</option>
+				<option value="percusion">Percusion</option>
+        <option value="viento">Viento</option>
       </select>
 
     </div>
@@ -15,7 +16,7 @@
       <!--Body content-->
 
       <ul class="articulos">
-        <li ng-repeat="articulo in articulos | filter:query | orderBy:orderProp" class="thumbnail">
+        <li ng-repeat="articulo in articulos | filter:query1 | filter:query2 | orderBy:orderProp" class="thumbnail">
           <a href="#/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
 					<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
 					<p>{{articulo.precio}}</p>
