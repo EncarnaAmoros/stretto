@@ -1,0 +1,17 @@
+{
+  "name": "stretto-spa",
+  "version": "1.0.0",
+  "description": "Cliente SPA de la API Stretto",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.13.3",
+    "hbs": "^4.0.0",
+    "request": "^2.65.0"		
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Encarna Amorós Beneite",
+  "license": "ISC"
+}
