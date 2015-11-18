@@ -7,3 +7,11 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',
     });
 		$scope.orderProp = 'createdAt';
   }]);
+
+strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http',
+	function ($scope, $http) {
+    $http.get('http://localhost:3000/stretto/articulos/1').success(function(data) {
+      $scope.articulo = data.data;
+			$scope.usuario = data.usuario;
+    });
+  }]);

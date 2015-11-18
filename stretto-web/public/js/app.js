@@ -7,6 +7,10 @@ strettoApp.config(
 				templateUrl: '/aplicacion/partials/articulos-list.html',
 				controller: 'ArticulosCtrl'
 			}).
+			when('/articulos/:id', {
+				templateUrl: '/aplicacion/partials/articulo-detalle.html',
+				controller: 'ArticuloCtrl'
+			}).
 			otherwise({
 	      redirectTo: '/articulos'
 	    });
