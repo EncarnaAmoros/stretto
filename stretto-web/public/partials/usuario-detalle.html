@@ -1,0 +1,17 @@
+<p>{{usuario.nombre}}</p>
+<p>{{usuario.email}}</p>
+<p>{{usuario.valoracion}}</p>
+<p>{{usuario.tlf}}</p>
+
+<a href="/usuarios/{{usuario.id}}/articulos">Artículos vendidos por {{usuario.nombre}}</a>
+
+<p>Últimos artículos del usuario</p>
+
+<ul class="last_articulos">
+	<li ng-repeat="articulo in last_articulos" class="thumbnail">
+		<a href="/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
+		<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
+		<p>{{articulo.precio}}</p>
+		<p>{{articulo.descripcion}}</p>
+	</li>
+</ul>

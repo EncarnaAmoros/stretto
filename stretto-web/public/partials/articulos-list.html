@@ -6,9 +6,7 @@
       Buscar por nombre: <input ng-model="query1">
       Busca por tipo de instrumento:
       <select ng-model="query2">
-        <option value="cuerda">Cuerda</option>
-				<option value="percusion">Percusion</option>
-        <option value="viento">Viento</option>
+        <option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
       </select>
 
     </div>

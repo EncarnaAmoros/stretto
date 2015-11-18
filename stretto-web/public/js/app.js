@@ -11,6 +11,14 @@ strettoApp.config(
 				templateUrl: '/aplicacion/partials/articulo-detalle.html',
 				controller: 'ArticuloCtrl'
 			}).
+			when('/usuarios/:id', {
+				templateUrl: '/aplicacion/partials/usuario-detalle.html',
+				controller: 'UsuarioCtrl'
+			}).
+			when('/usuarios/:id/articulos', {
+				templateUrl: '/aplicacion/partials/articulos-list.html',
+				controller: 'UsuarioArticulosCtrl'
+			}).
 			otherwise({
 	      redirectTo: '/articulos'
 	    });
