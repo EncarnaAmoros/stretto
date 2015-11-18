@@ -17,7 +17,7 @@
       <ul class="articulos">
         <li ng-repeat="articulo in articulos | filter:query | orderBy:orderProp" class="thumbnail">
           <a href="#/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
-					<img src={{articulo.foto}}></img>
+					<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
 					<p>{{articulo.precio}}</p>
 					<p>{{articulo.descripcion}}</p>
         </li>
