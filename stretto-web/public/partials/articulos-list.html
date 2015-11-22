@@ -18,10 +18,15 @@
           <a href="/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
 					<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
 					<p>{{articulo.precio}}</p>
-					<p>{{articulo.descripcion}}</p>
+					<div id="descripcion" >{{articulo.descripcion}}</div><!--class="descripcion{{articulo.id}}"-->
         </li>
       </ul>
-
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#descripcion").hide()
+	});
+</script>
