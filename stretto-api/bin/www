@@ -1,0 +1,184 @@
+#!/usr/bin/env node
+
+var app = require('../app');
+var debug = require('debug')('.bin:server');
+var models = require('../models');
+
+app.set('port', process.env.PORT || 3000);
+
+models.sequelize.sync({force:true}).then(function () {
+	
+	/* Rellenando BD */
+	models.Tipo.bulkCreate([
+		{nombre:'cuerda'},
+		{nombre:'viento'},
+		{nombre:'percusion'}
+	]).then(function() {
+			models.Usuario.bulkCreate([
+				{id: 1, nombre:'Lucas', email: 'lucas@gm.com', password: 'l', 
+						valoracion: 8, tlf: '665372812'},
+				{id: 2, nombre:'Ana', email: 'ana@gm.com', password: 'a', 
+						valoracion: 9, tlf: '665372812'},
+				{id: 3, nombre:'Juan', email: 'juan@gm.com', password: 'j', 
+						valoracion: 10, tlf: '665372812'}
+			]).then(function() {
+					models.Articulo.bulkCreate([
+					{
+						nombre:'Guitarra', 
+						descripcion: 'La mejor guitarra que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.playtech.com.br/Imagens/produtos/55/294355/294355_Ampliada.jpg',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 1
+					}, {
+						nombre:'Bajo', 
+						descripcion: 'El mejor bajo que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://mlm-s2-p.mlstatic.com/bajo-electrico-fender-vintage-modified-jaguar-bass-3794-MLM4609807606_072013-F.jpg',
+						precio: 174.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 2
+					}, {
+						nombre:'Saxofon', 
+						descripcion: 'El mejor saxo que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.musik-produktiv.es/pic-010058628xxl/yamaha-yts-480.jpg',
+						precio: 334.65,
+						TipoNombre: 'viento',
+						UsuarioId: 1
+					}, {
+						nombre:'Bateria', 
+						descripcion: 'La mejor bateria que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://cdn.clickplus.pt/product_images/VBL905C232_Bateria-PEARL-Vision-Birch-VBL905C-Ruby-Fade_1..jpg',
+						precio: 934.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 3
+				}, {
+						nombre:'Guitarra 12 cuerdas', 
+						descripcion: 'El mejor guitarra que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.elintervalo.com/images/RANGER%2012%20VINTAGE.gif',
+						precio: 134.65,
+						TipoNombre: 'viento',
+						UsuarioId: 2
+					}, {
+						nombre:'Bajo acústico', 
+						descripcion: 'El mejor oboe que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.crisfer.com/9067-17954-thickbox/warwick-alien-bajo-acustico-5-cuerdas.jpg',
+						precio: 134.65,
+						TipoNombre: 'viento',
+						UsuarioId: 3
+					}, {
+						nombre:'Violonchelo', 
+						descripcion: 'El mejor violonchelo que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://cdn1.image-tmart.com/prodimgs/1/17001194/44-Full-Size-Basswood-Blue-Color-Cello-Outfit-Bag-Bow-Rosin-Bridge-for-Beginner_180x180.jpg',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 1
+					}, {
+						nombre:'Violin', 
+						descripcion: 'El mejor violín que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://mundokenneth.com/main/wp-content/uploads/2010/02/Violin-electrico-EV20.jpg',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 2
+					}, {
+						nombre:'Baquetas', 
+						descripcion: 'Las mejores baquetas que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.casamusicaldegonzalocantuna.net/241-511-thickbox/baquetas-zildjian-.jpg',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Maracas', 
+						descripcion: 'Las mejores maracas que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'https://krazymuzic.files.wordpress.com/2012/03/7569.jpg',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Caja', 
+						descripcion: 'La mejor caja que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.musik-produktiv.es/pic-100054587l/latin-percussion-lp1432.jpg',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Bandurria', 
+						descripcion: 'La mejor guitarra que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://mla-s2-p.mlstatic.com/guitarra-electro-acustica-fender-cd-60ce-con-estuche-fender-17582-MLA20139726046_082014-F.jpg',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 2
+					}, {
+						nombre:'Flauta', 
+						descripcion: 'La mejor flauta que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.musik-produktiv.es/pic-100036036xl/moeck-schulblockfloete-1210.jpg',
+						precio: 134.65,
+						TipoNombre: 'viento',
+						UsuarioId: 2
+					}, {
+						nombre:'Oboe', 
+						descripcion: 'El mejor oboe que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.schillerinstruments.com/wp-content/uploads/2011/01/conservatory_grenadilla_oboe-1.jpg',
+						precio: 134.65,
+						TipoNombre: 'viento',
+						UsuarioId: 3
+					}, {
+						nombre:'Violonchelo', 
+						descripcion: 'El mejor violonchelo que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.thomann.de/pics/prod/225744.jpg',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 1
+					}, {
+						nombre:'Violin', 
+						descripcion: 'El mejor violin que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'https://upload.wikimedia.org/wikipedia/commons/0/05/X5455_-_violin_-_Peter_Westerlund_-_kopia_efter_Maggini_-_2002_-_foto_Mikael_Bodner.jpg',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 2
+					}, {
+						nombre:'Guitarra Eléctrica', 
+						descripcion: 'La mejor guitarra que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://mlm-s2-p.mlstatic.com/guitarra-electrica-music-man-roja-con-estuche-3152-MLM4027072648_032013-F.jpg',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Caja bateria', 
+						descripcion: 'La mejor caja para tu bateria que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.intermusic-pro.com/upload/productos/ddrum_dios-maple-trans-black_303.jpg',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Caja', 
+						descripcion: 'La mejor caja que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.musik-produktiv.es/pic-100054587l/latin-percussion-lp1432.jpg',
+						precio: 134.65,
+						TipoNombre: 'percusion',
+						UsuarioId: 1
+					}, {
+						nombre:'Bandurria', 
+						descripcion: 'La mejor bandurria que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.guitarrasdeluthier.com/cache/images/Otros_Instrumentos/Bandurria/Prudencio_190/Bandurria_Prudencio_Saez_190_front_756x1436cropfalse/100/fixcanvastrue.jpg',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 2
+					}, {
+						nombre:'Ukelele', 
+						descripcion: 'El mejor ukelele que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
+						foto: 'http://www.intermusic-pro.com/upload/productos/ibanez_ukelele-ibz-ukc10.jpg',
+						precio: 134.65,
+						TipoNombre: 'cuerda',
+						UsuarioId: 1
+					}]);
+			});
+	})
+	/* Servidor en funcionamiento */
+	.then(function(){
+		app.listen(app.get('port'), function () {
+			debug('Express server listening on port ' + app.get('port'));
+			console.log('¡API funcionado! :D - Puerto:' + (process.env.PORT || 3000));
+		});
+	});	
+});
+
