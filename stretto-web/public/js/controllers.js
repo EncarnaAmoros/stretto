@@ -55,11 +55,30 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 
 /* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
 
-strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$routeParams',
+strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$routeParams', 
 	function ($scope, $http, $routeParams) {
-    $http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos').success(function(data) {
-      $scope.articulos = data.data;
+		//Obtenemos los artículos del usuario
+    $http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page)
+			.success(function(data) {
+				$scope.articulos = data.data;
+				$scope.count = data.count;
+				var totalitems = data.total;
+				var numPaginas = totalitems/10;
+			
+				//Para el paginado
+				$scope.paginas = [];
+				var arrayy = new Array();
+				for(i=0;i<10;i++) {//numPaginas;i++) {
+					var jsonArg1 = new Object();
+							jsonArg1.n = i++;
+							arrayy.push(i++);
+				}
+				var myJsonString = JSON.stringify(arrayy);
+				console.log("miraa:"+myJsonString);
+				$scope.paginas = myJsonString;
     });
+		
+		//Obtenemos los tipos de instrumentos que hay
 		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
       $scope.tipos = data;
     });

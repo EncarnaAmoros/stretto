@@ -38,6 +38,12 @@
 					<div>{{articulo.descripcion}}</div>
         </li>
       </ul>
+			
+			<ul class="pagination">
+        <li ng-repeat="pag in paginas" class="activo">
+					<a href="#">{{pag.n}}</a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
