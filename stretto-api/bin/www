@@ -56,14 +56,14 @@ models.sequelize.sync({force:true}).then(function () {
 						descripcion: 'El mejor guitarra que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
 						foto: 'http://www.elintervalo.com/images/RANGER%2012%20VINTAGE.gif',
 						precio: 134.65,
-						TipoNombre: 'viento',
+						TipoNombre: 'cuerda',
 						UsuarioId: 2
 					}, {
 						nombre:'Bajo acústico', 
 						descripcion: 'El mejor oboe que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
 						foto: 'http://www.crisfer.com/9067-17954-thickbox/warwick-alien-bajo-acustico-5-cuerdas.jpg',
 						precio: 134.65,
-						TipoNombre: 'viento',
+						TipoNombre: 'cuerda',
 						UsuarioId: 3
 					}, {
 						nombre:'Violonchelo', 

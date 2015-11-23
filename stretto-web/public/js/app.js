@@ -3,6 +3,10 @@ var strettoApp = angular.module('strettoApp', ['ngRoute','strettoControllers']);
 strettoApp.config(
 	function($locationProvider, $routeProvider) {
 		$routeProvider.
+			when('/login', {
+				templateUrl: '/aplicacion/partials/login.html',
+				controller: 'LoginCtrl'
+			}).
 			when('/articulos', {
 				templateUrl: '/aplicacion/partials/articulos-list.html',
 				controller: 'ArticulosCtrl'
@@ -16,7 +20,7 @@ strettoApp.config(
 				controller: 'UsuarioCtrl'
 			}).
 			when('/usuarios/:id/articulos', {
-				templateUrl: '/aplicacion/partials/articulos-list.html',
+				templateUrl: '/aplicacion/partials/articulos-usuario-list.html',
 				controller: 'UsuarioArticulosCtrl'
 			}).
 			otherwise({
