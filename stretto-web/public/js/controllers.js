@@ -22,8 +22,8 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window',
 
 /* Mostramos los artículos de forma general */
 
-strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',
-	function ($scope, $http) {
+strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', '$window',
+	function ($scope, $http, $routeParams, $window) {
     $http.get('http://localhost:3000/stretto/articulos').success(function(data) {
       $scope.articulos = data.data;
     });
@@ -31,6 +31,26 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',
       $scope.tipos = data;
     });
 		$scope.orderProp = 'createdAt';
+		
+		//Funcion para pasar de página siguiente
+		$scope.pasarPaginaSiguiente = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined) {
+				$window.location.href = 'http://localhost:4000/articulos?page=2';
+			} else {				
+				var pagina = 1 + parseInt($routeParams.page);
+				$window.location.href = 'http://localhost:4000/articulos?page=' + pagina;	
+			}			
+		}
+		
+		//Funcion para pasar de página anterior
+		$scope.pasarPaginaAnterior = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1 || $routeParams.page=="1") {
+				console.log("no hay anterior");
+			} else {				
+				var pagina = 1 - parseInt($routeParams.page);
+				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
+			}			
+		}
   }]);
 
 /* Mostramos un artículo en detalle */
@@ -55,40 +75,46 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 
 /* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
 
-strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$routeParams', 
-	function ($scope, $http, $routeParams) {
+strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$routeParams', '$window', 
+	function ($scope, $http, $routeParams, $window) {
 		//Obtenemos los artículos del usuario
     $http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page)
 			.success(function(data) {
 				$scope.articulos = data.data;
-				$scope.count = data.count;
-				var totalitems = data.total;
-				var numPaginas = totalitems/10;
-			
-				//Para el paginado
-				$scope.paginas = [];
-				var arrayy = new Array();
-				for(i=0;i<10;i++) {//numPaginas;i++) {
-					var jsonArg1 = new Object();
-							jsonArg1.n = i++;
-							arrayy.push(i++);
-				}
-				var myJsonString = JSON.stringify(arrayy);
-				console.log("miraa:"+myJsonString);
-				$scope.paginas = myJsonString;
     });
 		
 		//Obtenemos los tipos de instrumentos que hay
 		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
       $scope.tipos = data;
     });
+		
+		//Orden por el que aparecen los articulos
 		$scope.orderProp = 'createdAt';
+		
+		//Funcion para pasar de página siguiente
+		$scope.pasarPaginaSiguiente = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined) {
+				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=2';
+			} else {				
+				var pagina = 1 + parseInt($routeParams.page);
+				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
+			}			
+		}
+		
+		//Funcion para pasar de página anterior
+		$scope.pasarPaginaAnterior = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1) {
+			} else {				
+				var pagina = 1 - parseInt($routeParams.page);
+				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
+			}			
+		}
 		
 		//Inicializamos
 		$scope.datos = {};
 		
 		//Funcion para añadir un nuevo artículo
-		$scope.addArticulo = function() {
+		$scope.addArticulo = function($window) {
 			$http({
 				method: "POST",
 				url: 'http://localhost:3000/stretto/articulos',
