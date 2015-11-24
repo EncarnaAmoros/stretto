@@ -1,5 +1,26 @@
 var strettoControllers = angular.module('strettoControllers', []);
 
+strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window',
+	function ($scope, $http, $window) {
+		var actualizarNavBar = function () {
+			if(localStorage.email!=undefined) {
+				$scope.showme = false;
+				$scope.usuario = localStorage.email;
+			}
+			else {
+				$scope.showme = true;
+				$scope.mensaje = "Iniciar sesión";
+			}
+		}
+		actualizarNavBar();
+		
+		$scope.logout = function() {
+			localStorage.clear();
+			actualizarNavBar();
+		}
+
+	}]);
+
 /* Login para los usuarios */
 
 strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window',

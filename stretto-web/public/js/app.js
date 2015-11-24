@@ -24,7 +24,7 @@ strettoApp.config(
 				controller: 'UsuarioArticulosCtrl'
 			}).
 			otherwise({
-	      redirectTo: '/articulos'
+	      redirectTo: '/login'
 	    });
 		
 		$locationProvider.html5Mode({
