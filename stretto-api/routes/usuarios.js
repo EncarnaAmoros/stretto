@@ -103,7 +103,8 @@ router.get('/:id_u/articulos', function(pet, resp){
 		models.Articulo.findAll({
 			where: { UsuarioId: pet.params.id_u },
 			offset: ((pet.query.page-1)*numArticulosPag),
-			limit: numArticulosPag
+			limit: numArticulosPag,
+			order: 'id DESC'
 		}).then(function(articulos){
 			models.Articulo.count({
 				where: { UsuarioId: pet.params.id_u }

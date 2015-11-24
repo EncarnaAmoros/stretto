@@ -103,7 +103,7 @@ models.sequelize.sync({force:true}).then(function () {
 					}, {
 						nombre:'Bandurria', 
 						descripcion: 'La mejor guitarra que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
-						foto: 'http://mla-s2-p.mlstatic.com/guitarra-electro-acustica-fender-cd-60ce-con-estuche-fender-17582-MLA20139726046_082014-F.jpg',
+						foto: 'http://www.mundofolklore.es/media/catalog/product/cache/1/thumbnail/300x300/9df78eab33525d08d6e5fb8d27136e95/f/i/fixcanvastrue6g82ozty.jpg',
 						precio: 134.65,
 						TipoNombre: 'cuerda',
 						UsuarioId: 2
@@ -124,7 +124,7 @@ models.sequelize.sync({force:true}).then(function () {
 					}, {
 						nombre:'Violonchelo', 
 						descripcion: 'El mejor violonchelo que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
-						foto: 'http://www.thomann.de/pics/prod/225744.jpg',
+						foto: 'http://www.sonomusic.com/5042-5042-large/cello-elect-carlo-giordano-neg.jpg',
 						precio: 134.65,
 						TipoNombre: 'cuerda',
 						UsuarioId: 1
@@ -138,7 +138,7 @@ models.sequelize.sync({force:true}).then(function () {
 					}, {
 						nombre:'Guitarra Eléctrica', 
 						descripcion: 'La mejor guitarra que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
-						foto: 'http://mlm-s2-p.mlstatic.com/guitarra-electrica-music-man-roja-con-estuche-3152-MLM4027072648_032013-F.jpg',
+						foto: 'http://www.crisfer.com/15959-15285-large/yamaha-pacifica-120h-vw-guitarra-electrica.jpg',
 						precio: 134.65,
 						TipoNombre: 'percusion',
 						UsuarioId: 1
@@ -159,14 +159,14 @@ models.sequelize.sync({force:true}).then(function () {
 					}, {
 						nombre:'Bandurria', 
 						descripcion: 'La mejor bandurria que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
-						foto: 'http://www.guitarrasdeluthier.com/cache/images/Otros_Instrumentos/Bandurria/Prudencio_190/Bandurria_Prudencio_Saez_190_front_756x1436cropfalse/100/fixcanvastrue.jpg',
+						foto: 'http://www.mundofolklore.es/media/catalog/product/cache/1/thumbnail/300x300/9df78eab33525d08d6e5fb8d27136e95/f/i/fixcanvastrue6g82ozty.jpg',
 						precio: 134.65,
 						TipoNombre: 'cuerda',
 						UsuarioId: 2
 					}, {
 						nombre:'Ukelele', 
 						descripcion: 'El mejor ukelele que puedas ver. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.',
-						foto: 'http://www.intermusic-pro.com/upload/productos/ibanez_ukelele-ibz-ukc10.jpg',
+						foto: 'http://www.stockmusical.com/3011-4767-large/ukelele-tanglewood-soprano-tu1.jpg',
 						precio: 134.65,
 						TipoNombre: 'cuerda',
 						UsuarioId: 1

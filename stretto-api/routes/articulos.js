@@ -18,7 +18,8 @@ router.get('/', function(pet, resp){
 	//Buscamos en la BD y devolvemos el resultado paginado
 	models.Articulo.findAll({
 		offset: ((pet.query.page-1)*numArticulosPag),
-		limit: numArticulosPag
+		limit: numArticulosPag,
+		order: 'id DESC'
 	}).then(function(articulos){
 		models.Articulo.count().then(function(cantidad){
 			//Obtenemos las variables para el paginado

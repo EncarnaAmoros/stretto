@@ -24,7 +24,7 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window',
 
 strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', '$window',
 	function ($scope, $http, $routeParams, $window) {
-    $http.get('http://localhost:3000/stretto/articulos').success(function(data) {
+    $http.get('http://localhost:3000/stretto/articulos?page='+$routeParams.page).success(function(data) {
       $scope.articulos = data.data;
     });
 		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
@@ -47,8 +47,8 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1 || $routeParams.page=="1") {
 				console.log("no hay anterior");
 			} else {				
-				var pagina = 1 - parseInt($routeParams.page);
-				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
+				var pagina = parseInt($routeParams.page) - 1;
+				$window.location.href = 'http://localhost:4000/articulos?page=' + pagina;	
 			}			
 		}
   }]);
@@ -83,19 +83,21 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 				$scope.articulos = data.data;
     });
 		
+		//Orden por el que aparecen los articulos
+		$scope.orderProp = 'createdAt';
+		
 		//Obtenemos los tipos de instrumentos que hay
 		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
       $scope.tipos = data;
     });
 		
-		//Orden por el que aparecen los articulos
-		$scope.orderProp = 'createdAt';
-		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
+			console.log("1");
 			if($routeParams.page=="" || $routeParams.page==undefined) {
 				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=2';
-			} else {				
+			} else {
+				console.log("2");
 				var pagina = 1 + parseInt($routeParams.page);
 				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
 			}			
@@ -105,7 +107,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 		$scope.pasarPaginaAnterior = function() {
 			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1) {
 			} else {				
-				var pagina = 1 - parseInt($routeParams.page);
+				var pagina = parseInt($routeParams.page) - 1;
 				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
 			}			
 		}

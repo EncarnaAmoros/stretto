@@ -31,7 +31,7 @@
       <!--Body content-->
 
       <ul class="articulos">
-        <li ng-repeat="articulo in articulos | filter:query1 | filter:query2 | orderBy:orderProp" class="thumbnail">
+        <li ng-repeat="articulo in articulos | filter:query1 | filter:query2" class="thumbnail">
           <a href="/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
 					<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
 					<p>{{articulo.precio}}</p>
@@ -40,8 +40,8 @@
       </ul>
 			
 			<ul class="pager">
-				<li><a ng-click=pasarPaginaSiguiente()>Anterior</a></li>
-				<li><a ng-click=pasarPaginaAnterior()>Siguiente</a></li>
+				<li><a ng-click=pasarPaginaAnterior()>Anterior</a></li>
+				<li><a ng-click=pasarPaginaSiguiente()>Siguiente</a></li>
 			</ul>
     </div>
   </div>
