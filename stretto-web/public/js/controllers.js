@@ -14,7 +14,7 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window',
 				.success(function(data) {
 					localStorage.email = $scope.datos.email;
 					localStorage.password = $scope.datos.password;
-					$window.location.href = 'http://localhost:4000/articulos';
+					$window.location.href = 'articulos';
     		})
 				//Hay error, lo mostramos
 				.error(function(data) {
@@ -38,10 +38,10 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
 			if($routeParams.page=="" || $routeParams.page==undefined) {
-				$window.location.href = 'http://localhost:4000/articulos?page=2';
+				$window.location.href = 'articulos?page=2';
 			} else {				
 				var pagina = 1 + parseInt($routeParams.page);
-				$window.location.href = 'http://localhost:4000/articulos?page=' + pagina;	
+				$window.location.href = 'articulos?page=' + pagina;	
 			}			
 		}
 		
@@ -51,7 +51,7 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 				console.log("no hay anterior");
 			} else {				
 				var pagina = parseInt($routeParams.page) - 1;
-				$window.location.href = 'http://localhost:4000/articulos?page=' + pagina;	
+				$window.location.href = 'articulos?page=' + pagina;	
 			}			
 		}
   }]);
@@ -98,11 +98,11 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 		$scope.pasarPaginaSiguiente = function() {
 			console.log("1");
 			if($routeParams.page=="" || $routeParams.page==undefined) {
-				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=2';
+				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=2';
 			} else {
 				console.log("2");
 				var pagina = 1 + parseInt($routeParams.page);
-				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
+				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
 			}			
 		}
 		
@@ -111,7 +111,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1) {
 			} else {				
 				var pagina = parseInt($routeParams.page) - 1;
-				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
+				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
 			}			
 		}
 		
