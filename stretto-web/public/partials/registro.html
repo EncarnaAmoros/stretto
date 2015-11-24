@@ -1,0 +1,74 @@
+<div>
+	<form class="form-group">
+		<label for="usr">Nombre:</label>
+		<input class="form-control" type="text" id="nombre">
+		
+		<label for="usr">Email:</label>
+		<input class="form-control" type="text" id="email">
+		
+		<label for="usr">Password:</label>
+		<input class="form-control" type="password" id="password">
+		
+		<label for="usr">Teléfono:</label>
+		<input class="form-control" type="text" id="tlf">
+		
+		<input type="submit" class="btn btn-default" value="Registrarme" id="botonRegistro">
+	</form>
+</div>
+
+<script type="text/javascript">	
+	function addUsuario() {
+		console.log("HOLAA");
+		var nombre = document.getElementById("nombre");
+		var email = document.getElementById("email");
+		var password = document.getElementById("password");
+		var tlf = document.getElementById("tlf");
+
+		var datos = '{"nombre": "'+nombre+'", "email" : "'+email+'", "password" : "'+password+'"}';
+
+		//Ejemplo de petición POST
+		var req = new XMLHttpRequest();
+		req.open('POST', 'http:localhost:3000/usuarios', true);
+		req.onreadystatechange = callback_registro;
+		//Si enviamos parámetros HTTP esto es necesario. Si enviamos JSON no.
+		//req.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+		//Los datos se envían en el send
+		req.send(datos);
+
+		function callback_registro() {
+			if ((this.readyState == 4) && (this.status == 200))
+				alert("Bien");
+			else if(this.readyState == 4)
+				alert("Error: ");
+		}
+	}
+	
+	var botonRegistro = document.getElementById("botonRegistro");
+	botonRegistro.onclick = addUsuario;
+	
+	/*$.ajax
+		({
+			type: "POST",
+			url: "http:localhost:3000/usuarios",
+			dataType: 'json',
+			async: false,
+			data: '{"nombre": "' + nombre + '", "email" : "' + email + '", "password" : "' + password '"}',
+			success: function (data) {
+				alert(data); 
+			}
+	});*/
+	
+	/*$("#botonRegistro").click(function(){
+		console.log("ese click ahi");
+		  $.post("http:localhost:3000/usuarios",
+			{
+					nombre: $("#nombre").val,
+					email: $("#email").val,
+					password: $("#password").val,
+					tlf: $("#tlf").val,
+			},
+			function(data, status){
+					alert("Data: " + data + "\nStatus: " + status);
+			});
+	});*/
+</script>

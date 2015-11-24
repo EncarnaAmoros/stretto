@@ -7,6 +7,10 @@ strettoApp.config(
 				templateUrl: '/aplicacion/partials/login.html',
 				controller: 'LoginCtrl'
 			}).
+			when('/registro', {
+				templateUrl: '/aplicacion/partials/registro.html'
+				//,controller: 'RegistroCtrl' --> 1 caso de uso sin usar framework
+			}).
 			when('/articulos', {
 				templateUrl: '/aplicacion/partials/articulos-list.html',
 				controller: 'ArticulosCtrl'
