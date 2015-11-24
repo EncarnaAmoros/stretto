@@ -14,6 +14,22 @@ var numArticulosUsuario = 5;
 var numUsuariosPag = 15;
 
 
+/* Comprobamos si un usuario existe email password */
+
+router.get('/login', function(pet, resp){
+	var correo = pet.query.email;
+	var pass = pet.query.password;
+	models.Usuario.findOne({ 
+		where: {email: correo, password: pass }
+	}).then(function(usuario){
+		if(usuario == undefined )
+			return resp.status(403).send('Email o contraseña incorrectos.').end();
+		else
+			resp.status(200).send('Inicio de sesión correcto').end();
+	});
+});
+
+
 /* GET lista de usuarios */
 
 router.get('/', function(pet, resp, err){

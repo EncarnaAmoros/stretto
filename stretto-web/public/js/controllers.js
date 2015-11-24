@@ -4,19 +4,22 @@ var strettoControllers = angular.module('strettoControllers', []);
 
 strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window',
 	function ($scope, $http, $window) {
-		console.log("hola");
-		$scope.datos = {};
+		//Inicializamos
+		$scope.datos = {};		
 		
+		//Comprobamos login
 		$scope.login = function() {
-			console.log("mira: "+$scope.datos.email+" y "+$scope.datos.password);
-			var femail = $scope.datos.email;
-			if($scope.datos.email=="1" && $scope.datos.password=="1") {
-				alert("Email o password incorrectos");
-			} else {
-				localStorage.email = $scope.datos.email;
-				localStorage.password = $scope.datos.password;
-				$window.location.href = 'http://localhost:4000/articulos';
-			}
+			$http.get('http://localhost:3000/stretto/usuarios/login?email='+$scope.datos.email+'&password='+$scope.datos.password)
+				//No hay error al iniciar sesion, guardamos auth
+				.success(function(data) {
+					localStorage.email = $scope.datos.email;
+					localStorage.password = $scope.datos.password;
+					$window.location.href = 'http://localhost:4000/articulos';
+    		})
+				//Hay error, lo mostramos
+				.error(function(data) {
+					alert("Email o password incorrectos");
+				});
 		}
 	}]);
 
@@ -78,13 +81,13 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$routeParams', '$window', 
 	function ($scope, $http, $routeParams, $window) {
 		//Obtenemos los artículos del usuario
-    $http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page)
-			.success(function(data) {
-				$scope.articulos = data.data;
-    });
-		
-		//Orden por el que aparecen los articulos
-		$scope.orderProp = 'createdAt';
+		var actualizararticulos = function() {
+			$http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page)
+				.success(function(data) {
+					$scope.articulos = data.data;
+			});
+		}
+	 	actualizararticulos();
 		
 		//Obtenemos los tipos de instrumentos que hay
 		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
@@ -113,8 +116,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 		}
 		
 		//Inicializamos
-		$scope.datos = {};
-		
+		$scope.datos = {};		
 		//Funcion para añadir un nuevo artículo
 		$scope.addArticulo = function($window) {
 			$http({
@@ -125,7 +127,24 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			})
 			.success(function(data, status, headers, config) {
 				alert(data);
-				$window.location.href = 'http://localhost:4000/usuarios/'+$routeParams.id+'/articulos';
+				actualizararticulos();
+			})
+			.error(function(data, status, headers, config) {
+				alert("Error código: "+status+". "+data);
+			})
+  	}
+		
+		//Funcion para añadir un nuevo artículo/*
+		$scope.deleteArticulo = function(id) {
+			console.log("mira:"+id);
+			$http({
+				method: "DELETE",
+				url: 'http://localhost:3000/stretto/articulos/'+id,
+				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
+			})
+			.success(function(data, status, headers, config) {
+				alert(Artículo eliminado con éxito);
+				actualizararticulos();
 			})
 			.error(function(data, status, headers, config) {
 				alert("Error código: "+status+". "+data);

@@ -36,6 +36,7 @@
 					<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
 					<p>{{articulo.precio}}</p>
 					<div>{{articulo.descripcion}}</div>
+					<button class="btn btn-default" ng-click="deleteArticulo(articulo.id)">Eliminar</button>
         </li>
       </ul>
 			
