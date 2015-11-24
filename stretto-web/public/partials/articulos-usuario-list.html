@@ -32,13 +32,29 @@
 
       <ul class="articulos">
         <li ng-repeat="articulo in articulos | filter:query1 | filter:query2" class="thumbnail">
-          <a href="/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
-					<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
-					<p>{{articulo.precio}}</p>
-					<div>{{articulo.descripcion}}</div>
-					<button class="btn btn-default" ng-click="deleteArticulo(articulo.id)">Eliminar</button>
+					
+          <a ng-hide="showview" href="/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
+					<input ng-show="showedit" ng-model=articulo.nombre>
+					
+					<img ng-hide="showview" src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
+					<input ng-show="showedit" ng-model=articulo.foto>
+			
+					<p ng-hide="showview">{{articulo.precio}}</p>
+					<input ng-show="showedit" ng-model=articulo.precio>
+					
+					<div ng-hide="showview">{{articulo.descripcion}}</div>
+					<input ng-show="showedit" ng-model=articulo.descripcion>
+			
+					<select ng-show="showedit" ng-model="articulo.tipo">
+        		<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+					</select>
+			
+					<button ng-click="showview=true; showedit=true; showsave=true" class="btn btn-default">Editar</button>
+					<button ng-show="showsave" ng-click="updateArticulo(articulo)" class="btn btn-default">Guardar</button>
+					<button ng-click="deleteArticulo(articulo.id)" class="btn btn-default">Eliminar</button>
         </li>
       </ul>
+		
 			
 			<ul class="pager">
 				<li><a ng-click=pasarPaginaAnterior()>Anterior</a></li>

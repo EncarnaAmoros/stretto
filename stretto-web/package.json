@@ -6,7 +6,7 @@
   "dependencies": {
     "express": "^4.13.3",
     "hbs": "^4.0.0",
-    "request": "^2.65.0"		
+    "request": "^2.65.0"
   },
   "devDependencies": {},
   "scripts": {

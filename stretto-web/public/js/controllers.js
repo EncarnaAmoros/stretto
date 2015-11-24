@@ -134,16 +134,32 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			})
   	}
 		
-		//Funcion para añadir un nuevo artículo/*
+		//Funcion para eliminar un artículo/*
 		$scope.deleteArticulo = function(id) {
-			console.log("mira:"+id);
 			$http({
 				method: "DELETE",
 				url: 'http://localhost:3000/stretto/articulos/'+id,
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			})
 			.success(function(data, status, headers, config) {
-				alert(Artículo eliminado con éxito);
+				alert("Artículo eliminado con éxito");
+				actualizararticulos();
+			})
+			.error(function(data, status, headers, config) {
+				alert("Error código: "+status+". "+data);
+			})
+  	}
+		
+		//Funcion para eliminar un artículo/*
+		$scope.updateArticulo = function(articulo) {
+			$http({
+				method: "PUT",
+				url: 'http://localhost:3000/stretto/articulos/'+articulo.id,
+				data: articulo,
+				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
+			})
+			.success(function(data, status, headers, config) {
+				alert("Artículo actualizado con éxito");
 				actualizararticulos();
 			})
 			.error(function(data, status, headers, config) {
