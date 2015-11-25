@@ -1,8 +1,7 @@
-<div class="container-fluid">
-	<div class="row">
+<!-- Include Bootstrap y otros estilos css -->
+	<link rel="stylesheet" href="/aplicacion/css/articulos-usuario.css">
 		
-		<div class="col-md-2">
-      <!--Sidebar content-->
+		<!--<div class="col-md-2">
 			<form ng-submit="addArticulo()">
 				Nombre: <input type="text" ng-model="datos.nombre">
 				<select ng-model="datos.tipo">
@@ -11,26 +10,32 @@
         Descripcion: <input type="text" ng-model="datos.descripcion">
         Precio: <input type="text" ng-model="datos.precio">
 				Foto url: <input type="text" ng-model="datos.foto">
-        <input type="submit" value="Enviar">
+        <input type="submit" value="Enviar">-->
 				<!--Otra forma de manejador ng-click="addArticulo()">-->
-			</form>
-    </div>
-		
-    <div class="col-md-8">
+			<!--</form>
+    </div>-->
+
+<div class="container-fluid">
+	<div class="row">
+    <div class="col-md-2">
       <!--Sidebar content-->
-      Buscar por nombre: <input ng-model="query1">
-			</br>
-      Busca por tipo de instrumento:
-      <select ng-model="query2">
-				<option value="">Selecciona un tipo</option>
+			
+      <h5>Busca por nombre:</h5>
+			<div class="input-group">
+				<input ng-model="filtronombre" class="form-control" placeholder="Busca por...">
+		 	</div>
+			
+      <h5>Tipo de instrumento:</h5>
+      <select ng-model="filtrotipo" class="form-control">
+				<option value="" id="defaulselect">Selecciona un tipo</option>
         <option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
       </select>
+			
     </div>
-	
-    <div class="col-md-10">
-      <!--Body content-->
+    <div class="col-md-10">			
 
-      <ul class="articulos">
+			
+			<!--<ul class="articulos">
         <li ng-repeat="articulo in articulos | filter:query1 | filter:query2" class="thumbnail">
 					
           <a ng-hide="showview" href="/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
@@ -53,9 +58,46 @@
 					<button ng-show="showsave" ng-click="updateArticulo(articulo)" class="btn btn-default">Guardar</button>
 					<button ng-click="deleteArticulo(articulo.id)" class="btn btn-default">Eliminar</button>
         </li>
-      </ul>
-		
+      </ul>-->
 			
+			<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">
+				
+				<a ng-hide="showview" href="/articulos/{{articulo.id}}" class="pull-left">
+					<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+				</a>
+				
+				<a ng-show="showedit" href="#" class="pull-left">
+					<img src="{{imagenPorDefecto}}" class="media-object" id="fotos-articulos" alt="Imagen por defecto">
+				</a>
+				<input ng-show="showedit" ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
+
+				<div class="media-body">
+				 	<h4 ng-hide="showview" class="media-heading">{{articulo.nombre}}
+					 	<input ng-show="showedit" ng-model=articulo.nombre class="form-control" id="inputformArtSmall" placeholder="Nombre">
+
+					 	<i ng-hide="showview" id="precio">{{articulo.precio}} €</i>
+					 	<input ng-show="showedit" ng-model=articulo.precio class="form-control" id="inputformArtSmall" placeholder="Precio">
+				 	</h4>
+
+				 	<p ng-hide="showview" id="descripcion">{{articulo.descripcion}}</p>
+					<textarea ng-show="showedit" rows="3" ng-model=articulo.descripcion class="form-control" 
+										id="inputformArtBig" placeholder="Dirección">
+					</textarea>
+				</div>
+				
+				<select ng-show="showedit" ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
+					<option value="" id="defaulselect">Selecciona un tipo</option>
+        	<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+				</select>
+				
+				<button ng-hide="showview" ng-click="showview=true; showedit=true; showsave=true" class="btn btn-default">Editar</button>
+				<button ng-show="showedit" ng-click="updateArticulo(articulo)" class="btn btn-default">Guardar</button>
+				<button ng-show="showedit" ng-click="actualizarArticulos()" id="botonderecha" class="btn btn-default">Cancelar</button>
+				<button ng-hide="showview" ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-default">Eliminar</button>
+			</div>
+	
+	
+	
 			<ul class="pager">
 				<li><a ng-click=pasarPaginaAnterior()>Anterior</a></li>
 				<li><a ng-click=pasarPaginaSiguiente()>Siguiente</a></li>

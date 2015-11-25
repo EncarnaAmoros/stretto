@@ -1,0 +1,13 @@
+#precio {
+	float: right;
+}
+
+#inputformArtSmall {
+	width: 20em;
+	margin-bottom: 0.5em;
+}
+
+#inputformArtBig {
+	width: 55em;
+	margin-bottom: 0.5em;
+}

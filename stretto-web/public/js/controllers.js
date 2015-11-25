@@ -1,5 +1,7 @@
 var strettoControllers = angular.module('strettoControllers', []);
 
+var imgPorDefecto = "";
+
 strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window',
 	function ($scope, $http, $window) {
 		var actualizarNavBar = function () {
@@ -54,7 +56,6 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
       $scope.tipos = data;
     });
-		$scope.orderProp = 'createdAt';
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
@@ -107,6 +108,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 				.success(function(data) {
 					$scope.articulos = data.data;
 			});
+			$scope.imagenPorDefecto = imgPorDefecto;
 		}
 	 	actualizararticulos();
 		

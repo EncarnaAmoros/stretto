@@ -2,3 +2,13 @@
 	width: 14em;
 	height: 13em;
 }
+
+#descripcion{
+	margin-top: 1.5em;
+	min-height: 5em;
+}
+
+#botonderecha {
+	float: right;
+	margin-right: 8em;
+}
