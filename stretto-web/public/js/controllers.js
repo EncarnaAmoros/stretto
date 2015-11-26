@@ -116,16 +116,24 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			tipos = data;
     });
 		
+		var articulo;
 		//Funcion para mostrar articulo en forma de edit
 		$scope.editableView = function() {
-			$scope.noshowdetail=true;
-			$scope.showedit=true;
+			//articulo = $scope.articulo;
+		/*$scope.noshowdetail=true;
+			$scope.showedit=true;*/
+		}
+		
+		$scope.cancelarEdit = function() {
+			console.log("hola");
+			actualizararticulos();
+			//$scope.articulo = articulo;
 		}
 		
 		//Funcion para mostrar artículo en forma de detail
 		$scope.detailView = function() {
-			$scope.noshowdetail=false;
-			$scope.showedit=false;
+			/*$scope.noshowdetail=false;
+			$scope.showedit=false;*/
 		}
 		
 		//Funcion para pasar de página siguiente

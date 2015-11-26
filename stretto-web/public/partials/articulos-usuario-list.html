@@ -29,7 +29,6 @@
 				<a ng-hide="noshowdetail" href="/articulos/{{articulo.id}}" class="pull-left">
 					<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
 				</a>
-				
 				<a ng-show="showedit" href="#" class="pull-left">
 					<img src="{{imagenPorDefecto}}" class="media-object" id="fotos-articulos" alt="Imagen por defecto">
 				</a>
@@ -49,28 +48,33 @@
 					</textarea>
 				</div>
 				
+				
 				<select ng-show="showedit" ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
 					<option value="" id="defaulselect">Selecciona un tipo</option>
         	<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
 				</select>
 				
-				<button ng-hide="noshowdetail" ng-click="editableView()" class="btn btn-default">
+				
+				<button ng-hide="noshowdetail" ng-click="editableView(); 
+																								 noshowdetail=true;showedit=true;" class="btn btn-default">
 					<span class="glyphicon glyphicon-pencil"></span>
 				</button>
-				
 				<button ng-hide="noshowdetail" ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-default">
 					<span class="glyphicon glyphicon-trash"></span>
 				</button>
 				
-				<button ng-show="showedit" ng-click="updateArticulo(articulo); detailView()" class="btn btn-default">
+				<button ng-show="showedit" ng-click="updateArticulo(articulo); detailView(); 
+																						 noshowdetail=false;showedit=false;" class="btn btn-default">
 					<span class="glyphicon glyphicon-floppy-saved"></span>
-				</button>
-				
-				<button ng-show="showedit" ng-click="detailView()" id="botonderecha" class="btn btn-default">
+				</button>	
+				<button ng-show="showedit" ng-click="detailView(); cancelarEdit(); 
+																						 noshowdetail=false;showedit=false;" id="botonderecha" class="btn btn-default">
 					<span class="glyphicon glyphicon-arrow-left"></span>
 				</button>
 			</div>
-	
+			
+			<!-- Paginado -->
+			
 			<ul class="pager">
 				<li><a ng-click=pasarPaginaAnterior()>Anterior</a></li>
 				<li><a ng-click=pasarPaginaSiguiente()>Siguiente</a></li>
