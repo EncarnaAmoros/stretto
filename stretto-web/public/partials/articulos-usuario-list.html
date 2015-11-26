@@ -1,19 +1,5 @@
-<!-- Include Bootstrap y otros estilos css -->
-	<link rel="stylesheet" href="/aplicacion/css/articulos-usuario.css">
-		
-		<!--<div class="col-md-2">
-			<form ng-submit="addArticulo()">
-				Nombre: <input type="text" ng-model="datos.nombre">
-				<select ng-model="datos.tipo">
-        	<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-				</select>
-        Descripcion: <input type="text" ng-model="datos.descripcion">
-        Precio: <input type="text" ng-model="datos.precio">
-				Foto url: <input type="text" ng-model="datos.foto">
-        <input type="submit" value="Enviar">-->
-				<!--Otra forma de manejador ng-click="addArticulo()">-->
-			<!--</form>
-    </div>-->
+<!-- Include estilo css -->
+<link rel="stylesheet" href="/aplicacion/css/articulos-usuario.css">
 
 <div class="container-fluid">
 	<div class="row">
@@ -31,38 +17,16 @@
         <option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
       </select>
 			
+			<h5>Vender un nuevo artículo:</h5>
+			<button ng-click="showModalAddArticulo()" class="btn btn-default">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
     </div>
-    <div class="col-md-10">			
-
-			
-			<!--<ul class="articulos">
-        <li ng-repeat="articulo in articulos | filter:query1 | filter:query2" class="thumbnail">
-					
-          <a ng-hide="showview" href="/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
-					<input ng-show="showedit" ng-model=articulo.nombre>
-					
-					<img ng-hide="showview" src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
-					<input ng-show="showedit" ng-model=articulo.foto>
-			
-					<p ng-hide="showview">{{articulo.precio}}</p>
-					<input ng-show="showedit" ng-model=articulo.precio>
-					
-					<div ng-hide="showview">{{articulo.descripcion}}</div>
-					<input ng-show="showedit" ng-model=articulo.descripcion>
-			
-					<select ng-show="showedit" ng-model="articulo.tipo">
-        		<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-					</select>
-			
-					<button ng-click="showview=true; showedit=true; showsave=true" class="btn btn-default">Editar</button>
-					<button ng-show="showsave" ng-click="updateArticulo(articulo)" class="btn btn-default">Guardar</button>
-					<button ng-click="deleteArticulo(articulo.id)" class="btn btn-default">Eliminar</button>
-        </li>
-      </ul>-->
+    <div class="col-md-10">
 			
 			<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">
 				
-				<a ng-hide="showview" href="/articulos/{{articulo.id}}" class="pull-left">
+				<a ng-hide="noshowdetail" href="/articulos/{{articulo.id}}" class="pull-left">
 					<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
 				</a>
 				
@@ -72,16 +36,16 @@
 				<input ng-show="showedit" ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
 
 				<div class="media-body">
-				 	<h4 ng-hide="showview" class="media-heading">{{articulo.nombre}}
+				 	<h4 ng-hide="noshowdetail" class="media-heading">{{articulo.nombre}}
 					 	<input ng-show="showedit" ng-model=articulo.nombre class="form-control" id="inputformArtSmall" placeholder="Nombre">
 
-					 	<i ng-hide="showview" id="precio">{{articulo.precio}} €</i>
+					 	<i ng-hide="noshowdetail" id="precio">{{articulo.precio}} €</i>
 					 	<input ng-show="showedit" ng-model=articulo.precio class="form-control" id="inputformArtSmall" placeholder="Precio">
 				 	</h4>
 
-				 	<p ng-hide="showview" id="descripcion">{{articulo.descripcion}}</p>
+				 	<p ng-hide="noshowdetail" id="descripcion">{{articulo.descripcion}}</p>
 					<textarea ng-show="showedit" rows="3" ng-model=articulo.descripcion class="form-control" 
-										id="inputformArtBig" placeholder="Dirección">
+										id="inputformArtBig" placeholder="Descripción">
 					</textarea>
 				</div>
 				
@@ -90,13 +54,22 @@
         	<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
 				</select>
 				
-				<button ng-hide="showview" ng-click="showview=true; showedit=true; showsave=true" class="btn btn-default">Editar</button>
-				<button ng-show="showedit" ng-click="updateArticulo(articulo)" class="btn btn-default">Guardar</button>
-				<button ng-show="showedit" ng-click="actualizarArticulos()" id="botonderecha" class="btn btn-default">Cancelar</button>
-				<button ng-hide="showview" ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-default">Eliminar</button>
+				<button ng-hide="noshowdetail" ng-click="editableView()" class="btn btn-default">
+					<span class="glyphicon glyphicon-pencil"></span>
+				</button>
+				
+				<button ng-hide="noshowdetail" ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-default">
+					<span class="glyphicon glyphicon-trash"></span>
+				</button>
+				
+				<button ng-show="showedit" ng-click="updateArticulo(articulo); detailView()" class="btn btn-default">
+					<span class="glyphicon glyphicon-floppy-saved"></span>
+				</button>
+				
+				<button ng-show="showedit" ng-click="detailView()" id="botonderecha" class="btn btn-default">
+					<span class="glyphicon glyphicon-arrow-left"></span>
+				</button>
 			</div>
-	
-	
 	
 			<ul class="pager">
 				<li><a ng-click=pasarPaginaAnterior()>Anterior</a></li>

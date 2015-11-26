@@ -1,6 +1,4 @@
-var strettoControllers = angular.module('strettoControllers', []);
-
-var imgPorDefecto = "";
+var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap'/*,'ngRoute'*/]);
 
 strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window',
 	function ($scope, $http, $window) {
@@ -100,22 +98,35 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 
 /* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
 
-strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$routeParams', '$window', 
-	function ($scope, $http, $routeParams, $window) {
+strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$routeParams', '$window', '$modal',
+	function ($scope, $http, $routeParams, $window, $modal) {
 		//Obtenemos los artículos del usuario
 		var actualizararticulos = function() {
 			$http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page)
 				.success(function(data) {
 					$scope.articulos = data.data;
 			});
-			$scope.imagenPorDefecto = imgPorDefecto;
 		}
 	 	actualizararticulos();
 		
+		var tipos;
 		//Obtenemos los tipos de instrumentos que hay
 		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
       $scope.tipos = data;
+			tipos = data;
     });
+		
+		//Funcion para mostrar articulo en forma de edit
+		$scope.editableView = function() {
+			$scope.noshowdetail=true;
+			$scope.showedit=true;
+		}
+		
+		//Funcion para mostrar artículo en forma de detail
+		$scope.detailView = function() {
+			$scope.noshowdetail=false;
+			$scope.showedit=false;
+		}
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
@@ -138,26 +149,20 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			}			
 		}
 		
-		//Inicializamos
-		$scope.datos = {};		
-		//Funcion para añadir un nuevo artículo
-		$scope.addArticulo = function($window) {
-			$http({
-				method: "POST",
-				url: 'http://localhost:3000/stretto/articulos',
-				data: $scope.datos,
-				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
-			})
-			.success(function(data, status, headers, config) {
-				alert(data);
-				actualizararticulos();
-			})
-			.error(function(data, status, headers, config) {
-				alert("Error código: "+status+". "+data);
-			})
-  	}
+		//Funcion para mostrar modal de añadir artículo
+		$scope.showModalAddArticulo = function() {
+			//Inicializamos
+			$scope.datos = {};
+			var modalInstancia = $modal.open({
+				templateUrl: '/aplicacion/partials/add-articulo.html',
+				controller: 'AddArticulosCtrl',
+				resolve: { 
+					Tipos:  tipos
+				}				
+			});
+		}
 		
-		//Funcion para eliminar un artículo/*
+		//Funcion para eliminar un artículo
 		$scope.deleteArticulo = function(id) {
 			$http({
 				method: "DELETE",
@@ -173,7 +178,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			})
   	}
 		
-		//Funcion para eliminar un artículo/*
+		//Funcion para actualizar un artículo
 		$scope.updateArticulo = function(articulo) {
 			$http({
 				method: "PUT",
@@ -183,6 +188,39 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			})
 			.success(function(data, status, headers, config) {
 				alert("Artículo actualizado con éxito");
+				actualizararticulos();
+			})
+			.error(function(data, status, headers, config) {
+				alert("Error código: "+status+". "+data);
+			})
+  	}
+	}]);
+
+/* Para el modal de añadir artículo */
+
+strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalInstancia','Tipos',
+	function ($scope, $http, $modalInstancia, Tipos) {
+		var tipos = Tipos;
+		//Obtenemos los tipos de instrumentos que hay
+		//$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
+      $scope.tipos = tipos;
+    //});
+		
+		//Funcion cancelar del modal añadir artículo
+		$scope.cancelshowModalAddArticulo = function() {
+			$modalInstancia.dismiss('cancel');
+		}
+				
+		//Funcion para añadir un nuevo artículo
+		$scope.addArticulo = function($window) {
+			$http({
+				method: "POST",
+				url: 'http://localhost:3000/stretto/articulos',
+				data: $scope.datos,
+				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
+			})
+			.success(function(data, status, headers, config) {
+				alert(data);
 				actualizararticulos();
 			})
 			.error(function(data, status, headers, config) {

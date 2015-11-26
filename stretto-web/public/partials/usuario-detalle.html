@@ -1,17 +1,18 @@
-<p>{{usuario.nombre}}</p>
-<p>{{usuario.email}}</p>
-<p>{{usuario.valoracion}}</p>
-<p>{{usuario.tlf}}</p>
+<h5>{{usuario.nombre}}</h5>
+<h5>{{usuario.email}}</h5>
+<h5>{{usuario.valoracion}}</h5>
+<h5>{{usuario.tlf}}</h5>
 
 <a href="/usuarios/{{usuario.id}}/articulos">Artículos vendidos por {{usuario.nombre}}</a>
 
-<p>Últimos artículos del usuario</p>
+<h5>Últimos artículos del usuario</h5>
 
-<ul class="last_articulos">
-	<li ng-repeat="articulo in last_articulos" class="thumbnail">
-		<a href="/articulos/{{articulo.id}}">{{articulo.nombre}}</a>
-		<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
-		<p>{{articulo.precio}}</p>
-		<p>{{articulo.descripcion}}</p>
-	</li>
-</ul>
+<div class="media" ng-repeat="articulo in last_articulos"> 
+	 <a href="/articulos/{{articulo.id}}" class="pull-left">
+			<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+	 </a>
+	 <div class="media-body">
+		 <h4 class="media-heading">{{articulo.nombre}}<i id="precio">{{articulo.precio}} €</i></h4>
+		 <p>{{articulo.descripcion}}</p>
+	 </div>
+</div>

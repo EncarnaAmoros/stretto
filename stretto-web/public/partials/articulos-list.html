@@ -17,7 +17,7 @@
 			
     </div>
     <div class="col-md-10">			
-
+			
 			<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo"> 
 				 <a href="/articulos/{{articulo.id}}" class="pull-left">
 						<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
@@ -27,9 +27,7 @@
 					 <p>{{articulo.descripcion}}</p>
 				 </div>
 			</div>
-	
-	
-	
+			
 			<ul class="pager">
 				<li><a ng-click=pasarPaginaAnterior()>Anterior</a></li>
 				<li><a ng-click=pasarPaginaSiguiente()>Siguiente</a></li>
