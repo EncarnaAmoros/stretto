@@ -1,4 +1,4 @@
-var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap'/*,'ngRoute'*/]);
+var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute']);
 
 strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window',
 	function ($scope, $http, $window) {
@@ -149,19 +149,6 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			}			
 		}
 		
-		//Funcion para mostrar modal de añadir artículo
-		$scope.showModalAddArticulo = function() {
-			//Inicializamos
-			$scope.datos = {};
-			var modalInstancia = $modal.open({
-				templateUrl: '/aplicacion/partials/add-articulo.html',
-				controller: 'AddArticulosCtrl',
-				resolve: { 
-					Tipos:  tipos
-				}				
-			});
-		}
-		
 		//Funcion para eliminar un artículo
 		$scope.deleteArticulo = function(id) {
 			$http({
@@ -194,12 +181,27 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 				alert("Error código: "+status+". "+data);
 			})
   	}
+		
+		//Funcion para mostrar modal de añadir artículo
+		$scope.showModalAddArticulo = function() {
+			//Inicializamos
+			$scope.datos = {};
+			var modalInstance = $modal.open({
+				templateUrl: '/aplicacion/partials/add-articulo.html',
+				resolve: { 
+					Tipos: function() {
+						return tipos;
+					}
+				},
+				controller: 'AddArticulosCtrl'
+			});
+		}
 	}]);
 
 /* Para el modal de añadir artículo */
 
-strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalInstancia','Tipos',
-	function ($scope, $http, $modalInstancia, Tipos) {
+strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalInstance','Tipos',
+	function ($scope, $http, $modalInstance, Tipos) {
 		var tipos = Tipos;
 		//Obtenemos los tipos de instrumentos que hay
 		//$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
@@ -208,7 +210,7 @@ strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalIn
 		
 		//Funcion cancelar del modal añadir artículo
 		$scope.cancelshowModalAddArticulo = function() {
-			$modalInstancia.dismiss('cancel');
+			$modalInstance.dismiss(/*'cancel'*/);
 		}
 				
 		//Funcion para añadir un nuevo artículo
@@ -221,6 +223,7 @@ strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalIn
 			})
 			.success(function(data, status, headers, config) {
 				alert(data);
+				$modalInstance.close();
 				actualizararticulos();
 			})
 			.error(function(data, status, headers, config) {
