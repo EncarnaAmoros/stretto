@@ -2,6 +2,22 @@
 	float: right;
 }
 
+#nombreEdit {
+	position: absolute;
+  text-align: left;
+	width: 15em;
+}
+
+#precioEdit {
+	width: 5.6em;
+	text-align: right;
+	margin-left: 225px;
+}
+
+#etiquetaPrecioEdit {
+	margin-right: 30px;
+}
+
 #inputformArtSmall {
 	width: 20em;
 	margin-bottom: 0.5em;

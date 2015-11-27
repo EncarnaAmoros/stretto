@@ -116,24 +116,21 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			tipos = data;
     });
 		
-		var articulo;
 		//Funcion para mostrar articulo en forma de edit
-		$scope.editableView = function() {
-			//articulo = $scope.articulo;
-		/*$scope.noshowdetail=true;
-			$scope.showedit=true;*/
+		$scope.editableView = function(articulo) {
+			articulo.noshowdetail=true;
+			articulo.showedit=true;
 		}
 		
-		$scope.cancelarEdit = function() {
-			console.log("hola");
+		$scope.cancelarEdit = function(articulo) {
 			actualizararticulos();
-			//$scope.articulo = articulo;
+			detailView();
 		}
 		
 		//Funcion para mostrar artículo en forma de detail
-		$scope.detailView = function() {
-			/*$scope.noshowdetail=false;
-			$scope.showedit=false;*/
+		$scope.detailView = function(articulo) {
+			articulo.noshowdetail=false;
+			articulo.showedit=false;
 		}
 		
 		//Funcion para pasar de página siguiente
@@ -187,6 +184,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			})
 			.error(function(data, status, headers, config) {
 				alert("Error código: "+status+". "+data);
+				actualizararticulos();
 			})
   	}
 		
