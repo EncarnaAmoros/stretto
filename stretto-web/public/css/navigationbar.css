@@ -1,5 +1,32 @@
+/* Barra en general */
+.navbar-default {
+	background-color: #D4B28B;
+	border-color: #D6B38C;
+}
+
+.navbar {
+    border-radius: 0px;
+}
+
+/* Logotipo */
+.navbar-default .navbar-brand {
+    color: #FFF;
+    font-size: 1.4em;
+}
+
 .logotipo {
 	margin-left: 1em;
+}
+
+/* Items de la barra */
+
+.navbar-default .navbar-nav>li>a {
+    color: #FFF;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #FFF;
+    background-color: #C59A6A;
 }
 
 .primerenlace {
@@ -7,6 +34,17 @@
 }
 
 #defaultselect {
-	color: #9D9D9D;
 	padding-left: 10px;
+}
+
+#iconousuario {
+	color: #777 !important;
+}
+
+.navbar-default .navbar-text {
+    color: #FFF;
+}
+
+.navbar-default .navbar-link {
+    color: #FFF;
 }

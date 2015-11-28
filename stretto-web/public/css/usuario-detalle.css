@@ -1,0 +1,29 @@
+/* Div de cada item */
+
+.panel-default {
+	border-color: #D5B28F;
+	border-radius: 1.5em;
+	margin-bottom: 0em;
+}
+
+/* Datos del usuario */
+#divUsuarioDetalle {
+	margin-left: 4em;
+	margin-right: 4em;
+}
+
+/* Datos de los artículos */
+
+#precio {
+	float: right;
+}
+
+#fotos-articulos {
+	width: 14em;
+	height: 13em;
+}
+
+#descripcion{
+	margin-top: 1.5em;
+	min-height: 5em;
+}

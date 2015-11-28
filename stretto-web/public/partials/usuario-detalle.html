@@ -1,18 +1,33 @@
-<h5>{{usuario.nombre}}</h5>
-<h5>{{usuario.email}}</h5>
-<h5>{{usuario.valoracion}}</h5>
-<h5>{{usuario.tlf}}</h5>
+<!-- Include estilo css -->
+<link rel="stylesheet" href="/aplicacion/css/usuario-detalle.css">
 
-<a href="/usuarios/{{usuario.id}}/articulos">Artículos vendidos por {{usuario.nombre}}</a>
+<div class="media" id="divUsuarioDetalle">		
+	<!-- Vista del usuario en detalle -->
+	<div class="media-body">
+		<h5 class="media-heading">Nombre: {{usuario.nombre}}</h5>
+		<h5 class="media-heading">Email: {{usuario.email}}</h5>
+		<h5 class="media-heading">Valoración: {{usuario.valoracion}}</h5>
+		<h5 class="media-heading">Teléfono: {{usuario.tlf}}</h5>
+	</div>
 
-<h5>Últimos artículos del usuario</h5>
+	<a href="/usuarios/{{usuario.id}}/articulos">Todos los artículos vendidos por {{usuario.nombre}}</a>
 
-<div class="media" ng-repeat="articulo in last_articulos"> 
-	 <a href="/articulos/{{articulo.id}}" class="pull-left">
-			<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
-	 </a>
-	 <div class="media-body">
-		 <h4 class="media-heading">{{articulo.nombre}}<i id="precio">{{articulo.precio}} €</i></h4>
-		 <p>{{articulo.descripcion}}</p>
-	 </div>
+	<!-- Vista de sus últimos artículos -->
+	<h5>Últimos artículos del usuario</h5>
+
+	<div class="media" ng-repeat="articulo in last_articulos">
+		<!-- Vista de cada artículo -->
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<a href="/articulos/{{articulo.id}}" class="pull-left">
+					<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading">{{articulo.nombre}}<i id="precio">{{articulo.precio}} €</i></h4>
+					<p>{{articulo.descripcion}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
