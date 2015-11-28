@@ -1,22 +1,3 @@
-/* Div de cada item */
-
-.panel-default {
-	/*
-	width: 31em;
-    height: 15em;
-	*/
-	border-color: #D5B28F;
-	border-radius: 1.5em;
-	margin-bottom: 0em;
-}
-
-/*
-.panel-body {
-    padding-top: 15px;
-    padding-right: 15px;
-}
-*/
-
 /* Datos articulos en detalle */
 
 #precio {
