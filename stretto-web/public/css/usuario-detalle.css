@@ -1,7 +1,54 @@
 /* Datos del usuario */
+
+/*Contenido detalle usuario*/
+
+.titulo {
+	font-size: 1.5em;
+}
+
+.marco_principal {
+	padding-bottom: 12px;
+  margin-left: 40px;
+}
+
+.marco_principal p {
+	width: 7em;
+  font-size: 17px;
+}
+
+.marco_principal h5 {
+  font-size: 18px;
+}
+
+.etiqueta {
+  margin-top: 7px;
+  margin-bottom: 0px;
+  /*font-weight: bold;*/
+  display: inline-block;
+}
+
+.datos_u {
+  margin-left: 10px;
+  display: inline-block;
+}
+
 #divUsuarioDetalle {
 	margin-left: 4em;
 	margin-right: 4em;
+}
+
+/* Botones */
+
+.btn-primary {
+	margin-top: 1em;
+  margin-bottom: 1em;
+	background-color: rgba(198, 150, 102, 0.73) !important;
+	color: #080808 !important;
+	border-color: white !important;
+}
+
+#botonDetecha {
+	margin-left: 1em;
 }
 
 /* Datos de los artículos */

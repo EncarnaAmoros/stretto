@@ -4,19 +4,35 @@
 
 <div class="media" id="divUsuarioDetalle">		
 	<!-- Vista del usuario en detalle -->
-	<div class="media-body">
-		<h5 class="media-heading">Nombre: {{usuario.nombre}}</h5>
-		<h5 class="media-heading">Email: {{usuario.email}}</h5>
-		<h5 class="media-heading">Valoración: {{usuario.valoracion}}</h5>
-		<h5 class="media-heading">Teléfono: {{usuario.tlf}}</h5>
-	</div>
+	<h5 class="titulo">Datos personales</h5>
+	<fieldset class="marco_principal">
+		<p class="etiqueta">Nombre: </p>
+		<h5 class="datos_u">{{usuario.nombre}}</h5> </br>
+	
+		<p class="etiqueta">Email: </p>
+		<h5 class="datos_u">{{usuario.email}}</h5> </br>
 
-	<a href="/usuarios/{{usuario.id}}/articulos">Todos los artículos vendidos por {{usuario.nombre}}</a>
+		<p class="etiqueta">Valoración: </p>
+		<h5 class="datos_u">{{usuario.valoracion}}</h5> </br>
+
+		<p class="etiqueta">Teléfono: </p>
+		<h5 class="datos_u">{{usuario.tlf}}</h5> </br>
+
+		<button ng-click="editableView(articulo)" class="btn btn-primary">
+			Editar perfil <span class="glyphicon glyphicon-pencil"></span>
+		</button>
+		<button ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
+			Eliminar cuenta <span class="glyphicon glyphicon-trash"></span>
+		</button>
+	</fieldset>
+
+	<a href="/usuarios/{{usuario.id}}/articulos" class="titulo">Todos los artículos vendidos por {{usuario.nombre}}</a>
 
 	<!-- Vista de sus últimos artículos -->
-	<h5>Últimos artículos del usuario</h5>
+	<h5 class="titulo">Últimos artículos del usuario</h5>
 
 	<div class="media" ng-repeat="articulo in last_articulos">
+		
 		<!-- Vista de cada artículo -->
 		<div class="panel panel-default">
 			<div class="panel-body">
