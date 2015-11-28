@@ -1,7 +1,7 @@
 var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute']);
 
-strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window',
-	function ($scope, $http, $window) {
+strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal',
+	function ($scope, $http, $window, $modal) {
 		var actualizarNavBar = function () {
 			if(localStorage.email!=undefined) {
 				$scope.showme = false;
@@ -14,6 +14,16 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window',
 		}
 		actualizarNavBar();
 		
+		//Si clica en iniciar sesión abrimos modal
+		//Funcion para mostrar modal de añadir artículo
+		$scope.showModalLogin = function() {
+			var modalInstance = $modal.open({
+				templateUrl: '/aplicacion/partials/login.html',
+				controller: 'LoginCtrl'
+			});
+		}
+		
+		//Si clica en cerrar sesión borramos sus datos
 		$scope.logout = function() {
 			localStorage.clear();
 			actualizarNavBar();
@@ -23,11 +33,26 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window',
 
 /* Login para los usuarios */
 
-strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window',
-	function ($scope, $http, $window) {
-		//Inicializamos
-		$scope.datos = {};		
+strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$modalInstance',
+	function ($scope, $http, $window, $modalInstance) {
 		
+		//Si clica en cancelar desaparece modal
+		$scope.cancelshowModalLogin = function() {
+			$modalInstance.dismiss();
+		}
+		
+		//Cambiamos a vista registro
+		$scope.vistaRegistro = function() {
+			$scope.showInicioRegistro = true;
+		}
+		
+		//Cambiamos a vista inicio sesión
+		$scope.vistaInicioSesion = function() {
+			$scope.showInicioRegistro = false;
+		}
+		
+		//Inicializamos para logeo
+		$scope.datos = {};				
 		//Comprobamos login
 		$scope.login = function() {
 			$http.get('http://localhost:3000/stretto/usuarios/login?email='+$scope.datos.email+'&password='+$scope.datos.password)
@@ -35,6 +60,8 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window',
 				.success(function(data) {
 					localStorage.email = $scope.datos.email;
 					localStorage.password = $scope.datos.password;
+					//$window.location.href = 'articulos';
+					$modalInstance.close();
 					$window.location.href = 'articulos';
     		})
 				//Hay error, lo mostramos
@@ -209,14 +236,11 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalInstance','Tipos',
 	function ($scope, $http, $modalInstance, Tipos) {
 		var tipos = Tipos;
-		//Obtenemos los tipos de instrumentos que hay
-		//$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
-      $scope.tipos = tipos;
-    //});
+		$scope.tipos = tipos;
 		
 		//Funcion cancelar del modal añadir artículo
 		$scope.cancelshowModalAddArticulo = function() {
-			$modalInstance.dismiss(/*'cancel'*/);
+			$modalInstance.dismiss();
 		}
 				
 		//Funcion para añadir un nuevo artículo

@@ -3,10 +3,6 @@ var strettoApp = angular.module('strettoApp', ['ngRoute','strettoControllers']);
 strettoApp.config(
 	function($locationProvider, $routeProvider) {
 		$routeProvider.
-			when('/login', {
-				templateUrl: '/aplicacion/partials/login.html',
-				controller: 'LoginCtrl'
-			}).
 			when('/registro', {
 				templateUrl: '/aplicacion/partials/registro.html'
 				//,controller: 'RegistroCtrl' --> 1 caso de uso sin usar framework
@@ -28,7 +24,7 @@ strettoApp.config(
 				controller: 'UsuarioArticulosCtrl'
 			}).
 			otherwise({
-	      redirectTo: '/login'
+	      redirectTo: '/articulos'
 	    });
 		
 		$locationProvider.html5Mode({

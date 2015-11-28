@@ -1,7 +1,55 @@
-<div>
-	<form ng-submit="login()">
-		Email: <input type="text" ng-model="datos.email">
-		Password: <input type="password" ng-model="datos.password">
-		<input type="submit" value="Iniciar sesión">
-	</form>
+<div ng-hide="showInicioRegistro">
+	<div class="modal-header">
+			<h3 class="modal-title">Iniciar sesión</h3>    
+			<p class="text-muted">Identifícate con tu email y contraseña o regístrate si no tienes cuenta.</p>
+	</div>
+	<div class="modal-body">
+			<form action="" role="form">
+					<div class="form-group">
+							<label for="email">Email:</label>
+							<input type="text" id="email" ng-model="datos.email" placeholder="tucorreo@gmail.com" class="form-control">
+					</div>
+					<div class="form-group">
+							<label for="password">Contraseña:</label>
+							<input type="password" id="password" ng-model="datos.password" class="form-control">
+					</div>
+			</form>
+			<a ng-click="vistaRegistro()">¡Regístrate!</a>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-link" ng-click="cancelshowModalLogin()">Cancelar</button>
+			<button class="btn btn-primary" ng-click="login();" href="">Iniciar sesión</button>
+	</div>
+</div>
+
+<div ng-show="showInicioRegistro">
+	<div class="modal-header">
+			<h3 class="modal-title">Registro</h3>    
+			<p class="text-muted">Crea tu propia cuenta introduciendon los siguientes datos.</p>
+	</div>
+	<div class="modal-body">
+			<form action="" role="form">
+					<div class="form-group">
+							<label for="nombre">Nombre:</label>
+							<input type="text" id="nombre" ng-model="datos.nombre" placeholder="Ej: Antonio" class="form-control">
+					</div>
+					<div class="form-group">
+							<label for="email">Email:</label>
+							<input type="text" id="email" ng-model="datos.email" placeholder="tucorreo@gmail.com" class="form-control">
+					</div>
+					<div class="form-group">
+							<label for="nombre">Teléfono:</label>
+							<input type="text" id="tlf" ng-model="datos.tlf" placeholder="Ej: 786543211" class="form-control">
+					</div>
+					<div class="form-group">
+							<label for="password">Contraseña:</label>
+							<input type="password" id="password" ng-model="datos.password" class="form-control">
+					</div>
+			</form>
+			<a ng-click="vistaInicioSesion()">¡Iniciar sesión!</a>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-link" ng-click="cancelshowModalLogin()">Cancelar</button>
+			<button class="btn btn-primary" ng-click="login();" href="">Iniciar sesión</button>
+	</div>
 </div>
