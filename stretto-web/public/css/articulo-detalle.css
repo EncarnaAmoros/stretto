@@ -1,0 +1,29 @@
+#precio {
+	float: right;
+	margin-right: 2em;
+}
+
+#fotos-articulos {
+	width: 14em;
+	height: 13em;
+}
+
+#descripcion{
+	margin-top: 1.5em;
+	min-height: 5em;
+}
+
+#divArticuloDetalle {
+	margin-left: 3em;
+  margin-right: 12em;
+  margin-top: 4em;
+}
+
+/* Botones */
+
+.btn-primary {
+	background-color: rgba(198, 150, 102, 0.73) !important;
+	color: #080808 !important;
+	border-color: white !important;
+	margin-top: 1em !important;
+}

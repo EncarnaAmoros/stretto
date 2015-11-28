@@ -1,5 +1,7 @@
 var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute']);
 
+/* Para la barra de navegación */
+
 strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal',
 	function ($scope, $http, $window, $modal) {
 		var actualizarNavBar = function () {
@@ -111,7 +113,11 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
       $scope.articulo = data.data;
 			$scope.usuario = data.usuario;
     });
-  }]);
+	
+		$scope.comprarArticulo = function() {
+			alert("Artículo comprado con éxito");
+		}
+	}]);
 
 /* Mostramos un usuario en detalle */
 
@@ -143,23 +149,6 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			tipos = data;
     });
 		
-		//Funcion para mostrar articulo en forma de edit
-		$scope.editableView = function(articulo) {
-			articulo.noshowdetail=true;
-			articulo.showedit=true;
-		}
-		
-		$scope.cancelarEdit = function(articulo) {
-			actualizararticulos();
-			detailView();
-		}
-		
-		//Funcion para mostrar artículo en forma de detail
-		$scope.detailView = function(articulo) {
-			articulo.noshowdetail=false;
-			articulo.showedit=false;
-		}
-		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
 			console.log("1");
@@ -179,6 +168,21 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 				var pagina = parseInt($routeParams.page) - 1;
 				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
 			}			
+		}
+		
+		//Funcion para mostrar articulo en forma de edit
+		$scope.editableView = function(articulo) {
+			articulo.showdetailedit=true;
+		}
+		
+		$scope.cancelarEdit = function(articulo) {
+			actualizararticulos();
+			detailView();
+		}
+		
+		//Funcion para mostrar artículo en forma de detail
+		$scope.detailView = function(articulo) {
+			articulo.showdetailedit=false;
 		}
 		
 		//Funcion para eliminar un artículo

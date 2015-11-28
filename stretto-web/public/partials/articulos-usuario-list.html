@@ -24,125 +24,72 @@
     </div>
     <div class="col-md-10">
 			
-			<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">
-				
-				<!-- Vista de los artículos en detalle -->
-				<div ng-hide="articulo.noshowdetail">
-					<a href="/articulos/{{articulo.id}}" class="pull-left">
-						<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
-					</a>
-
-					<div class="media-body">
-						<h4 class="media-heading">{{articulo.nombre}}
-							<i id="precio">{{articulo.precio}} €</i>
-						</h4>
-						<p id="descripcion">{{articulo.descripcion}}</p>
-						</textarea>
-					</div>				
-
-					<button ng-click="editableView(articulo)" class="btn btn-default">
-						<span class="glyphicon glyphicon-pencil"></span>
-					</button>
-					<button ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-default">
-						<span class="glyphicon glyphicon-trash"></span>
-					</button>
-				</div>
-			
-				<!-- Vista de los artículo para editar -->
-				<div ng-show="articulo.showedit">
+			<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">			
+				<div class="panel panel-default">
 					
-					<a href="#" class="pull-left" id="imagenArtEdit">
-						<img src="{{imagenPorDefecto}}" class="media-object" id="fotos-articulos" alt="Imagen por defecto">
-					</a>
-					<label>URL foto:</label>
-					<input ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
+					<!-- Vista de los artículos en detalle -->
+					<div ng-hide="articulo.showdetailedit" class="panel-body">
+						<a href="/articulos/{{articulo.id}}" class="pull-left">
+							<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+						</a>
 
-					<div class="media-body">
-						<div>
-							<div id="nombreEdit">
-								<label>Nombre:</label>
-								<input ng-model=articulo.nombre class="form-control" placeholder="Nombre">
-							</div>
-							<div id="precioEdit">
-								<label id="etiquetaPrecioEdit">Precio:</label>
-								<input ng-model=articulo.precio class="form-control" placeholder="Precio">
-							</div>
-						</div>
-						<label>Descripción:</label>
-						<textarea rows="3" ng-model=articulo.descripcion class="form-control" 
-											id="inputformArtBig" placeholder="Descripción">
-						</textarea>				
+						<div class="media-body">
+							<h4 class="media-heading">{{articulo.nombre}}
+								<i id="precio">{{articulo.precio}} €</i>
+							</h4>
+							<p id="descripcion">{{articulo.descripcion}}</p>
+						</div>				
 						
-						<label id="etiquetaPrecioEdit">Tipo:</label>
-						<select ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
-							<option value="" id="defaulselect">Selecciona un tipo</option>
-							<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-						</select>	
-						
-						<button ng-click="updateArticulo(articulo); detailView(articulo);" class="btn btn-default">
-							<span class="glyphicon glyphicon-floppy-saved"></span>
-						</button>	
-						<button ng-click="detailView(articulo); 
-																													cancelarEdit(articulo); " id="botonderecha" class="btn btn-default">
-							<span class="glyphicon glyphicon-arrow-left"></span>
+						<button ng-click="editableView(articulo)" class="btn btn-primary">
+							Editar <span class="glyphicon glyphicon-pencil"></span>
+						</button>
+						<button ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
+							Eliminar <span class="glyphicon glyphicon-trash"></span>
 						</button>
 					</div>
-			
 					
+					<!-- Vista de los artículo para editar -->
+					<div ng-show="articulo.showdetailedit" class="panel-body">
+						<a href="#" class="pull-left" id="imagenArtEdit">
+							<img src="{{imagenPorDefecto}}" class="media-object" id="fotos-articulos" alt="Imagen por defecto">
+						</a>
+						<label>URL foto:</label>
+						<input ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
+
+						<div class="media-body">
+							<div>
+								<div id="nombreEdit">
+									<label>Nombre:</label>
+									<input ng-model=articulo.nombre class="form-control" placeholder="Nombre">
+								</div>
+								<div id="precioEdit">
+									<label id="etiquetaPrecioEdit">Precio:</label>
+									<input ng-model=articulo.precio class="form-control" placeholder="Precio">
+								</div>
+							</div>
+							
+							<label>Descripción:</label>
+							<textarea rows="3" ng-model=articulo.descripcion class="form-control" 
+												id="inputformArtBig" placeholder="Descripción">
+							</textarea>				
+
+							<label id="etiquetaPrecioEdit">Tipo:</label>
+							<select ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
+								<option value="" id="defaulselect">Selecciona un tipo</option>
+								<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+							</select>	
+
+							<button ng-click="updateArticulo(articulo); detailView(articulo);" class="btn btn-primary">
+								Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
+							</button>	
+							<button ng-click="detailView(articulo); cancelarEdit(articulo); " class="btn btn-primary" id="botonDetecha">
+								Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
+							</button>
+						</div>						
+					</div>
 					
-				</div>
-		
+				</div>		
 			</div>
-			
-			
-			
-			
-			<!--<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">
-				
-				<a ng-hide="articulo.noshowdetail" href="/articulos/{{articulo.id}}" class="pull-left">
-					<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
-				</a>
-				<a ng-show="articulo.showedit" href="#" class="pull-left">
-					<img src="{{imagenPorDefecto}}" class="media-object" id="fotos-articulos" alt="Imagen por defecto">
-				</a>
-				<input ng-show="articulo.showedit" ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
-
-				<div class="media-body">
-				 	<h4 ng-hide="articulo.noshowdetail" class="media-heading">{{articulo.nombre}}
-					 	<input ng-show="articulo.showedit" ng-model=articulo.nombre class="form-control" id="inputformArtSmall" placeholder="Nombre">
-
-					 	<i ng-hide="articulo.noshowdetail" id="precio">{{articulo.precio}} €</i>
-					 	<input ng-show="articulo.showedit" ng-model=articulo.precio class="form-control" id="inputformArtSmall" placeholder="Precio">
-				 	</h4>
-
-				 	<p ng-hide="articulo.noshowdetail" id="descripcion">{{articulo.descripcion}}</p>
-					<textarea ng-show="articulo.showedit" rows="3" ng-model=articulo.descripcion class="form-control" 
-										id="inputformArtBig" placeholder="Descripción">
-					</textarea>
-				</div>
-				
-				
-				<select ng-show="articulo.showedit" ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
-					<option value="" id="defaulselect">Selecciona un tipo</option>
-        	<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-				</select>
-				
-				
-				<button ng-hide="articulo.noshowdetail" ng-click="editableView(articulo)" class="btn btn-default">
-					<span class="glyphicon glyphicon-pencil"></span>
-				</button>
-				<button ng-hide="articulo.noshowdetail" ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-default">
-					<span class="glyphicon glyphicon-trash"></span>
-				</button>
-				
-				<button ng-show="articulo.showedit" ng-click="updateArticulo(articulo); detailView(articulo);" class="btn btn-default">
-					<span class="glyphicon glyphicon-floppy-saved"></span>
-				</button>	
-				<button ng-show="articulo.showedit" ng-click="detailView(articulo); 
-																											cancelarEdit(articulo); " id="botonderecha" class="btn btn-default">
-					<span class="glyphicon glyphicon-arrow-left"></span>
-				</button>
-			</div>-->
 			
 			<!-- Paginado -->
 			

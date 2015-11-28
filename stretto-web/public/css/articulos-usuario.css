@@ -1,6 +1,33 @@
+/* Div de cada item */
+
+.panel-default {
+	border-color: #D5B28F;
+	border-radius: 1.5em;
+	margin-bottom: 0em;
+}
+
+/* Datos articulos en detalle */
+
 #precio {
 	float: right;
 }
+
+#fotos-articulos {
+	width: 14em;
+	height: 13em;
+}
+
+#inputformArtSmall {
+	width: 20em;
+	margin-bottom: 0.5em;
+}
+
+#inputformArtBig {
+	width: 55em;
+	margin-bottom: 0.5em;
+}
+
+/* Datos articulos en edicion */
 
 #nombreEdit {
 	position: absolute;
@@ -18,12 +45,18 @@
 	margin-right: 30px;
 }
 
-#inputformArtSmall {
-	width: 20em;
-	margin-bottom: 0.5em;
+#imagenArtEdit {
+	padding-right: 10px;
 }
 
-#inputformArtBig {
-	width: 55em;
-	margin-bottom: 0.5em;
+/* Botones */
+
+.btn-primary {
+	background-color: rgba(198, 150, 102, 0.73) !important;
+	color: #080808 !important;
+	border-color: white !important;
+}
+
+#botonDetecha {
+	margin-left: 1em;
 }

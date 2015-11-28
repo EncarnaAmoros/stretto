@@ -1,20 +1,32 @@
-<div>
-	<form class="form-group">
-		<label>Nombre:</label>
-		<input class="form-control" type="text" id="nombre">
-		
-		<label>Email:</label>
-		<input class="form-control" type="text" id="email">
-		
-		<label>Password:</label>
-		<input class="form-control" type="password" id="password">
-		
-		<label>Teléfono:</label>
-		<input class="form-control" type="text" id="tlf">
-		
-		<input type="submit" class="btn btn-default" value="Registrarme" id="botonRegistro">
-	</form>
-</div>
+<div class="modal-header">
+			<h3 class="modal-title">Registro</h3>    
+			<p class="text-muted">Crea tu propia cuenta introduciendon los siguientes datos.</p>
+	</div>
+	<div class="modal-body">
+			<form action="" role="form">
+					<div class="form-group">
+							<label for="nombre">Nombre:</label>
+							<input type="text" id="nombre" ng-model="datos.nombre" placeholder="Ej: Antonio" class="form-control">
+					</div>
+					<div class="form-group">
+							<label for="email">Email:</label>
+							<input type="text" id="email" ng-model="datos.email" placeholder="tucorreo@gmail.com" class="form-control">
+					</div>
+					<div class="form-group">
+							<label for="nombre">Teléfono:</label>
+							<input type="text" id="tlf" ng-model="datos.tlf" placeholder="Ej: 786543211" class="form-control">
+					</div>
+					<div class="form-group">
+							<label for="password">Contraseña:</label>
+							<input type="password" id="password" ng-model="datos.password" class="form-control">
+					</div>
+			</form>
+			<a ng-click="vistaInicioSesion()">¡Iniciar sesión!</a>
+	</div>
+	<div class="modal-footer">
+			<button class="btn btn-link" ng-click="cancelshowModalLogin()">Cancelar</button>
+			<button class="btn btn-primary" href="" id="botonRegistro">Registrarme</button>
+	</div>
 
 <script type="text/javascript">		
 	function addUsuario() {

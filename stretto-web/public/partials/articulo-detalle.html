@@ -1,6 +1,22 @@
-<p>{{articulo.nombre}}</p>
-<img src={{articulo.foto}} id="fotos-articulos" class="img-rounded"></img>
-<p>{{articulo.descripcion}}</p>
-<p>{{articulo.precio}}</p>
-<a href="usuarios/{{usuario.id}}">{{usuario.nombre}}</a>
-<p>{{usuario.email}}</p>
+<!-- Include estilo css -->
+<link rel="stylesheet" href="/aplicacion/css/articulo-detalle.css">
+
+<div class="media" id="divArticuloDetalle">		
+	<!-- Vista de los artículos en detalle -->
+	<a href="/articulos/{{articulo.id}}" class="pull-left">
+		<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+	</a>
+
+	<div class="media-body">
+		<h4 class="media-heading">{{articulo.nombre}}
+			<i id="precio">{{articulo.precio}} €</i>
+		</h4>
+		<p id="descripcion">{{articulo.descripcion}}</p>
+		<p>Vendedor: <a href="usuarios/{{usuario.id}}">{{usuario.nombre}} - {{usuario.email}}</a></p>
+		
+	</div>	
+
+	<button ng-click="comprarArticulo()" class="btn btn-primary">
+		Comprar <span class="glyphicon glyphicon-shopping-cart"></span>
+	</button>
+</div>
