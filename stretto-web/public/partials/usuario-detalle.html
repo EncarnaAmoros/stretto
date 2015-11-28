@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/aplicacion/css/usuario-detalle.css">
 <link rel="stylesheet" href="/aplicacion/css/lista.css">
 
-<div class="media" id="divUsuarioDetalle">		
+<div id="divUsuarioDetalle">		
 	<!-- Vista del usuario en detalle -->
 	<h5 class="titulo">Datos personales</h5>
 	<fieldset class="marco_principal">
@@ -31,20 +31,20 @@
 	<!-- Vista de sus últimos artículos -->
 	<h5 class="titulo">Últimos artículos del usuario</h5>
 
-	<div class="media" ng-repeat="articulo in last_articulos">
-		
+	<div ng-repeat="articulo in last_articulos">
 		<!-- Vista de cada artículo -->
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<a href="/articulos/{{articulo.id}}" class="pull-left">
-					<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
-				</a>
-				<div class="media-body">
-					<h4 class="media-heading">{{articulo.nombre}}<i id="precio">{{articulo.precio}} €</i></h4>
-					<p>{{articulo.descripcion}}</p>
+		<div class="divArticulo">
+				<div >
+					<div>
+						<h4 >{{articulo.nombre}} 
+							<i id="precio">{{articulo.precio}} €</i>
+						</h4>
+					</div>
+					<a href="/articulos/{{articulo.id}}" class="pull-left">
+							<img src="{{articulo.foto}}" id="fotos-articulos" alt="{{articulo.nombre}}">
+					</a>
+					<p id="descripcion">{{articulo.descripcion}}</p>
 				</div>
 			</div>
-		</div>
 	</div>
-
 </div>

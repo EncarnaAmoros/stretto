@@ -63,6 +63,18 @@
 }
 
 #descripcion{
-	margin-top: 1.5em;
-	min-height: 5em;
+	margin-top: 1em;
+	height: 12em;
+	margin-left: 14em;
+}
+/*
+.panel-default {
+	width: 30em !important;
+	display: inline-block !important;
+}*/
+.divArticulo {
+	float:left;
+	margin-right: 2em;
+	margin-bottom: 7em;
+	width: 27em !important;
 }
