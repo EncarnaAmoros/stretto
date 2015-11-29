@@ -1,5 +1,7 @@
 var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute']);
 
+var usuariodetalle = require(['./usuario-detalle']);
+
 var mostrarLogin = function($modal) {
 	var modalInstance = $modal.open({
 		templateUrl: '/aplicacion/partials/login.html',
@@ -147,6 +149,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			});
 		}
 		actualizarUsuario();
+		usuariodetalle.editsuccess;
 		
 		//Funcion para mostrar usuario en forma de edit
 		$scope.editableView = function() {

@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/aplicacion/css/usuario-detalle.css">
 <link rel="stylesheet" href="/aplicacion/css/lista.css">
 
-<div id="divUsuarioDetalle">		
+<div id="divUsuarioDetalle">
 	<!-- Vista del usuario en detalle -->
 	<h5 class="titulo" id="tituloprincipal">Datos personales - 
 		<a href="/usuarios/{{usuario.id}}/articulos" class="titulolink">Todos los artículos vendidos por {{usuario.nombre}}</a>
@@ -28,6 +28,8 @@
 			Eliminar cuenta <span class="glyphicon glyphicon-trash"></span>
 		</button>
 	</fieldset>
+
+	<div class="alert alert-success" id="usuarioModificado">Usuario modificado correctamente</div>
 
 	<!-- Vista usuario editar -->
 	<fieldset ng-show="showdetailedit" class="marco_principal">

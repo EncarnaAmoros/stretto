@@ -99,3 +99,9 @@
 .divArticulo h4 {
 	margin-left: 10.8em;
 }
+
+/* Mensajes */
+
+#usuarioModificado {
+	display: none;
+}
