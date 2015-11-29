@@ -1,5 +1,12 @@
 var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute']);
 
+var mostrarLogin = function($modal) {
+	var modalInstance = $modal.open({
+		templateUrl: '/aplicacion/partials/login.html',
+		controller: 'LoginCtrl'
+	});
+}
+
 /* Para la barra de navegación */
 
 strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal',
@@ -20,10 +27,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal'
 		//Si clica en iniciar sesión abrimos modal
 		//Funcion para mostrar modal de añadir artículo
 		$scope.showModalLogin = function() {
-			var modalInstance = $modal.open({
-				templateUrl: '/aplicacion/partials/login.html',
-				controller: 'LoginCtrl'
-			});
+			mostrarLogin($modal);
 		}
 		
 		//Si clica en cerrar sesión borramos sus datos
@@ -126,6 +130,13 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window',
 	function ($scope, $http, $routeParams, $window) {
 		actualizarUsuario = function() {
+			//O su perfil o usuario que no es su cuenta
+			//Incluimos un html u otro
+			if($routeParams.id==localStorage.id)
+				$scope.showusuario=false;
+			else
+				$scope.showusuario=true;
+			//Obtenemos los datos del usuario
 			$http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id).success(function(data) {
 				$scope.usuario = data.data;
 				$scope.last_articulos = data.articulos;
@@ -170,7 +181,6 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 		
 		//Funcion para actualizar un artículo
 		$scope.updateUsuario = function(usuario) {
-			console.log("usuario:"+usuario.id);
 			$http({
 				method: "PUT",
 				url: 'http://localhost:3000/stretto/usuarios/'+usuario.id,
@@ -210,11 +220,9 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
-			console.log("1");
 			if($routeParams.page=="" || $routeParams.page==undefined) {
 				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=2';
 			} else {
-				console.log("2");
 				var pagina = 1 + parseInt($routeParams.page);
 				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
 			}			
@@ -231,7 +239,10 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 		
 		//Funcion para mostrar articulo en forma de edit
 		$scope.editableView = function(articulo) {
-			articulo.showdetailedit=true;
+			if(localStorage.email==undefined && localStorage.password==undefined)
+				mostrarLogin($modal);
+			else
+				articulo.showdetailedit=true;
 		}
 		
 		$scope.cancelarEdit = function(articulo) {
@@ -246,19 +257,23 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 		
 		//Funcion para eliminar un artículo
 		$scope.deleteArticulo = function(id) {
-			$http({
-				method: "DELETE",
-				url: 'http://localhost:3000/stretto/articulos/'+id,
-				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
-			})
-			.success(function(data, status, headers, config) {
-				alert("Artículo eliminado con éxito");
-				actualizararticulos();
-				$scope.detailView(articulo);
-			})
-			.error(function(data, status, headers, config) {
-				alert("Error código: "+status+". "+data);
-			})
+			if(localStorage.email==undefined && localStorage.password==undefined)
+				mostrarLogin($modal);
+			else {
+				$http({
+					method: "DELETE",
+					url: 'http://localhost:3000/stretto/articulos/'+id,
+					headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
+				})
+				.success(function(data, status, headers, config) {
+					alert("Artículo eliminado con éxito");
+					actualizararticulos();
+					$scope.detailView(articulo);
+				})
+				.error(function(data, status, headers, config) {
+					alert("Error código: "+status+". "+data);
+				})	
+			}
   	}
 		
 		//Funcion para actualizar un artículo
