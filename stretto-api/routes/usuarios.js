@@ -9,7 +9,7 @@ var paginar = require('./paginar');
 //Artículos por página
 var numArticulosPag = 10;
 //Artículos en página del usuario
-var numArticulosUsuario = 5;
+var numArticulosUsuario = 6;
 //Usuarios por página
 var numUsuariosPag = 15;
 
@@ -82,7 +82,7 @@ router.get('/', function(pet, resp, err){
 });
 
 /* GET de un usuario */
-/* Cuando mostramos un usuario mostramos sus últimos 5 artículos puestos en venta. Es	*/
+/* Cuando mostramos un usuario mostramos sus últimos 6 artículos puestos en venta. Es	*/
 /* una forma de mostrar un resumen de los artículos que ha puesto en venta. Para ver	*/
 /* todos sus artículos se utilizará otra petición (GET usuarios/id/articulos) 				*/
 /* Incluimos toda la información de esos artículos puestos en venta más recientes			*/

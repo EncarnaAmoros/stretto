@@ -126,6 +126,10 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
     $http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id).success(function(data) {
       $scope.usuario = data.data;
 			$scope.last_articulos = data.articulos;
+			//Acortamos todas las descripciones
+			for(i=0;i<data.articulos.length;i++) {
+				$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,171)+"...";
+			}
     });
   }]);
 

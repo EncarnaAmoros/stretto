@@ -60,9 +60,12 @@
 #fotos-articulos {
 	width: 14em;
 	height: 13em;
+	margin-top: -2em;
 }
 
 #descripcion{
+	padding-top: 1em;
+  text-align: justify;
 	margin-top: 1em;
 	height: 12em;
 	margin-left: 14em;
@@ -77,4 +80,8 @@
 	margin-right: 2em;
 	margin-bottom: 7em;
 	width: 27em !important;
+}
+
+.divArticulo h4 {
+	margin-left: 10.8em;
 }
