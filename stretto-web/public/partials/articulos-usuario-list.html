@@ -80,10 +80,10 @@
 								<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
 							</select>	
 
-							<button ng-click="updateArticulo(articulo); detailView(articulo);" class="btn btn-primary">
+							<button ng-click="updateArticulo(articulo)" class="btn btn-primary">
 								Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
 							</button>	
-							<button ng-click="detailView(articulo); cancelarEdit(articulo); " class="btn btn-primary" id="botonDetecha">
+							<button ng-click="cancelarEdit(articulo)" class="btn btn-primary" id="botonDetecha">
 								Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
 							</button>
 						</div>						

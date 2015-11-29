@@ -182,7 +182,6 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			})
 			.error(function(data, status, headers, config) {
 				alert("Error código: "+status+". "+data);
-				actualizarUsuario();
 			})
   	}
   }]);
@@ -226,7 +225,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 				var pagina = parseInt($routeParams.page) - 1;
 				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
 			}			
-		}
+		}		
 		
 		//Funcion para mostrar articulo en forma de edit
 		$scope.editableView = function(articulo) {
@@ -235,7 +234,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 		
 		$scope.cancelarEdit = function(articulo) {
 			actualizararticulos();
-			detailView();
+			$scope.detailView(articulo);
 		}
 		
 		//Funcion para mostrar artículo en forma de detail
@@ -253,6 +252,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			.success(function(data, status, headers, config) {
 				alert("Artículo eliminado con éxito");
 				actualizararticulos();
+				$scope.detailView(articulo);
 			})
 			.error(function(data, status, headers, config) {
 				alert("Error código: "+status+". "+data);
@@ -270,10 +270,10 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 			.success(function(data, status, headers, config) {
 				alert("Artículo actualizado con éxito");
 				actualizararticulos();
+				$scope.detailView(articulo);
 			})
 			.error(function(data, status, headers, config) {
 				alert("Error código: "+status+". "+data);
-				actualizararticulos();
 			})
   	}
 		
