@@ -2,6 +2,21 @@
 
 /*Contenido detalle usuario*/
 
+#tituloprincipal {
+	font-size: 1.5em;
+}
+
+.titulolink {
+	/*font-size: 20px;*/
+	text-decoration: none;
+	color: #333333;
+}
+
+.titulolink:hover {
+	text-decoration: none;
+	color: #333333;
+}
+
 .titulo {
 	font-size: 1.5em;
 }
@@ -9,6 +24,7 @@
 .marco_principal {
 	padding-bottom: 12px;
   margin-left: 40px;
+	width: 30em;
 }
 
 .marco_principal p {
@@ -54,32 +70,30 @@
 /* Datos de los artículos */
 
 #precio {
-	float: right;
 }
 
 #fotos-articulos {
 	width: 14em;
 	height: 13em;
-	margin-top: -2em;
+	margin-top: -1.8em;
 }
 
 #descripcion{
-	padding-top: 1em;
+	padding-top: 0em;
   text-align: justify;
-	margin-top: 1em;
-	height: 12em;
+	margin-top: 0em;
+	height: 9em;
 	margin-left: 14em;
 }
-/*
-.panel-default {
-	width: 30em !important;
-	display: inline-block !important;
-}*/
+
 .divArticulo {
-	float:left;
-	margin-right: 2em;
-	margin-bottom: 7em;
-	width: 27em !important;
+	border-bottom: 1px solid;
+	border-color: #DDDDDD;
+	float: left;
+	margin-right: 0em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	width: 29em !important;
 }
 
 .divArticulo h4 {

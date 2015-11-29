@@ -121,16 +121,70 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 
 /* Mostramos un usuario en detalle */
 
-strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams',
-	function ($scope, $http, $routeParams) {
-    $http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id).success(function(data) {
-      $scope.usuario = data.data;
-			$scope.last_articulos = data.articulos;
-			//Acortamos todas las descripciones
-			for(i=0;i<data.articulos.length;i++) {
-				$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,171)+"...";
-			}
-    });
+strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window',
+	function ($scope, $http, $routeParams, $window) {
+		actualizarUsuario = function() {
+			$http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id).success(function(data) {
+				$scope.usuario = data.data;
+				$scope.last_articulos = data.articulos;
+    		//Acortamos todas las descripciones
+				for(i=0;i<$scope.last_articulos.length;i++) {
+					$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
+				}
+			});
+		}
+		actualizarUsuario();
+		
+		//Funcion para mostrar usuario en forma de edit
+		$scope.editableView = function() {
+			$scope.showdetailedit=true;
+		}
+		
+		$scope.cancelarEdit = function() {
+			actualizarUsuario();
+			$scope.detailView();
+		}
+		
+		//Funcion para mostrar artículo en forma de detail
+		$scope.detailView = function() {
+			$scope.showdetailedit=false;
+		}
+		
+		//Funcion para eliminar un usuario
+		$scope.deleteUsuario = function(id) {
+			$http({
+				method: "DELETE",
+				url: 'http://localhost:3000/stretto/usuarios/'+id,
+				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
+			})
+			.success(function(data, status, headers, config) {
+				alert("Cuenta eliminada con éxito");
+				$window.location.href = "/";
+			})
+			.error(function(data, status, headers, config) {
+				alert("Error código: "+status+". "+data);
+			})
+  	}
+		
+		//Funcion para actualizar un artículo
+		$scope.updateUsuario = function(usuario) {
+			console.log("usuario:"+usuario.id);
+			$http({
+				method: "PUT",
+				url: 'http://localhost:3000/stretto/usuarios/'+usuario.id,
+				data: usuario,
+				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
+			})
+			.success(function(data, status, headers, config) {
+				alert("Usuario actualizado con éxito");
+				actualizarUsuario();
+				$scope.detailView();
+			})
+			.error(function(data, status, headers, config) {
+				alert("Error código: "+status+". "+data);
+				actualizarUsuario();
+			})
+  	}
   }]);
 
 /* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
