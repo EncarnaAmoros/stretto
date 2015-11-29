@@ -25,7 +25,7 @@ router.get('/login', function(pet, resp){
 		if(usuario == undefined )
 			return resp.status(403).send('Email o contraseña incorrectos.').end();
 		else
-			resp.status(200).send('Inicio de sesión correcto').end();
+			resp.status(200).send({mensaje: 'Inicio de sesión correcto', id: usuario.id}).end();
 	});
 });
 

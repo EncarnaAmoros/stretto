@@ -8,6 +8,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal'
 			if(localStorage.email!=undefined) {
 				$scope.showme = false;
 				$scope.usuario = localStorage.email;
+				$scope.id = localStorage.id;
 			}
 			else {
 				$scope.showme = true;
@@ -62,7 +63,8 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 				.success(function(data) {
 					localStorage.email = $scope.datos.email;
 					localStorage.password = $scope.datos.password;
-					//$window.location.href = 'articulos';
+					localStorage.id = data.id;
+					alert(data.mensaje);
 					$modalInstance.close();
 					$window.location.href = 'articulos';
     		})

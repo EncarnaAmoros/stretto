@@ -12,21 +12,21 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" id="logotipo" href="#">Logotipo</a>
+		<a class="navbar-brand" id="logotipo" href="/articulos">Stretto</a>
 	</div>
 
 	<!-- Agrupar los enlaces de navegación, los formularios y cualquier
 			 otro elemento que se pueda ocultar al minimizar la barra -->
 	<div class="collapse navbar-collapse navbar-ex1-collapse">
 		<ul class="nav navbar-nav">
-			<li class="active" id="primerenlace"><a href="articulos">Artículos</a></li>
-			<li><a href="usuarios/1/articulos">Mis artículos</a></li>
-			<li><a href="usuarios/1">Perfil</a></li>
+			<li id="primerenlace"><a href="/articulos">Artículos</a></li><!--class="active"-->
+			<li><a href="/usuarios/{{id}}/articulos">Mis artículos</a></li>
+			<li><a href="/usuarios/{{id}}">Perfil</a></li>
 		</ul>
 
-		<ul class="nav navbar-nav navbar-right"><!--navbar navbar-default navbar-fixed-top-->
+		<ul class="nav navbar-nav navbar-right" id="enlacesusuario">
 			<p ng-hide="showme" class="navbar-text pull-right">
-				Hola <a href="/usuarios/1" class="navbar-link">{{usuario}}</a>
+				Hola <a href="/usuarios/{{id}}" class="navbar-link">{{usuario}}</a>
 				<span class="glyphicon glyphicon-user" id="iconousuario"></span> - 
 				<a ng-click="logout()" href="#" class="navbar-link" id="iconousuario">Log out</a>
 			</p>
