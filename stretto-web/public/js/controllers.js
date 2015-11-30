@@ -114,15 +114,16 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 
 /* Mostramos un artículo en detalle */
 
-strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams',
-	function ($scope, $http, $routeParams) {
+strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams', 'articulodetalle',
+	function ($scope, $http, $routeParams, articulodetalle) {
     $http.get('http://localhost:3000/stretto/articulos/'+$routeParams.id).success(function(data) {
       $scope.articulo = data.data;
 			$scope.usuario = data.usuario;
     });
 	
 		$scope.comprarArticulo = function() {
-			alert("Artículo comprado con éxito");
+			$scope.mensaje="Compra realizada con éxito. ¡Gracias por confiar en Stretto!";
+			articulodetalle.compradoBien();
 		}
 	}]);
 
@@ -152,11 +153,13 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 		//Funcion para mostrar usuario en forma de edit
 		$scope.editableView = function() {
 			$scope.showdetailedit=true;
+			usuariodetalle.modificadoDesaparece();
 		}
 		
 		$scope.cancelarEdit = function() {
 			actualizarUsuario();
 			$scope.detailView();
+			usuariodetalle.modificadoDesaparece();
 		}
 		
 		//Funcion para mostrar artículo en forma de detail
@@ -177,7 +180,8 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 				$window.location.href = "/";
 			})
 			.error(function(data, status, headers, config) {
-				alert("Error código: "+status+". "+data);
+				$scope.mensaje="Error código: "+status+". "+data;
+				usuariodetalle.modificadoMal();
 			})
   	}
 		
