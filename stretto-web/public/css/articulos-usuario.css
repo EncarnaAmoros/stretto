@@ -28,6 +28,8 @@
 }
 
 #precioEdit {
+	float: left;
+	margin-right: 2em;
 	width: 5.6em;
 	text-align: right;
 	margin-left: 225px;
@@ -51,4 +53,12 @@
 
 #botonDetecha {
 	margin-left: 1em;
+}
+
+/* Mensajes */
+
+#mensaje {
+	display: block;
+	opacity: 0;
+	margin-bottom: -1em;
 }

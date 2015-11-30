@@ -25,6 +25,8 @@
     </div>
     <div class="col-md-10">
 			
+			<div class="alert alert-success" id="mensaje">{{mensaje}}</div>
+			
 			<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">			
 				<div class="panel panel-default">
 					
@@ -58,28 +60,27 @@
 						<input ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
 
 						<div class="media-body">
+							<div id="nombreEdit">
+								<label>Nombre:</label>
+								<input ng-model=articulo.nombre class="form-control" placeholder="Nombre">
+							</div>
+							<div id="precioEdit">
+								<label id="etiquetaPrecioEdit">Precio:</label>
+								<input ng-model=articulo.precio class="form-control" placeholder="Precio">
+							</div>
 							<div>
-								<div id="nombreEdit">
-									<label>Nombre:</label>
-									<input ng-model=articulo.nombre class="form-control" placeholder="Nombre">
-								</div>
-								<div id="precioEdit">
-									<label id="etiquetaPrecioEdit">Precio:</label>
-									<input ng-model=articulo.precio class="form-control" placeholder="Precio">
-								</div>
+								<label id="etiquetaPrecioEdit">Tipo:</label>
+								<select ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
+									<option value="" id="defaulselect">Selecciona un tipo</option>
+									<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+								</select>	
 							</div>
 							
 							<label>Descripción:</label>
 							<textarea rows="3" ng-model=articulo.descripcion class="form-control" 
 												id="inputformArtBig" placeholder="Descripción">
-							</textarea>				
-
-							<label id="etiquetaPrecioEdit">Tipo:</label>
-							<select ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
-								<option value="" id="defaulselect">Selecciona un tipo</option>
-								<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-							</select>	
-
+							</textarea>
+							
 							<button ng-click="updateArticulo(articulo)" class="btn btn-primary">
 								Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
 							</button>	

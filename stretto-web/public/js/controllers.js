@@ -72,7 +72,7 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 					$scope.mensaje = data.mensaje;
 					login.loginBien();
 				
-					//A los 2 segundos ejecutamos lo siguiente
+					//A los 2 segundos ejecutamos lo que contiene la funcion
 					$timeout(function() {
 						$modalInstance.close();
 						$window.location.href = 'articulos';
@@ -136,8 +136,8 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 
 /* Mostramos un usuario en detalle */
 
-strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuariodetalle',
-	function ($scope, $http, $routeParams, $window, usuariodetalle) {
+strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuariodetalle', '$timeout',
+	function ($scope, $http, $routeParams, $window, usuariodetalle, $timeout) {
 		actualizarUsuario = function() {
 			//O su perfil o usuario que no es su cuenta
 			//Incluimos un html u otro
@@ -160,7 +160,6 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 		//Funcion para mostrar usuario en forma de edit
 		$scope.editableView = function() {
 			$scope.showdetailedit=true;
-			usuariodetalle.modificadoDesaparece();
 		}
 		
 		$scope.cancelarEdit = function() {
@@ -205,6 +204,11 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 				actualizarUsuario();
 				$scope.detailView();
 				usuariodetalle.modificadoBien();
+				
+				//A los 2 segundos ejecutamos lo que contiene la funcion
+				$timeout(function() {
+					usuariodetalle.modificadoDesaparece();
+				}, 2000);				
 			})
 			.error(function(data, status, headers, config) {
 				$scope.mensaje="Error código: "+status+" "+data;
@@ -215,8 +219,8 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 
 /* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
 
-strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$routeParams', '$window', '$modal',
-	function ($scope, $http, $routeParams, $window, $modal) {
+strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeParams','$window','$modal','articuloslista','$timeout',
+	function ($scope, $http, $routeParams, $window, $modal, articuloslista, $timeout) {
 		//Obtenemos los artículos del usuario
 		var actualizararticulos = function() {
 			$http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page)
@@ -263,6 +267,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 		$scope.cancelarEdit = function(articulo) {
 			actualizararticulos();
 			$scope.detailView(articulo);
+			articuloslista.compradoDesaparece();
 		}
 		
 		//Funcion para mostrar artículo en forma de detail
@@ -281,12 +286,24 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 					headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 				})
 				.success(function(data, status, headers, config) {
-					alert("Artículo eliminado con éxito");
 					actualizararticulos();
-					$scope.detailView(articulo);
+					$scope.mensaje = "Artículo eliminado con éxito";
+					console.log("holaa");
+					articuloslista.modificadoBien();
+					
+					//A los 2 segundos ejecutamos lo que contiene la funcion
+					$timeout(function() {
+						articuloslista.compradoDesaparece();
+					}, 2000);
 				})
 				.error(function(data, status, headers, config) {
-					alert("Error código: "+status+" "+data);
+					$scope.mensaje = "Error código: "+status+" "+data;
+					articuloslista.modificadoMal();
+					
+					//A los 2 segundos ejecutamos lo que contiene la funcion
+					$timeout(function() {
+						articuloslista.compradoDesaparece();
+					}, 2000);
 				})	
 			}
   	}
@@ -300,12 +317,19 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			})
 			.success(function(data, status, headers, config) {
-				alert("Artículo actualizado con éxito");
 				actualizararticulos();
 				$scope.detailView(articulo);
+				$scope.mensaje="Artículo actualizado con éxito";
+				articuloslista.modificadoBien();
+				
+				//A los 2 segundos ejecutamos lo que contiene la funcion
+				$timeout(function() {
+					articuloslista.compradoDesaparece();
+				}, 2000);
 			})
 			.error(function(data, status, headers, config) {
-				alert("Error código: "+status+" "+data);
+				$scope.mensaje = "Error código: "+status+" "+data;
+				articuloslista.modificadoMal();
 			})
   	}
 		
