@@ -1,0 +1,16 @@
+#divNombre {
+	float: left;
+	width: 31em;
+	margin-right: 1.3em;
+}
+
+#inputPrecio {
+	width: 20%;
+}
+
+/* Mensajes */
+
+#mensaje2 {
+	display: block;
+	opacity: 0;
+}

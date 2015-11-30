@@ -1,27 +1,27 @@
+<!-- Include estilo css -->
+<link rel="stylesheet" href="/aplicacion/css/add-articulo.css">
+
 <div class="modal-header">
     <h3 class="modal-title">Nuevo artículo</h3>    
     <p class="text-muted">Pon en venta un nuevo artículo indicando la información del producto.</p>
 </div>
 <div class="modal-body">
     <form action="" role="form">
-        <div class="form-group">
+        <div class="form-group" id="divNombre">
             <label for="nombre">Nombre</label>
             <input type="text" id="name" ng-model="datos.nombre" placeholder="Guitarra Fender" class="form-control">
+        </div>
+				<div class="form-group">
+            <label for="precio">Precio</label>
+            <input type="url" id="inputPrecio" ng-model="datos.precio" placeholder="299€" class="form-control">
         </div>
         <div class="form-group">
             <label for="foto">URL</label>
             <input type="url" id="url" ng-model="datos.foto" placeholder="http://..." class="form-control">
         </div>
 				<div class="form-group">
-            <label for="precio">Precio</label>
-            <input type="url" id="url" ng-model="datos.precio" placeholder="299€" class="form-control">
-        </div>
-				<div class="form-group">
             <label for="descripcion">Descripción</label>
-						<textarea ng-model=datos.descripcion class="form-control" placeholder="Descripción de tu artículo. Estado (nuevo, 
-																																									 segunda mano...), características físicas,
-																																									 etc. Si se añade algún accesorio, 
-																																									 sus funcionalidades.">
+						<textarea ng-model=datos.descripcion class="form-control" placeholder="Descripción de tu artículo. Estado (nuevo, segunda mano...), características físicas,	etc. Si se añade algún accesorio, sus funcionalidades.">
 						</textarea>
         </div>
 				<div class="form-group">
@@ -32,6 +32,8 @@
 						</select>
         </div>
     </form>
+	
+		<div class="alert alert-success" id="mensaje2">{{mensaje}}</div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-link" ng-click="cancelshowModalAddArticulo()">Cancelar</button>
