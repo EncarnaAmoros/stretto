@@ -1,7 +1,6 @@
-var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute']);
+var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute', 'strettoService']);
 
-var usuariodetalle = require(['./usuario-detalle']);
-
+//Funcion para mostrar modal con login
 var mostrarLogin = function($modal) {
 	var modalInstance = $modal.open({
 		templateUrl: '/aplicacion/partials/login.html',
@@ -129,8 +128,8 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 
 /* Mostramos un usuario en detalle */
 
-strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window',
-	function ($scope, $http, $routeParams, $window) {
+strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuariodetalle',
+	function ($scope, $http, $routeParams, $window, usuariodetalle) {
 		actualizarUsuario = function() {
 			//O su perfil o usuario que no es su cuenta
 			//Incluimos un html u otro
@@ -149,7 +148,6 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			});
 		}
 		actualizarUsuario();
-		usuariodetalle.editsuccess;
 		
 		//Funcion para mostrar usuario en forma de edit
 		$scope.editableView = function() {
@@ -175,6 +173,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			})
 			.success(function(data, status, headers, config) {
 				alert("Cuenta eliminada con éxito");
+				actualizarUsuario();
 				$window.location.href = "/";
 			})
 			.error(function(data, status, headers, config) {
@@ -191,12 +190,14 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			})
 			.success(function(data, status, headers, config) {
-				alert("Usuario actualizado con éxito");
+				$scope.mensaje = "Usuario actualizado con éxito";
 				actualizarUsuario();
 				$scope.detailView();
+				usuariodetalle.modificadoBien();
 			})
 			.error(function(data, status, headers, config) {
-				alert("Error código: "+status+". "+data);
+				$scope.mensaje="Error código: "+status+". "+data;
+				usuariodetalle.modificadoMal();
 			})
   	}
   }]);

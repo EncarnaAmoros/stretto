@@ -103,5 +103,6 @@
 /* Mensajes */
 
 #usuarioModificado {
-	display: none;
+	display: block;
+	opacity: 0;
 }

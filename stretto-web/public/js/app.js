@@ -1,4 +1,4 @@
-var strettoApp = angular.module('strettoApp', ['ngRoute','strettoControllers']);
+var strettoApp = angular.module('strettoApp', ['ngRoute','strettoControllers', 'strettoService']);
 
 strettoApp.config(
 	function($locationProvider, $routeProvider) {
