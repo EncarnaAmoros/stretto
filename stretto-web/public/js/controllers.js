@@ -41,8 +41,8 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal'
 
 /* Login para los usuarios */
 
-strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$modalInstance',
-	function ($scope, $http, $window, $modalInstance) {
+strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$modalInstance', 'login', '$timeout',
+	function ($scope, $http, $window, $modalInstance, login, $timeout) {
 		
 		//Si clica en cancelar desaparece modal
 		$scope.cancelshowModalLogin = function() {
@@ -69,13 +69,20 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 					localStorage.email = $scope.datos.email;
 					localStorage.password = $scope.datos.password;
 					localStorage.id = data.id;
-					alert(data.mensaje);
-					$modalInstance.close();
-					$window.location.href = 'articulos';
+					$scope.mensaje = data.mensaje;
+					login.loginBien();
+				
+					//A los 2 segundos ejecutamos lo siguiente
+					$timeout(function() {
+						$modalInstance.close();
+						$window.location.href = 'articulos';
+					}, 2000);
+					
     		})
 				//Hay error, lo mostramos
 				.error(function(data) {
-					alert("Email o password incorrectos");
+					$scope.mensaje="Error código: "+status+" "+data;
+					login.loginMal();
 				});
 		}
 	}]);
@@ -180,7 +187,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 				$window.location.href = "/";
 			})
 			.error(function(data, status, headers, config) {
-				$scope.mensaje="Error código: "+status+". "+data;
+				$scope.mensaje="Error código: "+status+" "+data;
 				usuariodetalle.modificadoMal();
 			})
   	}
@@ -200,7 +207,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 				usuariodetalle.modificadoBien();
 			})
 			.error(function(data, status, headers, config) {
-				$scope.mensaje="Error código: "+status+". "+data;
+				$scope.mensaje="Error código: "+status+" "+data;
 				usuariodetalle.modificadoMal();
 			})
   	}
@@ -279,7 +286,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 					$scope.detailView(articulo);
 				})
 				.error(function(data, status, headers, config) {
-					alert("Error código: "+status+". "+data);
+					alert("Error código: "+status+" "+data);
 				})	
 			}
   	}
@@ -298,7 +305,7 @@ strettoControllers.controller('UsuarioArticulosCtrl',  ['$scope', '$http', '$rou
 				$scope.detailView(articulo);
 			})
 			.error(function(data, status, headers, config) {
-				alert("Error código: "+status+". "+data);
+				alert("Error código: "+status+" "+data);
 			})
   	}
 		
@@ -344,7 +351,7 @@ strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalIn
 				actualizararticulos();
 			})
 			.error(function(data, status, headers, config) {
-				alert("Error código: "+status+". "+data);
+				alert("Error código: "+status+" "+data);
 			})
   	}
 	}]);

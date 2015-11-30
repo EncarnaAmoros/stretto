@@ -1,3 +1,6 @@
+<!-- Include estilo css -->
+<link rel="stylesheet" href="/aplicacion/css/login.css">
+
 <div ng-hide="showInicioRegistro">
 	<div class="modal-header">
 			<h3 class="modal-title">Iniciar sesión</h3>    
@@ -15,7 +18,10 @@
 					</div>
 			</form>
 			<a ng-click="vistaRegistro()">¡Regístrate!</a>
+	
+			<div class="alert alert-success" id="mensaje">{{mensaje}}</div>
 	</div>
+	
 	<div class="modal-footer">
 			<button class="btn btn-link" ng-click="cancelshowModalLogin()">Cancelar</button>
 			<button class="btn btn-primary" ng-click="login();" href="">Iniciar sesión</button>
