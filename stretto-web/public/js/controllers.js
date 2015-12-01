@@ -43,7 +43,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal'
 
 strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$modalInstance', 'loginService', '$timeout',
 	function ($scope, $http, $window, $modalInstance, loginService, $timeout) {
-		
+		console.log("hla");
 		//Si clica en cancelar desaparece modal
 		$scope.cancelshowModalLogin = function() {
 			$modalInstance.dismiss();
@@ -84,6 +84,54 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 					$scope.mensaje="Error código: "+status+" "+data;
 					loginService.loginMal();
 				});
+		}
+		
+		//Si clica en cancelar desaparece modal
+		$scope.cancelshowModalRegistro = function() {
+			$modalInstance.dismiss();
+		}
+		
+		//Cuando el registro sea correcto
+		$scope.registroCorrecto = function(mensaje) {
+			loginService.loginBien();
+			//A los 2 segundos ejecutamos lo que contiene la funcion
+			$timeout(function() {
+				$modalInstance.close();
+				$window.location.href = 'articulos';
+			}, 2000);
+		}
+		
+		//Cuando el registro de error
+		$scope.registroError = function() {
+			//Hay error, lo mostramos
+			$scope.mensaje="Error código: "+status+" "+data;
+			loginService.loginMal();	
+		}
+	}]);
+
+/* Registro para los usuarios */
+
+strettoControllers.controller('RegistroCtrl', ['$scope', '$http', '$window', '$modalInstance', 'loginService', '$timeout',
+	function ($scope, $http, $window, $modalInstance, loginService, $timeout) {
+		console.log("hola registro");
+		//Si clica en cancelar desaparece modal
+		$scope.cancelshowModalRegistro = function() {
+			$modalInstance.dismiss();
+		}
+		
+		$scope.registroCorrecto = function(mensaje) {
+			loginService.loginBien();
+			//A los 2 segundos ejecutamos lo que contiene la funcion
+			$timeout(function() {
+				$modalInstance.close();
+				$window.location.href = 'articulos';
+			}, 2000);
+		}
+		
+		$scope.registroError = function() {
+			//Hay error, lo mostramos
+			$scope.mensaje="Error código: "+status+" "+data;
+			loginService.loginMal();	
 		}
 	}]);
 

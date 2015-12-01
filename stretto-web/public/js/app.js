@@ -4,8 +4,8 @@ strettoApp.config(
 	function($locationProvider, $routeProvider) {
 		$routeProvider.
 			when('/registro', {
-				templateUrl: '/aplicacion/partials/registro.html'
-				//,controller: 'RegistroCtrl' --> 1 caso de uso sin usar framework
+				templateUrl: '/aplicacion/partials/registro.html',
+				controller: 'RegistroCtrl'// --> 1 caso de uso sin usar framework
 			}).
 			when('/articulos', {
 				templateUrl: '/aplicacion/partials/articulos-list.html',
