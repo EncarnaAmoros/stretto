@@ -59,6 +59,19 @@
 
 #mensaje {
 	display: block;
-	opacity: 0;
 	margin-bottom: -1em;
+}
+
+.mensajeoculto {
+	opacity: 0;
+}
+
+.mensajevisible {
+	opacity: 1;
+	transition: opacity 1s ease-out;
+}
+
+.mensajedesaparece {
+	opacity: 0;
+	transition: opacity 1s ease-out;
 }

@@ -102,7 +102,20 @@
 
 /* Mensajes */
 
-#usuarioModificado {
+#mensaje {
 	display: block;
+}
+
+.mensajeoculto {
 	opacity: 0;
+}
+
+.mensajevisible {
+	opacity: 1;
+	transition: opacity 1s ease-out;
+}
+
+.mensajedesaparece {
+	opacity: 0;
+	transition: opacity 1s ease-out;
 }

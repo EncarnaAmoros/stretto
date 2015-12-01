@@ -2,17 +2,20 @@
 
 #mensaje {
 	display: block;
-/*	opacity: 0;*/
-  margin-top: 1em;
+	margin-top: 1em;
   margin-bottom: 0em;
 }
 
-.alert-success {
-	transition: opacity 1s ease-out;
-	opacity: 1 !important;
+.mensajeoculto {
+	opacity: 0;
 }
 
-.alert-danger {
+.mensajevisible {
+	opacity: 1;
 	transition: opacity 1s ease-out;
-	opacity: 1 !important;
+}
+
+.mensajedesaparece {
+	opacity: 0;
+	transition: opacity 1s ease-out;
 }
