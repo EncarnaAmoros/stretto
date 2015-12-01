@@ -27,6 +27,7 @@
 			
 			<div id="divmensaje" class="mensajeoculto"><div class="alert alert-success" id="mensaje">{{mensaje}}</div></div>
 			
+			<!-- Mostramos la lista de los artículos pudiendo editar y eliminar porque son suyos --> 
 			<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">			
 				<div class="panel panel-default">
 					
@@ -43,12 +44,15 @@
 							<p id="descripcion">{{articulo.descripcion}}</p>
 						</div>				
 						
-						<button ng-click="editableView(articulo)" class="btn btn-primary">
-							Editar <span class="glyphicon glyphicon-pencil"></span>
-						</button>
-						<button ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
-							Eliminar <span class="glyphicon glyphicon-trash"></span>
-						</button>
+						<!--No los mostramos si los artículos son de un usuario que no es el logeado -->
+						<div ng-show="sonmisarticulos">
+							<button ng-click="editableView(articulo)" class="btn btn-primary">
+								Editar <span class="glyphicon glyphicon-pencil"></span>
+							</button>
+							<button ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
+								Eliminar <span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</div>
 					</div>
 					
 					<!-- Vista de los artículo para editar -->
@@ -92,6 +96,9 @@
 					
 				</div>		
 			</div>
+			
+			<!-- Mostramos la vista del perfil de un usuario sin poder modificar nada -->
+			<!--<ng-include ng-hide="showusuario" src="'/aplicacion/partials/articulos-usuario-ajenos.html'"></ng-include>-->
 			
 			<!-- Paginado -->
 			

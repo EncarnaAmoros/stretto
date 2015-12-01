@@ -269,6 +269,10 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 
 strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeParams','$window','$modal','articulosService','$timeout',
 	function ($scope, $http, $routeParams, $window, $modal, articulosService, $timeout) {
+		//Si son los artículos de otro usuario no se pueden editar o eliminar
+		console.log("miraa"+$routeParams.id+" "+localStorage.id);
+		if($routeParams.id==localStorage.id) $scope.sonmisarticulos=true;
+		else $scope.sonmisarticulos=false;
 		//Obtenemos los artículos del usuario
 		var actualizararticulos = function() {
 			$http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page)
