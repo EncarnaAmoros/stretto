@@ -4,10 +4,16 @@ var models = require('../models');
 
 module.exports = function(sequelize, DataTypes) {
   var Articulo = sequelize.define("Articulo", {
-    nombre: DataTypes.STRING,
+		nombre: {
+			allowNull: false,
+			type: DataTypes.STRING			
+		},
     descripcion: DataTypes.TEXT,
     foto: DataTypes.STRING,
-    precio: DataTypes.FLOAT,
+		precio: {
+			type: DataTypes.FLOAT,
+			allowNull: false
+		},
     valoracion: DataTypes.FLOAT
   }, {
 		name:{singular:'Articulo', plural:'Articulos'},

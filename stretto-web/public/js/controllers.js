@@ -185,18 +185,16 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 
 strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuarioService', '$timeout',
 	function ($scope, $http, $routeParams, $window, usuarioService, $timeout) {
-		actualizarUsuario = function() {
-			//O su perfil o usuario que no es su cuenta
-			//Incluimos un html u otro
-			if($routeParams.id==localStorage.id)
+		var actualizarUsuario = function() {
+			//O su perfil o usuario que no es su cuenta incluimos un html u otro
+			if($routeParams.id==localStorage.id) 
 				$scope.showusuario=false;
 			else
 				$scope.showusuario=true;
-			//Obtenemos los datos del usuario
-			$http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id).success(function(data) {
-				$scope.usuario = data.data;
-				$scope.last_articulos = data.articulos;
-    		//Acortamos todas las descripciones
+			//Obtenemos los datos del api llamando al servicio y acortamos todas las descripciones
+			usuarioService.getUsuario($routeParams.id).then(function(resultados) {
+				$scope.usuario = resultados.data.data;
+				$scope.last_articulos = resultados.data.articulos;
 				for(i=0;i<$scope.last_articulos.length;i++) {
 					$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
 				}
@@ -222,11 +220,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 		
 		//Funcion para eliminar un usuario
 		$scope.deleteUsuario = function(id) {
-			$http({
-				method: "DELETE",
-				url: 'http://localhost:3000/stretto/usuarios/'+id,
-				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
-			})
+			usuarioService.deleteUsuario(id)
 			.success(function(data, status, headers, config) {
 				alert("Cuenta eliminada con éxito");
 				actualizarUsuario();
@@ -240,12 +234,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 		
 		//Funcion para actualizar un artículo
 		$scope.updateUsuario = function(usuario) {
-			$http({
-				method: "PUT",
-				url: 'http://localhost:3000/stretto/usuarios/'+usuario.id,
-				data: usuario,
-				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
-			})
+			usuarioService.updateUsuario(usuario)
 			.success(function(data, status, headers, config) {
 				$scope.mensaje = "Usuario actualizado con éxito";
 				actualizarUsuario();

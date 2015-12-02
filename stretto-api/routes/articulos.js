@@ -88,6 +88,10 @@ router.get('/:id', function(pet, resp){
 
 router.post('/', auth.checkAuth, function(pet, resp){
 	var loginstr=new Buffer(pet.headers.authorization.split(' ')[1], 'base64').toString('ascii').split(':');
+	if(pet.body.nombre==undefined || pet.body.nombre=='')
+		return resp.status(400).send('El nombre es obligatorio.').end();
+	if(pet.body.precio==undefined || pet.body.precio=='')
+		return resp.status(400).send('El precio es obligatorio.').end();
 	models.Usuario.findAll ({
 		where: { email: loginstr[0] }
 	}).then(function(usuarios) {
@@ -104,10 +108,6 @@ router.post('/', auth.checkAuth, function(pet, resp){
 		}).catch(function (err) {
 				if(pet.body.tipo=='' || pet.body.tipo==undefined)	
 					return resp.status(400).send('El tipo debe rellenarse.').end;
-				else if(pet.body.nombre==undefined || pet.body.nombre=='')
-					return resp.status(400).send('El nombre es obligatorio.').end();
-				else if(pet.body.precio==undefined || pet.body.precio=='')
-					return resp.status(400).send('El precio es obligatorio.').end();
 				else
 						resp.status(400).send('El tipo de instrumento no se reconoce.');
 		});
@@ -122,6 +122,10 @@ router.put('/:id', auth.checkAuth, function(pet, resp){
 	models.Articulo.findById(pet.params.id).then(function(articulo){
 		if(articulo == undefined)
 			return resp.status(404).send('No existe el artículo referido.').end();
+		if(pet.body.nombre==undefined || pet.body.nombre=='')
+			return resp.status(400).send('El nombre es obligatorio.').end();
+		else if(pet.body.precio==undefined || pet.body.precio=='')
+			return resp.status(400).send('El precio es obligatorio.').end();
 		var loginstr=new Buffer(pet.headers.authorization.split(' ')[1], 'base64').toString('ascii').split(':');
 		models.Usuario.findAll ({
 			where: { email: loginstr[0] }
@@ -140,10 +144,6 @@ router.put('/:id', auth.checkAuth, function(pet, resp){
 				}).catch(function (err) {
 						if(pet.body.tipo=='' || pet.body.tipo==undefined)	
 							return resp.status(400).send('El tipo debe rellenarse.').end;
-						else if(pet.body.nombre==undefined || pet.body.nombre=='')
-							return resp.status(400).send('El nombre es obligatorio.').end();
-						else if(pet.body.precio==undefined || pet.body.precio=='')
-							return resp.status(400).send('El precio es obligatorio.').end();
 						else
 								resp.status(400).send('El tipo de instrumento no se reconoce.');
 				});
