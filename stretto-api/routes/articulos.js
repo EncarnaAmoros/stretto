@@ -104,6 +104,10 @@ router.post('/', auth.checkAuth, function(pet, resp){
 		}).catch(function (err) {
 				if(pet.body.tipo=='' || pet.body.tipo==undefined)	
 					return resp.status(400).send('El tipo debe rellenarse.').end;
+				else if(pet.body.nombre==undefined || pet.body.nombre=='')
+					return resp.status(400).send('El nombre es obligatorio.').end();
+				else if(pet.body.precio==undefined || pet.body.precio=='')
+					return resp.status(400).send('El precio es obligatorio.').end();
 				else
 						resp.status(400).send('El tipo de instrumento no se reconoce.');
 		});
@@ -136,6 +140,10 @@ router.put('/:id', auth.checkAuth, function(pet, resp){
 				}).catch(function (err) {
 						if(pet.body.tipo=='' || pet.body.tipo==undefined)	
 							return resp.status(400).send('El tipo debe rellenarse.').end;
+						else if(pet.body.nombre==undefined || pet.body.nombre=='')
+							return resp.status(400).send('El nombre es obligatorio.').end();
+						else if(pet.body.precio==undefined || pet.body.precio=='')
+							return resp.status(400).send('El precio es obligatorio.').end();
 						else
 								resp.status(400).send('El tipo de instrumento no se reconoce.');
 				});

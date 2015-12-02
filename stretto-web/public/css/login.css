@@ -1,6 +1,6 @@
 /* Mensajes */
 
-#mensaje {
+#mensaje, #mensaje2 {
 	display: block;
 	margin-top: 1em;
   margin-bottom: 0em;
@@ -11,11 +11,11 @@
 }
 
 .mensajevisible {
-	opacity: 1;
 	transition: opacity 1s ease-out;
+	opacity: 1;
 }
 
 .mensajedesaparece {
-	opacity: 0;
 	transition: opacity 1s ease-out;
+	opacity: 0;
 }

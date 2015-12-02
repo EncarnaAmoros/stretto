@@ -168,6 +168,10 @@ router.get('/:id_u/articulos', function(pet, resp){
 router.post('/', function(pet, resp){ 
 	if(pet.body.email==undefined || pet.body.email=='')
 		return resp.status(400).send('El email es obligatorio.').end();
+	if(pet.body.nombre==undefined || pet.body.nombre=='')
+		return resp.status(400).send('El nombre es obligatorio.').end();
+	if(pet.body.password==undefined || pet.body.password=='')
+		return resp.status(400).send('La contraseña es obligatoria.').end();
 	models.Usuario.create({
 		email: pet.body.email,
 		password: pet.body.password,
@@ -194,6 +198,10 @@ router.put('/:id', auth.checkAuth, function(pet, resp){
 			return resp.status(404).send('No existe el usuario referido.').end();
 		if(pet.body.email==undefined || pet.body.email=='')
 			return resp.status(400).send('El email es obligatorio.').end();
+		if(pet.body.nombre==undefined || pet.body.nombre=='')
+			return resp.status(400).send('El nombre es obligatorio.').end();
+		if(pet.body.password==undefined || pet.body.password=='')
+			return resp.status(400).send('La contraseña es obligatoria.').end();
 			models.Usuario.update({   
 				email: pet.body.email,
 				password: pet.body.password,

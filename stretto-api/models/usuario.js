@@ -8,9 +8,15 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.TEXT,
 			unique: true
 		},
-    password: DataTypes.TEXT,
+    password: {
+			type: DataTypes.TEXT,
+			allowNull: false
+		},
     valoracion: DataTypes.FLOAT,
-    nombre: DataTypes.TEXT,
+		nombre: {
+			type: DataTypes.TEXT,
+			allowNull: false
+		},
     tlf: DataTypes.INTEGER
   }, {
 		name:{singular:'Usuario', plural:'Usuarios'},

@@ -92,8 +92,7 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 		}
 		
 		//Cuando el registro sea correcto
-		$scope.registroCorrecto = function(mensaje) {
-			loginService.loginBien();
+		$scope.registroCorrecto = function() {
 			//A los 2 segundos ejecutamos lo que contiene la funcion
 			$timeout(function() {
 				$modalInstance.close();
