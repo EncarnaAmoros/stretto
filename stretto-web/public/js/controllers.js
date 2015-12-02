@@ -1,17 +1,16 @@
 var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute', 'strettoService']);
 
-//Funcion para mostrar modal con login
-var mostrarLogin = function($modal) {
-	var modalInstance = $modal.open({
-		templateUrl: '/aplicacion/partials/login.html',
-		controller: 'LoginCtrl'
-	});
-}
+/* Nota: controllers.js -> las llamadas a la API se hacen por medio de un Service */
+
+/////////////////////////////
+//OTROS ELEMENTOS DE LA VISTA
+/////////////////////////////
 
 /* Para la barra de navegación */
 
 strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal',
 	function ($scope, $http, $window, $modal) {
+		//Miramos si el usuario está logeado o no
 		var actualizarNavBar = function () {
 			if(localStorage.email!=undefined) {
 				$scope.showme = false;
@@ -25,8 +24,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal'
 		}
 		actualizarNavBar();
 		
-		//Si clica en iniciar sesión abrimos modal
-		//Funcion para mostrar modal de añadir artículo
+		//Si clica en iniciar sesión abrimos modal para logearse
 		$scope.showModalLogin = function() {
 			mostrarLogin($modal);
 		}
@@ -39,11 +37,305 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal'
 
 	}]);
 
-/* Login para los usuarios */
+////////////////////////////////////////
+//CONTROLADORES Y FUNCIONES DE ARTICULOS
+////////////////////////////////////////
+
+/* Mostramos los artículos de forma general */
+
+strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', '$window', 'articulosService', 'tiposService',
+	function ($scope, $http, $routeParams, $window, articulosService, tiposService) {
+		//Obtenemos los artículos llamando al service y lo mostramos en vista
+    articulosService.getArticulos().then(function(resultados) {
+      $scope.articulos = resultados.data.data;
+    });
+		tiposService.getTipos().then(function(resultados) {
+      $scope.tipos = resultados.data;
+    });
+		
+		//Funcion para pasar de página siguiente
+		$scope.pasarPaginaSiguiente = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined) {
+				$window.location.href = 'articulos?page=2';
+			} else {				
+				var pagina = 1 + parseInt($routeParams.page);
+				$window.location.href = 'articulos?page=' + pagina;	
+			}			
+		}
+		
+		//Funcion para pasar de página anterior
+		$scope.pasarPaginaAnterior = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1 || $routeParams.page=="1") {
+				console.log("no hay anterior");
+			} else {				
+				var pagina = parseInt($routeParams.page) - 1;
+				$window.location.href = 'articulos?page=' + pagina;	
+			}			
+		}
+  }]);
+
+/* Mostramos un artículo en detalle */
+
+strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams', 'articuloService',
+	function ($scope, $http, $routeParams, articuloService) {
+		//Obtenemos los artículos de Service y mostramos en vista
+    articuloService.getArticulo().then(function(resultado) {
+			$scope.articulo = resultado.data.data;
+			$scope.usuario = resultado.data.usuario;
+		})
+		
+		//Mensaje con compra exitosa
+		$scope.comprarArticulo = function() {
+			$scope.mensaje="Compra realizada con éxito. ¡Gracias por confiar en Stretto!";
+			articuloService.compradoBien();
+		}
+	}]);
+
+/* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
+
+strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeParams','$window','$modal','articulosService',
+																											 'tiposService', 'articuloService', '$timeout',
+	function ($scope, $http, $routeParams, $window, $modal, articulosService, tiposService, articuloService, $timeout) {
+		//Si son los artículos de otro usuario no se pueden editar o eliminar
+		if($routeParams.id==localStorage.id)
+			$scope.sonmisarticulos=true;
+		else 
+			$scope.sonmisarticulos=false;
+		
+		//Obtenemos los artículos del usuario
+		var actualizararticulos = function() {
+			articulosService.getArticulosUsuario().then(function(resultados) {
+				$scope.articulos = resultados.data.data;
+			});
+		}
+	 	actualizararticulos();
+		
+		//Obtenemos los tipos de instrumentos que hay
+		var tipos;
+		tiposService.getTipos().then(function(resultados) {
+      $scope.tipos = resultados.data;
+			tipos = resultados.data;
+    });
+		
+		//Funcion para pasar de página siguiente
+		$scope.pasarPaginaSiguiente = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined) {
+				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=2';
+			} else {
+				var pagina = 1 + parseInt($routeParams.page);
+				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
+			}			
+		}
+		
+		//Funcion para pasar de página anterior
+		$scope.pasarPaginaAnterior = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1) {
+			} else {				
+				var pagina = parseInt($routeParams.page) - 1;
+				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
+			}			
+		}		
+		
+		//Funcion para mostrar articulo en vista editable (si no está logeado modal con login)
+		$scope.editableView = function(articulo) {
+			if(localStorage.email==undefined && localStorage.password==undefined)
+				mostrarLogin($modal);
+			else
+				articulo.showdetailedit=true;
+		}
+		
+		//Si cancela volvemos a la vista de detalle
+		$scope.cancelarEdit = function(articulo) {
+			actualizararticulos();
+			$scope.detailView(articulo);
+			articulosService.modificadoDesaparece();
+		}
+		
+		//Funcion para mostrar artículo en forma detalle
+		$scope.detailView = function(articulo) {
+			articulo.showdetailedit=false;
+		}
+		
+		//Funcion para mostrar modal de añadir artículo
+		$scope.showModalAddArticulo = function() {
+			//Inicializamos
+			$scope.datos = {};
+			var modalInstance = $modal.open({
+				templateUrl: '/aplicacion/partials/add-articulo.html',
+				resolve: { 
+					Tipos: function() {
+						return tipos;
+					}
+				},
+				controller: 'AddArticulosCtrl'
+			});
+			actualizararticulos();
+		}
+		
+		//Funcion para actualizar un artículo
+		$scope.updateArticulo = function(articulo) {
+			articuloService.updateArticulo(articulo)
+			.success(function(data, status, headers, config) {
+				actualizararticulos();
+				$scope.detailView(articulo);
+				$scope.mensaje="Artículo actualizado con éxito";
+				articulosService.modificadoBien();
+				
+				//A los 2 segundos ejecutamos lo que contiene la funcion
+				$timeout(function() {
+					articulosService.modificadoDesaparece();
+				}, 2000);
+			})
+			.error(function(data, status, headers, config) {
+				$scope.mensaje = "Error código: "+status+" "+data;
+				articulosService.modificadoMal();
+			})
+  	}
+		
+		//Funcion para eliminar un artículo llamando al service
+		$scope.deleteArticulo = function(id) {
+			if(localStorage.email==undefined && localStorage.password==undefined)
+				mostrarLogin($modal);
+			else {
+				articuloService.deleteArticulo(id)
+					.success(function(data, status, headers, config) {
+						actualizararticulos();
+						$scope.mensaje = "Artículo eliminado con éxito";
+						articulosService.modificadoBien();
+
+						//A los 2 segundos ejecutamos lo que contiene la funcion
+						$timeout(function() {
+							articulosService.modificadoDesaparece();
+						}, 2000);
+					})
+					.error(function(data, status, headers, config) {
+						$scope.mensaje = "Error código: "+status+" "+data;
+						articulosService.modificadoMal();
+
+						//A los 2 segundos ejecutamos lo que contiene la funcion
+						$timeout(function() {
+							articulosService.modificadoDesaparece();
+						}, 2000);
+					})
+			}
+  	}
+	}]);
+
+/* Para el modal de añadir artículo */
+
+strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalInstance', 'Tipos', 'articulosService', '$timeout',
+																										 'articuloService',
+	function ($scope, $http, $modalInstance, Tipos, articulosService, $timeout, articuloService) {
+		var tipos = Tipos;
+		$scope.tipos = tipos;
+		
+		//Funcion cancelar del modal añadir artículo
+		$scope.cancelshowModalAddArticulo = function() {
+			$modalInstance.dismiss();
+		}
+				
+		//Funcion para añadir un nuevo artículo llamando al service
+		$scope.addArticulo = function($window) {
+			articuloService.addArticulo($scope.datos)
+			.success(function(data, status, headers, config) {
+				$scope.mensaje = data;
+				articulosService.addBien();
+				
+				//A los 2 segundos ejecutamos lo que contiene la funcion
+				$timeout(function() {
+					$modalInstance.close();
+					actualizararticulos();
+				}, 2000);
+			})
+			.error(function(data, status, headers, config) {
+				$scope.mensaje = "Error código: "+status+" "+data;
+				articulosService.addMal();
+			})
+  	}
+	}]);
+
+///////////////////////////////////////
+//CONTROLADORES Y FUNCIONES DE USUARIOS
+///////////////////////////////////////
+
+/* Mostramos un usuario en detalle */
+
+strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuarioService', '$timeout',
+	function ($scope, $http, $routeParams, $window, usuarioService, $timeout) {
+		var actualizarUsuario = function() {	
+			//Según si es su perfil o no, incluimos un html u otro
+			if($routeParams.id==localStorage.id) 
+				$scope.showusuario=false;
+			else
+				$scope.showusuario=true;
+			
+			usuarioService.getUsuario().then(function(resultados) {
+				$scope.usuario = resultados.data.data;
+				$scope.last_articulos = resultados.data.articulos;	
+				//Acortamos las descripciones
+				for(i=0;i<$scope.last_articulos.length;i++) {
+					$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
+				}
+			});
+		}		
+		actualizarUsuario();
+		
+		//Funcion para mostrar usuario en forma editable
+		$scope.editableView = function() {
+			$scope.showdetailedit=true;
+		}
+		
+		//Función para cancelar la edición y pasar a modo detalle
+		$scope.cancelarEdit = function() {
+			actualizarUsuario();
+			$scope.detailView();
+			usuarioService.modificadoDesaparece();
+		}
+		
+		//Funcion para mostrar artículo en forma de detalle
+		$scope.detailView = function() {
+			$scope.showdetailedit=false;
+		}
+		
+		//Funcion para actualizar un usuario llamando al Service
+		$scope.updateUsuario = function(usuario) {
+			usuarioService.updateUsuario(usuario)
+			.success(function(data, status, headers, config) {
+				$scope.mensaje = "Usuario actualizado con éxito";
+				actualizarUsuario();
+				$scope.detailView();
+				usuarioService.modificadoBien();
+				
+				//A los 2 segundos ejecutamos lo que contiene la funcion
+				$timeout(function() {
+					usuarioService.modificadoDesaparece();
+				}, 2000);				
+			})
+			.error(function(data, status, headers, config) {
+				$scope.mensaje="Error código: "+status+" "+data;
+				usuarioService.modificadoMal();
+			})
+  	}
+		
+		//Funcion para eliminar un usuario llamando al service
+		$scope.deleteUsuario = function(id) {
+			usuarioService.deleteUsuario(id)
+			.success(function(data, status, headers, config) {
+				alert("Cuenta eliminada con éxito");
+				actualizarUsuario();
+				$window.location.href = "/";
+			})
+			.error(function(data, status, headers, config) {
+				$scope.mensaje="Error código: "+status+" "+data;
+				usuarioService.modificadoMal();
+			})
+  	}
+  }]);
+
+/* Login y registro para los usuarios */
 
 strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$modalInstance', 'loginService', '$timeout',
 	function ($scope, $http, $window, $modalInstance, loginService, $timeout) {
-		console.log("hla");
 		//Si clica en cancelar desaparece modal
 		$scope.cancelshowModalLogin = function() {
 			$modalInstance.dismiss();
@@ -63,8 +355,8 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 		$scope.datos = {};				
 		//Comprobamos login
 		$scope.login = function() {
-			$http.get('http://localhost:3000/stretto/usuarios/login?email='+$scope.datos.email+'&password='+$scope.datos.password)
-				//No hay error al iniciar sesion, guardamos auth
+			//No hay error al iniciar sesion, guardamos auth
+			loginService.getLogin($scope.datos.email, $scope.datos.password)
 				.success(function(data) {
 					localStorage.email = $scope.datos.email;
 					localStorage.password = $scope.datos.password;
@@ -108,321 +400,11 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 		}
 	}]);
 
-/* Registro para los usuarios */
+/* Funcion para mostrar modal con login */
 
-strettoControllers.controller('RegistroCtrl', ['$scope', '$http', '$window', '$modalInstance', 'loginService', '$timeout',
-	function ($scope, $http, $window, $modalInstance, loginService, $timeout) {
-		console.log("hola registro");
-		//Si clica en cancelar desaparece modal
-		$scope.cancelshowModalRegistro = function() {
-			$modalInstance.dismiss();
-		}
-		
-		$scope.registroCorrecto = function(mensaje) {
-			loginService.loginBien();
-			//A los 2 segundos ejecutamos lo que contiene la funcion
-			$timeout(function() {
-				$modalInstance.close();
-				$window.location.href = 'articulos';
-			}, 2000);
-		}
-		
-		$scope.registroError = function() {
-			//Hay error, lo mostramos
-			$scope.mensaje="Error código: "+status+" "+data;
-			loginService.loginMal();	
-		}
-	}]);
-
-/* Mostramos los artículos de forma general */
-
-strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', '$window',
-	function ($scope, $http, $routeParams, $window) {
-    $http.get('http://localhost:3000/stretto/articulos?page='+$routeParams.page).success(function(data) {
-      $scope.articulos = data.data;
-    });
-		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
-      $scope.tipos = data;
-    });
-		
-		//Funcion para pasar de página siguiente
-		$scope.pasarPaginaSiguiente = function() {
-			if($routeParams.page=="" || $routeParams.page==undefined) {
-				$window.location.href = 'articulos?page=2';
-			} else {				
-				var pagina = 1 + parseInt($routeParams.page);
-				$window.location.href = 'articulos?page=' + pagina;	
-			}			
-		}
-		
-		//Funcion para pasar de página anterior
-		$scope.pasarPaginaAnterior = function() {
-			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1 || $routeParams.page=="1") {
-				console.log("no hay anterior");
-			} else {				
-				var pagina = parseInt($routeParams.page) - 1;
-				$window.location.href = 'articulos?page=' + pagina;	
-			}			
-		}
-  }]);
-
-/* Mostramos un artículo en detalle */
-
-strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams', 'articuloService',
-	function ($scope, $http, $routeParams, articuloService) {
-    $http.get('http://localhost:3000/stretto/articulos/'+$routeParams.id).success(function(data) {
-      $scope.articulo = data.data;
-			$scope.usuario = data.usuario;
-    });
-	
-		$scope.comprarArticulo = function() {
-			$scope.mensaje="Compra realizada con éxito. ¡Gracias por confiar en Stretto!";
-			articuloService.compradoBien();
-		}
-	}]);
-
-/* Mostramos un usuario en detalle */
-
-strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuarioService', '$timeout',
-	function ($scope, $http, $routeParams, $window, usuarioService, $timeout) {
-		var actualizarUsuario = function() {
-			//O su perfil o usuario que no es su cuenta incluimos un html u otro
-			if($routeParams.id==localStorage.id) 
-				$scope.showusuario=false;
-			else
-				$scope.showusuario=true;
-			//Obtenemos los datos del api llamando al servicio y acortamos todas las descripciones
-			usuarioService.getUsuario($routeParams.id).then(function(resultados) {
-				$scope.usuario = resultados.data.data;
-				$scope.last_articulos = resultados.data.articulos;
-				for(i=0;i<$scope.last_articulos.length;i++) {
-					$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
-				}
-			});
-		}
-		actualizarUsuario();
-		
-		//Funcion para mostrar usuario en forma de edit
-		$scope.editableView = function() {
-			$scope.showdetailedit=true;
-		}
-		
-		$scope.cancelarEdit = function() {
-			actualizarUsuario();
-			$scope.detailView();
-			usuarioService.modificadoDesaparece();
-		}
-		
-		//Funcion para mostrar artículo en forma de detail
-		$scope.detailView = function() {
-			$scope.showdetailedit=false;
-		}
-		
-		//Funcion para eliminar un usuario
-		$scope.deleteUsuario = function(id) {
-			usuarioService.deleteUsuario(id)
-			.success(function(data, status, headers, config) {
-				alert("Cuenta eliminada con éxito");
-				actualizarUsuario();
-				$window.location.href = "/";
-			})
-			.error(function(data, status, headers, config) {
-				$scope.mensaje="Error código: "+status+" "+data;
-				usuarioService.modificadoMal();
-			})
-  	}
-		
-		//Funcion para actualizar un artículo
-		$scope.updateUsuario = function(usuario) {
-			usuarioService.updateUsuario(usuario)
-			.success(function(data, status, headers, config) {
-				$scope.mensaje = "Usuario actualizado con éxito";
-				actualizarUsuario();
-				$scope.detailView();
-				usuarioService.modificadoBien();
-				
-				//A los 2 segundos ejecutamos lo que contiene la funcion
-				$timeout(function() {
-					usuarioService.modificadoDesaparece();
-				}, 2000);				
-			})
-			.error(function(data, status, headers, config) {
-				$scope.mensaje="Error código: "+status+" "+data;
-				usuarioService.modificadoMal();
-			})
-  	}
-  }]);
-
-/* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
-
-strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeParams','$window','$modal','articulosService','$timeout',
-	function ($scope, $http, $routeParams, $window, $modal, articulosService, $timeout) {
-		//Si son los artículos de otro usuario no se pueden editar o eliminar
-		console.log("miraa"+$routeParams.id+" "+localStorage.id);
-		if($routeParams.id==localStorage.id) $scope.sonmisarticulos=true;
-		else $scope.sonmisarticulos=false;
-		//Obtenemos los artículos del usuario
-		var actualizararticulos = function() {
-			$http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page)
-				.success(function(data) {
-					$scope.articulos = data.data;
-			});
-		}
-	 	actualizararticulos();
-		
-		var tipos;
-		//Obtenemos los tipos de instrumentos que hay
-		$http.get('http://localhost:3000/stretto/tipos').success(function(data) {
-      $scope.tipos = data;
-			tipos = data;
-    });
-		
-		//Funcion para pasar de página siguiente
-		$scope.pasarPaginaSiguiente = function() {
-			if($routeParams.page=="" || $routeParams.page==undefined) {
-				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=2';
-			} else {
-				var pagina = 1 + parseInt($routeParams.page);
-				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
-			}			
-		}
-		
-		//Funcion para pasar de página anterior
-		$scope.pasarPaginaAnterior = function() {
-			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1) {
-			} else {				
-				var pagina = parseInt($routeParams.page) - 1;
-				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
-			}			
-		}		
-		
-		//Funcion para mostrar articulo en forma de edit
-		$scope.editableView = function(articulo) {
-			if(localStorage.email==undefined && localStorage.password==undefined)
-				mostrarLogin($modal);
-			else
-				articulo.showdetailedit=true;
-		}
-		
-		$scope.cancelarEdit = function(articulo) {
-			actualizararticulos();
-			$scope.detailView(articulo);
-			articulosService.modificadoDesaparece();
-		}
-		
-		//Funcion para mostrar artículo en forma de detail
-		$scope.detailView = function(articulo) {
-			articulo.showdetailedit=false;
-		}
-		
-		//Funcion para eliminar un artículo
-		$scope.deleteArticulo = function(id) {
-			if(localStorage.email==undefined && localStorage.password==undefined)
-				mostrarLogin($modal);
-			else {
-				$http({
-					method: "DELETE",
-					url: 'http://localhost:3000/stretto/articulos/'+id,
-					headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
-				})
-				.success(function(data, status, headers, config) {
-					actualizararticulos();
-					$scope.mensaje = "Artículo eliminado con éxito";
-					console.log("holaa");
-					articulosService.modificadoBien();
-					
-					//A los 2 segundos ejecutamos lo que contiene la funcion
-					$timeout(function() {
-						articulosService.modificadoDesaparece();
-					}, 2000);
-				})
-				.error(function(data, status, headers, config) {
-					$scope.mensaje = "Error código: "+status+" "+data;
-					articulosService.modificadoMal();
-					
-					//A los 2 segundos ejecutamos lo que contiene la funcion
-					$timeout(function() {
-						articulosService.modificadoDesaparece();
-					}, 2000);
-				})	
-			}
-  	}
-		
-		//Funcion para actualizar un artículo
-		$scope.updateArticulo = function(articulo) {
-			$http({
-				method: "PUT",
-				url: 'http://localhost:3000/stretto/articulos/'+articulo.id,
-				data: articulo,
-				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
-			})
-			.success(function(data, status, headers, config) {
-				actualizararticulos();
-				$scope.detailView(articulo);
-				$scope.mensaje="Artículo actualizado con éxito";
-				articulosService.modificadoBien();
-				
-				//A los 2 segundos ejecutamos lo que contiene la funcion
-				$timeout(function() {
-					articulosService.modificadoDesaparece();
-				}, 2000);
-			})
-			.error(function(data, status, headers, config) {
-				$scope.mensaje = "Error código: "+status+" "+data;
-				articulosService.modificadoMal();
-			})
-  	}
-		
-		//Funcion para mostrar modal de añadir artículo
-		$scope.showModalAddArticulo = function() {
-			//Inicializamos
-			$scope.datos = {};
-			var modalInstance = $modal.open({
-				templateUrl: '/aplicacion/partials/add-articulo.html',
-				resolve: { 
-					Tipos: function() {
-						return tipos;
-					}
-				},
-				controller: 'AddArticulosCtrl'
-			});
-			actualizararticulos();
-		}
-	}]);
-
-/* Para el modal de añadir artículo */
-
-strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalInstance', 'Tipos', 'articulosService', '$timeout',
-	function ($scope, $http, $modalInstance, Tipos, articulosService, $timeout) {
-		var tipos = Tipos;
-		$scope.tipos = tipos;
-		
-		//Funcion cancelar del modal añadir artículo
-		$scope.cancelshowModalAddArticulo = function() {
-			$modalInstance.dismiss();
-		}
-				
-		//Funcion para añadir un nuevo artículo
-		$scope.addArticulo = function($window) {
-			$http({
-				method: "POST",
-				url: 'http://localhost:3000/stretto/articulos',
-				data: $scope.datos,
-				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
-			})
-			.success(function(data, status, headers, config) {
-				$scope.mensaje = data;
-				articulosService.addBien();
-				
-				//A los 2 segundos ejecutamos lo que contiene la funcion
-				$timeout(function() {
-					$modalInstance.close();
-					actualizararticulos();
-				}, 2000);
-			})
-			.error(function(data, status, headers, config) {
-				$scope.mensaje = "Error código: "+status+" "+data;
-				articulosService.addMal();
-			})
-  	}
-	}]);
+var mostrarLogin = function($modal) {
+	var modalInstance = $modal.open({
+		templateUrl: '/aplicacion/partials/login.html',
+		controller: 'LoginCtrl'
+	});
+}
