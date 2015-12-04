@@ -5,22 +5,25 @@ describe('Modulo strettoService', function () {
     beforeEach(function () {
         module('strettoService');
     });
- 
-    describe('Tipos service', function () {
+
+		describe('Tipos service', function () {
  
         var tiposService;
  
         beforeEach(function () {
-            inject(['TiposService', function (service) {
+            inject(['tiposService', function (service) {
                     tiposService = service;
                 }
             ]);
         });
  
         it('debe devolver una lista de 4 tipos', function () {
-            var tipos = tiposService.getTipos();
-            expect(tipos).toBeDefined();
-            expect(tipos.length).toBe(4);
+            tiposService.getTipos().then(function (resultado) {
+							console.log(resultado);
+							expect(resultado).toBeDefined();
+            	expect(resultado.length).toBe(4);
+						});
+            
         });
     });
 });

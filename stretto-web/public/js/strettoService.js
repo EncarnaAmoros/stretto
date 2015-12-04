@@ -6,7 +6,7 @@ var strettoService = angular.module('strettoService', []);
 //LLAMADAS AL API PARA TIPOS
 ////////////////////////////
 
-strettoService.service('tiposService', function($http, $routeParams)
+strettoService.service('tiposService', function($http)
 {
 	return {
 		getTipos: function() {

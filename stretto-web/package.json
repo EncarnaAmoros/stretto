@@ -22,8 +22,6 @@
     "requirejs": "^2.1.22"
   },
   "scripts": {
-    "postinstall": "bower install",
-    "pretest": "npm install",
     "test": "karma start karma.conf.js"
   },
   "author": "Encarna Amorós Beneite",

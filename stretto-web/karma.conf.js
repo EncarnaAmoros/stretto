@@ -8,13 +8,11 @@ module.exports = function(config) {
     basePath: '',
 		
 		// list of files / patterns to load in the browser
-    files: [
-			JASMINE, 
-			JASMINE_ADAPTER,
-			
-			
-			
-			
+    files: [		
+		 	'public/index.html',
+			'public/lib/angular.js',
+			'node_modules/angular-mocks/angular-mocks.js',
+			{pattern: 'public/js/strettoService.js', watched: false, included: true, served: true},
 			{pattern: 'public/test/strettoService-test.js', watched: false, included: true, served: true}
 			
 			
@@ -35,15 +33,14 @@ module.exports = function(config) {
 		
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['requirejs', 'jasmine', 'browserify'],
+    frameworks: ['jasmine', 'browserify'],
 		
 		singleRun: true,
 		
-		plugins : [
-        'karma-chrome-launcher',
-        'karma-jasmine',
+		plugins : [			
         'karma-browserify',
-				'karma-requirejs'
+        'karma-chrome-launcher',
+        'karma-jasmine'
  		],
 
 
