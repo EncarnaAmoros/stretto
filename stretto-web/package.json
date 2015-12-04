@@ -7,11 +7,24 @@
     "angular-bootstrap": "^0.12.2",
     "express": "^4.13.3",
     "hbs": "^4.0.0",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "phantomjs": "^1.9.19",
     "request": "^2.65.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "angular-mocks": "^1.4.8",
+    "jasmine-core": "^2.4.0",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.6",
+    "karma-requirejs": "^0.2.2",
+    "requirejs": "^2.1.22"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "bower install",
+    "pretest": "npm install",
+    "test": "karma start karma.conf.js"
   },
   "author": "Encarna Amorós Beneite",
   "license": "ISC"
