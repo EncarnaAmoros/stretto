@@ -14,17 +14,6 @@ module.exports = function(config) {
 			'node_modules/angular-mocks/angular-mocks.js',
 			{pattern: 'public/js/strettoService.js', watched: false, included: true, served: true},
 			{pattern: 'public/test/strettoService-test.js', watched: false, included: true, served: true}
-			
-			
-			/*'public/lib/angular.js',
-			'public/js/angular.min.js',
-			'node_modules/angular-mocks/angular-mocks.js',
-			'node_modules/angular-mocks/*.js',
-			'app.js',
-			'public/js/app.js',
-			'public/js/strettoService.js',
-			'node_modules/requirejs/require.js',
-			'public/test/strettoService-test.js'*/
     ],
 
 		preprocessors: {

@@ -19,11 +19,11 @@ strettoService.service('tiposService', function($http)
 //LLAMADAS AL API PARA ARTICULOS
 ////////////////////////////////
 
-strettoService.service('articuloService', function($http, $routeParams)
+strettoService.service('articuloService', function($http)
 {
 	return {
-		getArticulo: function() {
-			return $http.get('http://localhost:3000/stretto/articulos/'+$routeParams.id);
+		getArticulo: function(id) {
+			return $http.get('http://localhost:3000/stretto/articulos/'+id);
 		},
 		addArticulo: function(datos) {
 			return $http({
@@ -58,14 +58,14 @@ strettoService.service('articuloService', function($http, $routeParams)
 	}
 });
 
-strettoService.service('articulosService', function($http, $routeParams)
+strettoService.service('articulosService', function($http)
 {
 	return {
-		getArticulos: function() {
-			return $http.get('http://localhost:3000/stretto/articulos?page='+$routeParams.page);
+		getArticulos: function(page) {
+			return $http.get('http://localhost:3000/stretto/articulos?page='+page);
 		},
-		getArticulosUsuario: function() {
-			return $http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos'+'?page='+$routeParams.page);
+		getArticulosUsuario: function(id, page) {
+			return $http.get('http://localhost:3000/stretto/usuarios/'+id+'/articulos'+'?page='+page);
 		},
 		mensaje: document.getElementById("mensaje"),
 		divmensaje: document.getElementById("divmensaje"),
@@ -97,11 +97,11 @@ strettoService.service('articulosService', function($http, $routeParams)
 //LLAMADAS AL API PARA USUARIOS
 ///////////////////////////////
 
-strettoService.service('usuarioService', function($http, $routeParams)
+strettoService.service('usuarioService', function($http)
 {
 	return {
-		getUsuario: function() {
-			return $http.get('http://localhost:3000/stretto/usuarios/'+$routeParams.id);
+		getUsuario: function(id) {
+			return $http.get('http://localhost:3000/stretto/usuarios/'+id);
 		},
 		deleteUsuario: function(id) {
 			return $http({

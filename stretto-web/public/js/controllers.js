@@ -46,7 +46,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal'
 strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', '$window', 'articulosService', 'tiposService',
 	function ($scope, $http, $routeParams, $window, articulosService, tiposService) {
 		//Obtenemos los artículos llamando al service y lo mostramos en vista
-    articulosService.getArticulos().then(function(resultados) {
+    articulosService.getArticulos($routeParams.page).then(function(resultados) {
       $scope.articulos = resultados.data.data;
     });
 		tiposService.getTipos().then(function(resultados) {
@@ -79,7 +79,7 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams', 'articuloService',
 	function ($scope, $http, $routeParams, articuloService) {
 		//Obtenemos los artículos de Service y mostramos en vista
-    articuloService.getArticulo().then(function(resultado) {
+    articuloService.getArticulo($routeParams.id).then(function(resultado) {
 			$scope.articulo = resultado.data.data;
 			$scope.usuario = resultado.data.usuario;
 		})
@@ -104,7 +104,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 		
 		//Obtenemos los artículos del usuario
 		var actualizararticulos = function() {
-			articulosService.getArticulosUsuario().then(function(resultados) {
+			articulosService.getArticulosUsuario($routeParams.id, $routeParams.page).then(function(resultados) {
 				$scope.articulos = resultados.data.data;
 			});
 		}
@@ -269,7 +269,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			else
 				$scope.showusuario=true;
 			
-			usuarioService.getUsuario().then(function(resultados) {
+			usuarioService.getUsuario($routeParams.id).then(function(resultados) {
 				$scope.usuario = resultados.data.data;
 				$scope.last_articulos = resultados.data.articulos;	
 				//Acortamos las descripciones
