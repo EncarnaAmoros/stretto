@@ -1,0 +1,32 @@
+{
+  "name": "stretto-spa",
+  "description": "Cliente SPA de la API Stretto",
+  "main": "app.js",
+  "authors": [
+    "Encarna Amorós Beneite"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "instrumentos"
+  ],
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "homepage": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-ui": "~1.11.4",
+    "angular": "~1.4.8",
+    "bootstrap": "~3.3.6"
+  }
+}
