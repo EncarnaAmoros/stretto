@@ -8,12 +8,23 @@ module.exports = function(config) {
     basePath: '',
 		
 		// list of files / patterns to load in the browser
-    files: [		
-		 	'public/index.html',
-			'public/lib/angular.js',
-			'node_modules/angular-mocks/angular-mocks.js',
+    files: [
+			'bower_components/angular/angular.js',
+			'bower_components/jquery/dist/jquery.js',
+			'bower_components/jquery-ui/jquery-ui.js',
+			'bower_components/bootstrap/dist/js/bootstrap.js',
+			'public/js/ui-bootstrap-tpls-0.14.3.min.js',
+			'bower_components/angular-route/angular-route.js',
+			'bower_components/angular-ui/build/angular-ui.js',
+			'bower_components/angular-mocks/angular-mocks.js',
+		
 			{pattern: 'public/js/strettoService.js', watched: false, included: true, served: true},
-			{pattern: 'public/test/strettoService-test.js', watched: false, included: true, served: true}
+			{pattern: 'public/test/strettoService-test.js', watched: false, included: true, served: true},
+			
+			{pattern: 'public/js/app.js', watched: false, included: true, served: true},
+			
+			{pattern: 'public/js/controllers.js', watched: false, included: true, served: true},			
+			{pattern: 'public/test/prueba-test.js', watched: false, included: true, served: true}
     ],
 
 		preprocessors: {

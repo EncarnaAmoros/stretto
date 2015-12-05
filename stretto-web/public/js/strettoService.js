@@ -141,14 +141,14 @@ strettoService.service('loginService', function($http)
 			return $http.get('http://localhost:3000/stretto/usuarios/login?email='+email+'&password='+password);
 		},		
 		loginBien: function() {
-			var mensaje = document.getElementById("mensaje");
-			var divmensaje = document.getElementById("divmensaje");
+			var mensaje = document.getElementById("mensajelogin");
+			var divmensaje = document.getElementById("divmensajelogin");
 			mensaje.className = "alert alert-success";
 			divmensaje.className = "mensajevisible";
 		},
 		loginMal: function() {
-			var mensaje = document.getElementById("mensaje");
-			var divmensaje = document.getElementById("divmensaje");
+			var mensaje = document.getElementById("mensajelogin");
+			var divmensaje = document.getElementById("divmensajelogin");
 			mensaje.className = "alert alert-danger";
 			divmensaje.className = "mensajevisible";
 		}

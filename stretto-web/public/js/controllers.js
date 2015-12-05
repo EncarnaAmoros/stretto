@@ -6,10 +6,17 @@ var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','n
 //OTROS ELEMENTOS DE LA VISTA
 /////////////////////////////
 
+ // Registers a controller to our module 'calculatorApp'.
+strettoControllers.controller('ArticulosCtrl2', ['$scope', 'articulosService', function ($scope, articulosService) {
+	articulosService.getArticulos(1).then(function(resultados) {//$routeParams.page
+      $scope.articulos = resultados.data.data;
+    });
+}]);
+
 /* Para la barra de navegación */
 
-strettoControllers.controller('NavCtrl', ['$scope', '$http', '$window', '$modal',
-	function ($scope, $http, $window, $modal) {
+strettoControllers.controller('NavCtrl', ['$scope', '$modal',
+	function ($scope, $modal) {
 		//Miramos si el usuario está logeado o no
 		var actualizarNavBar = function () {
 			if(localStorage.email!=undefined) {
@@ -169,7 +176,10 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 				},
 				controller: 'AddArticulosCtrl'
 			});
-			actualizararticulos();
+			//Cuando se cierra el model ejecutamos callback
+			modalInstance.result.then(function (result) {
+				actualizararticulos();
+			});
 		}
 		
 		//Funcion para actualizar un artículo
@@ -226,8 +236,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalInstance', 'Tipos', 'articulosService', '$timeout',
 																										 'articuloService',
 	function ($scope, $http, $modalInstance, Tipos, articulosService, $timeout, articuloService) {
-		var tipos = Tipos;
-		$scope.tipos = tipos;
+		$scope.tipos = Tipos;
 		
 		//Funcion cancelar del modal añadir artículo
 		$scope.cancelshowModalAddArticulo = function() {
@@ -243,8 +252,8 @@ strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalIn
 				
 				//A los 2 segundos ejecutamos lo que contiene la funcion
 				$timeout(function() {
-					$modalInstance.close();
-					actualizararticulos();
+					var articulo = $scope.datos;
+					$modalInstance.close(articulo);
 				}, 2000);
 			})
 			.error(function(data, status, headers, config) {
@@ -334,8 +343,8 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 
 /* Login y registro para los usuarios */
 
-strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$modalInstance', 'loginService', '$timeout',
-	function ($scope, $http, $window, $modalInstance, loginService, $timeout) {
+strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$modalInstance', 'loginService', '$timeout', '$location',
+	function ($scope, $http, $window, $modalInstance, loginService, $timeout, $location) {
 		//Si clica en cancelar desaparece modal
 		$scope.cancelshowModalLogin = function() {
 			$modalInstance.dismiss();
@@ -367,7 +376,8 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 					//A los 2 segundos ejecutamos lo que contiene la funcion
 					$timeout(function() {
 						$modalInstance.close();
-						$window.location.href = 'articulos';
+						//$window.location.href = 'articulos';
+						$location.path("/articulos");
 					}, 2000);
 					
     		})
@@ -406,5 +416,10 @@ var mostrarLogin = function($modal) {
 	var modalInstance = $modal.open({
 		templateUrl: '/aplicacion/partials/login.html',
 		controller: 'LoginCtrl'
+	});
+	
+	//Cuando se cierra el model ejecutamos callback
+	modalInstance.result.then(function (result) {
+		
 	});
 }

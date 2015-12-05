@@ -28,5 +28,13 @@
     "jquery-ui": "~1.11.4",
     "angular": "~1.4.8",
     "bootstrap": "~3.3.6"
+  },
+  "devDependencies": {
+    "angular-ui-router": "~0.2.15",
+    "angular": "~1.4.8",
+    "angular-route": "~1.4.8",
+    "angular-ui": "~0.4.0",
+    "angular-mocks": "~1.4.8",
+    "ui-bootstrap": "~0.14.3"
   }
 }
