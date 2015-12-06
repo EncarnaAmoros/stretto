@@ -3,6 +3,10 @@ var strettoApp = angular.module('strettoApp', ['ngRoute','strettoControllers', '
 strettoApp.config(
 	function($locationProvider, $routeProvider) {
 		$routeProvider.
+			when('/prueba', {
+				templateUrl: '/aplicacion/partials/prueba.html',
+				controller: 'ArticulosCtrl2'// --> 1 caso de uso sin usar framework
+			}).
 			when('/registro', {
 				templateUrl: '/aplicacion/partials/registro.html',
 				controller: 'RegistroCtrl'// --> 1 caso de uso sin usar framework

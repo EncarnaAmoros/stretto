@@ -1,4 +1,4 @@
-var strettoService = angular.module('strettoService', []);
+var strettoService = angular.module('strettoService', ['ngRoute']);
 
 /* Nota: strettoService.js -> Este es el Service que hace las llamadas a la API */
 
@@ -62,7 +62,7 @@ strettoService.service('articulosService', function($http)
 {
 	return {
 		getArticulos: function(page) {
-			return $http.get('http://localhost:3000/stretto/articulos?page='+page);
+			return $http.get('http://localhost:3000/stretto/articulos?page='+page);			
 		},
 		getArticulosUsuario: function(id, page) {
 			return $http.get('http://localhost:3000/stretto/usuarios/'+id+'/articulos'+'?page='+page);

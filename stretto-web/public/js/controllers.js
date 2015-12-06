@@ -8,8 +8,9 @@ var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','n
 
  // Registers a controller to our module 'calculatorApp'.
 strettoControllers.controller('ArticulosCtrl2', ['$scope', 'articulosService', function ($scope, articulosService) {
-	articulosService.getArticulos(1).then(function(resultados) {//$routeParams.page
-      $scope.articulos = resultados.data.data;
+	articulosService.getArticulos(1)
+		.success(function(resultados) {//$routeParams.page
+			$scope.articulos = resultados.data;
     });
 }]);
 
@@ -53,12 +54,21 @@ strettoControllers.controller('NavCtrl', ['$scope', '$modal',
 strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', '$window', 'articulosService', 'tiposService',
 	function ($scope, $http, $routeParams, $window, articulosService, tiposService) {
 		//Obtenemos los artículos llamando al service y lo mostramos en vista
-    articulosService.getArticulos($routeParams.page).then(function(resultados) {
-      $scope.articulos = resultados.data.data;
-    });
-		tiposService.getTipos().then(function(resultados) {
-      $scope.tipos = resultados.data;
-    });
+    articulosService.getArticulos($routeParams.page)
+			.success(function(resultados) {
+			$scope.articulos = resultados.data;
+			})
+			.error(function(resultados) {
+				//Pag error	
+			})
+		
+		tiposService.getTipos()
+			.success(function(resultados) {
+      	$scope.tipos = resultados;
+    	})
+			.error(function(resultados) {
+				//Pag error	
+			})
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
@@ -86,10 +96,14 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams', 'articuloService',
 	function ($scope, $http, $routeParams, articuloService) {
 		//Obtenemos los artículos de Service y mostramos en vista
-    articuloService.getArticulo($routeParams.id).then(function(resultado) {
-			$scope.articulo = resultado.data.data;
-			$scope.usuario = resultado.data.usuario;
-		})
+    articuloService.getArticulo($routeParams.id)
+			.success(function(resultado) {
+				$scope.articulo = resultado.data;
+				$scope.usuario = resultado.usuario;
+			})
+			.error(function(resultados) {
+				//Pag error	
+			})
 		
 		//Mensaje con compra exitosa
 		$scope.comprarArticulo = function() {
@@ -111,18 +125,26 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 		
 		//Obtenemos los artículos del usuario
 		var actualizararticulos = function() {
-			articulosService.getArticulosUsuario($routeParams.id, $routeParams.page).then(function(resultados) {
-				$scope.articulos = resultados.data.data;
-			});
+			articulosService.getArticulosUsuario($routeParams.id, $routeParams.page)
+				.success(function(resultados) {
+					$scope.articulos = resultados.data;
+				})
+				.error(function(resultados) {
+					//Pag error	
+				})
 		}
 	 	actualizararticulos();
 		
 		//Obtenemos los tipos de instrumentos que hay
 		var tipos;
-		tiposService.getTipos().then(function(resultados) {
-      $scope.tipos = resultados.data;
-			tipos = resultados.data;
-    });
+		tiposService.getTipos()
+			.success(function(resultados) {
+      	$scope.tipos = resultados.data;
+				tipos = resultados.data;
+    	})
+			.error(function(resultados) {
+				//Pag error	
+			})
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
@@ -185,21 +207,21 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 		//Funcion para actualizar un artículo
 		$scope.updateArticulo = function(articulo) {
 			articuloService.updateArticulo(articulo)
-			.success(function(data, status, headers, config) {
-				actualizararticulos();
-				$scope.detailView(articulo);
-				$scope.mensaje="Artículo actualizado con éxito";
-				articulosService.modificadoBien();
-				
-				//A los 2 segundos ejecutamos lo que contiene la funcion
-				$timeout(function() {
-					articulosService.modificadoDesaparece();
-				}, 2000);
-			})
-			.error(function(data, status, headers, config) {
-				$scope.mensaje = "Error código: "+status+" "+data;
-				articulosService.modificadoMal();
-			})
+				.success(function(data, status, headers, config) {
+					actualizararticulos();
+					$scope.detailView(articulo);
+					$scope.mensaje="Artículo actualizado con éxito";
+					articulosService.modificadoBien();
+
+					//A los 2 segundos ejecutamos lo que contiene la funcion
+					$timeout(function() {
+						articulosService.modificadoDesaparece();
+					}, 2000);
+				})
+				.error(function(data, status, headers, config) {
+					$scope.mensaje = "Error código: "+status+" "+data;
+					articulosService.modificadoMal();
+				})
   	}
 		
 		//Funcion para eliminar un artículo llamando al service
@@ -278,14 +300,18 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			else
 				$scope.showusuario=true;
 			
-			usuarioService.getUsuario($routeParams.id).then(function(resultados) {
-				$scope.usuario = resultados.data.data;
-				$scope.last_articulos = resultados.data.articulos;	
-				//Acortamos las descripciones
-				for(i=0;i<$scope.last_articulos.length;i++) {
-					$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
-				}
-			});
+			usuarioService.getUsuario($routeParams.id)
+				.success(function(resultados) {
+					$scope.usuario = resultados.data;
+					$scope.last_articulos = resultados.articulos;	
+					//Acortamos las descripciones
+					for(i=0;i<$scope.last_articulos.length;i++) {
+						$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
+					}
+				})
+				.error(function(resultados) {
+					//Pag error	
+				})
 		}		
 		actualizarUsuario();
 		

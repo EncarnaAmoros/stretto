@@ -24,7 +24,7 @@ module.exports = function(config) {
 			{pattern: 'public/js/app.js', watched: false, included: true, served: true},
 			
 			{pattern: 'public/js/controllers.js', watched: false, included: true, served: true},			
-			{pattern: 'public/test/prueba-test.js', watched: false, included: true, served: true}
+			{pattern: 'public/test/controllers-articulos-test.js', watched: false, included: true, served: true}
     ],
 
 		preprocessors: {
