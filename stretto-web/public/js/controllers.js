@@ -40,34 +40,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$modal',
 ////////////////////////////////////////
 //CONTROLADORES Y FUNCIONES DE ARTICULOS
 ////////////////////////////////////////
-
- // Registers a controller to our module 'calculatorApp'.
-strettoControllers.controller('ArticulosCtrl2', ['$scope', '$routeParams', 'articulosService', 'tiposService', '$window',
-																								 function ($scope, $routeParams, articulosService, tiposService, $window) {
-	articulosService.getArticulos($routeParams.page)
-		.success(function(resultados) {//
-			$scope.articulos = resultados.data;
-    });
-																									 
-	tiposService.getTipos()
-			.success(function(resultados) {
-      	$scope.tipos = resultados;
-    	})
-			.error(function(resultados) {
-				//Pag error	
-			})
-	
-	//Funcion para pasar de página siguiente
-		$scope.pasarPaginaSiguiente = function() {
-			if($routeParams.page=="" || $routeParams.page==undefined) {
-				$window.location.href = 'articulos?page=2';
-			} else {				
-				var pagina = 1 + parseInt($routeParams.page);
-				$window.location.href = 'articulos?page=' + pagina;	
-			}			
-		}
-}]);
-
+ 
 /* Mostramos los artículos de forma general */
 
 strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', '$window', 'articulosService', 'tiposService',
@@ -75,10 +48,10 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 		//Obtenemos los artículos llamando al service y lo mostramos en vista
     articulosService.getArticulos($routeParams.page)
 			.success(function(resultados) {
-			$scope.articulos = resultados.data;
+				$scope.articulos = resultados.data;
 			})
 			.error(function(resultados) {
-				//Pag error	
+				//Sin datos					
 			})
 		
 		tiposService.getTipos()
@@ -86,7 +59,7 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
       	$scope.tipos = resultados;
     	})
 			.error(function(resultados) {
-				//Pag error	
+				//Sin datos	
 			})
 		
 		//Funcion para pasar de página siguiente
@@ -121,7 +94,7 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 				$scope.usuario = resultado.usuario;
 			})
 			.error(function(resultados) {
-				//Pag error	
+				//Sin datos	
 			})
 		
 		//Mensaje con compra exitosa
@@ -149,21 +122,20 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 					$scope.articulos = resultados.data;
 				})
 				.error(function(resultados) {
-					//Pag error	
+					//Sin datos	
+				})			
+			//Obtenemos los tipos de instrumentos que hay
+			var tipos;
+			tiposService.getTipos()
+				.success(function(resultados) {
+					$scope.tipos = resultados;
+					tipos = resultados;
+				})
+				.error(function(resultados) {
+					//Sin datos	
 				})
 		}
 	 	actualizararticulos();
-		
-		//Obtenemos los tipos de instrumentos que hay
-		var tipos;
-		tiposService.getTipos()
-			.success(function(resultados) {
-      	$scope.tipos = resultados.data;
-				tipos = resultados.data;
-    	})
-			.error(function(resultados) {
-				//Pag error	
-			})
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
@@ -324,12 +296,14 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 					$scope.usuario = resultados.data;
 					$scope.last_articulos = resultados.articulos;	
 					//Acortamos las descripciones
-					for(i=0;i<$scope.last_articulos.length;i++) {
-						$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
-					}
+					console.log("mira"+$scope.last_articulos)
+					if($scope.last_articulos!=undefined)
+						for(i=0;i<$scope.last_articulos.length;i++) {
+							$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
+						}
 				})
 				.error(function(resultados) {
-					//Pag error	
+					//Sin datos	
 				})
 		}		
 		actualizarUsuario();
