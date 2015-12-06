@@ -28,7 +28,7 @@ function logeoUsuario(email, password) {
 		success: function(resultado) {
 			localStorage.id = resultado.id;
 			localStorage.email = email;
-			localStorage.password = password;			
+			localStorage.password = password;
 	 	}
  });
 }
@@ -39,7 +39,6 @@ function addUsuario() {
 	var email = document.getElementById("email").value;
 	var password = document.getElementById("password").value;
 	var tlf = document.getElementById("tlf").value;
-	var divmensaje = document.getElementById("divmensaje").value;
 
 	$.ajax({
 		url: 'http://localhost:3000/stretto/usuarios',

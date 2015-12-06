@@ -26,12 +26,12 @@
 
 		<ul class="nav navbar-nav navbar-right" id="enlacesusuario">
 			<p ng-hide="showme" class="navbar-text pull-right">
-				Hola <a href="/usuarios/{{id}}" class="navbar-link">{{usuario}}</a>
+				Hola <a href="/usuarios/{{id}}" class="navbar-link" id="nombreusuariologeado">{{usuario}}</a>
 				<span class="glyphicon glyphicon-user" id="iconousuario"></span> - 
 				<a ng-click="logout()" href="#/" class="navbar-link" id="iconousuario">Log out</a>
 			</p>
 
-			<p ng-show="showme" class="navbar-text pull-right">
+			<p ng-show="showme" class="navbar-text pull-right" id="nologeado">
 				<a ng-click="showModalLogin();" href="" class="navbar-link">{{mensaje}}</a>
 			</p>
 		</ul>

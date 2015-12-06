@@ -8,8 +8,8 @@ var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','n
 
 /* Para la barra de navegación */
 
-strettoControllers.controller('NavCtrl', ['$scope', '$modal',
-	function ($scope, $modal) {
+strettoControllers.controller('NavCtrl', ['$scope', '$modal', '$window',
+	function ($scope, $modal, $window) {		
 		//Miramos si el usuario está logeado o no
 		var actualizarNavBar = function () {
 			if(localStorage.email!=undefined) {
@@ -26,7 +26,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$modal',
 		
 		//Si clica en iniciar sesión abrimos modal para logearse
 		$scope.showModalLogin = function() {
-			mostrarLogin($modal);
+			mostrarLogin($modal, $window);
 		}
 		
 		//Si clica en cerrar sesión borramos sus datos
@@ -159,7 +159,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 		//Funcion para mostrar articulo en vista editable (si no está logeado modal con login)
 		$scope.editableView = function(articulo) {
 			if(localStorage.email==undefined && localStorage.password==undefined)
-				mostrarLogin($modal);
+				mostrarLogin($modal, $window);
 			else
 				articulo.showdetailedit=true;
 		}
@@ -218,7 +218,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 		//Funcion para eliminar un artículo llamando al service
 		$scope.deleteArticulo = function(id) {
 			if(localStorage.email==undefined && localStorage.password==undefined)
-				mostrarLogin($modal);
+				mostrarLogin($modal, $window);
 			else {
 				articuloService.deleteArticulo(id)
 					.success(function(data, status, headers, config) {
@@ -296,7 +296,6 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 					$scope.usuario = resultados.data;
 					$scope.last_articulos = resultados.articulos;	
 					//Acortamos las descripciones
-					console.log("mira"+$scope.last_articulos)
 					if($scope.last_articulos!=undefined)
 						for(i=0;i<$scope.last_articulos.length;i++) {
 							$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
@@ -431,14 +430,14 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 
 /* Funcion para mostrar modal con login */
 
-var mostrarLogin = function($modal) {
+var mostrarLogin = function($modal, $window) {
 	var modalInstance = $modal.open({
 		templateUrl: '/aplicacion/partials/login.html',
 		controller: 'LoginCtrl'
 	});
 	
-	//Cuando se cierra el model ejecutamos callback
-	modalInstance.result.then(function (result) {
-		
+	//Siempre que se cierre el model ejecutamos este callback
+	modalInstance.result.finally(function () {
+		$window.location.href = '/';	
 	});
 }

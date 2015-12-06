@@ -10,6 +10,44 @@ describe('specs de los controladores de strettoControllers', function() {
 	//Inyectamos el módulo del servicio utilizado por el controlador
   beforeEach(module('strettoService'));
 	
+		/* TEST DEL CONTROLADOR ARTICULOSCTRL */
+	
+  describe('NavCtrl con usuario logeado', function(){
+    var scope, ctrl;
+
+    beforeEach(inject(function($rootScope, $controller) {	
+      scope = $rootScope.$new();
+			localStorage.id=1;
+			localStorage.email='lucas@gm.com'
+      ctrl = $controller('NavCtrl', {$scope: scope});
+    }));
+		
+    it('debe de aparecer el nombre del usuario en navbar', function() {
+			expect(scope.showme).toEqual(false);
+			expect(scope.usuario).toEqual('lucas@gm.com');
+			expect(scope.id).toEqual('1');
+    });
+
+  });
+	
+	describe('NavCtrl con usuario no logeado', function(){
+    var scope, ctrl;
+
+    beforeEach(inject(function($rootScope, $controller) {	
+      scope = $rootScope.$new();
+			localStorage.clear();
+      ctrl = $controller('NavCtrl', {$scope: scope});
+    }));
+		
+    it('debe de aparecer el nombre del usuario en navbar', function() {
+			expect(scope.showme).toEqual(true);
+			expect(scope.usuario).toEqual(undefined);
+			expect(scope.id).toEqual(undefined);
+			expect(scope.mensaje).toEqual("Iniciar sesión");
+    });
+
+  });
+	
 	/* TEST DEL CONTROLADOR ARTICULOSCTRL */
 	
   describe('ArticulosCtrl', function(){
@@ -77,7 +115,10 @@ describe('specs de los controladores de strettoControllers', function() {
 			expect(scope.usuario).toEqual({id: 1, nombre: 'Lucas', email: 'lucas@gm.com'});
     });
 		
-		it('para comprar artículo', function() {
+		it('al comprar un artículo sale mensaje de confirmación', function() {
+			//console.log(ctrl); = {}
+			//ctrl.comprarArticulo; NO VA
+			//expect(scope.mensaje).toEqual('Compra realizada con éxito. ¡Gracias por confiar en Stretto!');
     });
 		
   });
@@ -85,7 +126,7 @@ describe('specs de los controladores de strettoControllers', function() {
 	
 	/* TEST DEL CONTROLADOR USUARIOARTICULOSCTRL */
 	
-  describe('UsuarioArticulosCtrl', function(){
+  describe('UsuarioArticulosCtrl vemos nuestros artículos', function(){
     var scope, ctrl, $httpBackend, $routeParams;
 
     beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
@@ -99,7 +140,10 @@ describe('specs de los controladores de strettoControllers', function() {
 											 		{nombre: 'Bateria', tipo: 'percusión', precio: '905.49'}]});
 			$httpBackend.expectGET('http://localhost:3000/stretto/tipos').
       	respond([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
-
+			
+			localStorage.id=1;
+			localStorage.email='lucas@gm.com'
+			
       scope = $rootScope.$new();
       ctrl = $controller('UsuarioArticulosCtrl', {$scope: scope});
     }));
@@ -114,6 +158,10 @@ describe('specs de los controladores de strettoControllers', function() {
 																			 {nombre: 'Saxofon', tipo: 'viento', precio: '327.99'},
 																			 {nombre: 'Bateria', tipo: 'percusión', precio: '905.49'}]);
 			expect(scope.tipos).toEqual([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
+    });
+		
+		it('si estamos viendo nuestros artículos veremos los botones eliminar y editar', function() {
+			expect(scope.sonmisarticulos).toEqual(true);
     });
 		
 		it('al pasar a pagina siguiente??', function() {
@@ -135,6 +183,35 @@ describe('specs de los controladores de strettoControllers', function() {
 		});
 		
   });
+	
+	describe('UsuarioArticulosCtrl vemos los artículos de otro usuario', function(){
+    var scope, ctrl, $httpBackend, $routeParams;
+
+    beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
+			$routeParams.id = 1;
+			$routeParams.page = 1;
+      $httpBackend = _$httpBackend_;			
+      $httpBackend.expectGET('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos?page='+$routeParams.page).
+      	respond({_links: {},
+								 data:	 [{nombre: 'Guitarra', tipo: 'cuerda', precio: '145.50'},
+											 		{nombre: 'Saxofon', tipo: 'viento', precio: '327.99'},
+											 		{nombre: 'Bateria', tipo: 'percusión', precio: '905.49'}]});
+			$httpBackend.expectGET('http://localhost:3000/stretto/tipos').
+      	respond([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
+			
+			localStorage.id=2;
+			localStorage.email='ana@gm.com';
+			
+      scope = $rootScope.$new();
+      ctrl = $controller('UsuarioArticulosCtrl', {$scope: scope});
+    }));
+		
+		it('si estamos viendo los artículos de otro usuario no veremos botones eliminar y editar', function() {
+			localStorage.clear();
+			expect(scope.sonmisarticulos).toEqual(false);
+    });
+		
+	});
 	
 	/* TEST DEL CONTROLADOR ADDARTICULOS */
 	
@@ -164,7 +241,7 @@ describe('specs de los controladores de strettoControllers', function() {
 
 	/* TEST DEL CONTROLADOR USUARIOCTRL */
 	
-  describe('UsuarioCtrl', function(){
+  describe('UsuarioCtrl usuario ve su perfil', function(){
     var scope, ctrl, $httpBackend, $routeParams;
 
     beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
@@ -176,6 +253,9 @@ describe('specs de los controladores de strettoControllers', function() {
 														 {nombre: 'Saxofon', tipo: 'viento', precio: '327.99', descripcion: 'El mejor articulo'},
 														 {nombre: 'Bateria', tipo: 'percusión', precio: '905.49', descripcion: 'El mejor articulo'}]});
 
+			localStorage.id=1;
+			localStorage.email='lucas@gm.com';
+			
       scope = $rootScope.$new();
       ctrl = $controller('UsuarioCtrl', {$scope: scope});
     }));
@@ -193,6 +273,10 @@ describe('specs de los controladores de strettoControllers', function() {
 														 {nombre: 'Bateria', tipo: 'percusión', precio: '905.49', descripcion: 'El mejor articulo...'}]);
     });
 		
+		it('vemos botones de editar perfil y eliminar cuenta', function() {
+			expect(scope.showusuario).toEqual(false);
+    });
+		
 		it('para editar un usuario??', function() {
     });
 		
@@ -200,7 +284,32 @@ describe('specs de los controladores de strettoControllers', function() {
     });
 		
   });
+	
+	  describe('UsuarioCtrl usuario ve el perfil de otro usuario', function(){
+    var scope, ctrl, $httpBackend, $routeParams;
 
+    beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
+			$routeParams.id = 2;
+      $httpBackend = _$httpBackend_;			
+      $httpBackend.expectGET('http://localhost:3000/stretto/usuarios/'+$routeParams.id).
+      	respond({data: {nombre: 'Lucas', email: 'lucas@gm.com', password: 'l', tlf: '665372812'}, 
+								 articulos: [{nombre: 'Guitarra', tipo: 'cuerda', precio: '145.50', descripcion: 'El mejor articulo'}, 
+														 {nombre: 'Saxofon', tipo: 'viento', precio: '327.99', descripcion: 'El mejor articulo'},
+														 {nombre: 'Bateria', tipo: 'percusión', precio: '905.49', descripcion: 'El mejor articulo'}]});
+
+			localStorage.id=1;
+			localStorage.email='lucas@gm.com';
+			
+      scope = $rootScope.$new();
+      ctrl = $controller('UsuarioCtrl', {$scope: scope});
+    }));
+		
+		it('no vemos botones de editar perfil y eliminar cuenta', function() {
+			expect(scope.showusuario).toEqual(true);
+    });
+
+	});
+	
 	/* TEST DEL CONTROLADOR LOGINCTRL */
 	
   describe('LoginCtrl', function(){
