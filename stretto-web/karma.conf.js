@@ -24,7 +24,9 @@ module.exports = function(config) {
 			{pattern: 'public/js/app.js', watched: true, included: true, served: true},
 			
 			{pattern: 'public/js/controllers.js', watched: true, included: true, served: true},			
-			{pattern: 'public/test/strettoControllersSpec.js', watched: true, included: true, served: true}
+			{pattern: 'public/test/strettoControllersSpec.js', watched: true, included: true, served: true},
+			
+			{pattern: 'public/test/strettoe2eScenarios.js', watched: true, included: true, served: true}
     ],
 
 		preprocessors: {
