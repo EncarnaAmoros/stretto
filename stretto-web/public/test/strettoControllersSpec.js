@@ -16,11 +16,13 @@ describe('specs de los controladores de strettoControllers', function() {
 
 		//Para cada test: creación del controlador inyectando mocks necesarios (scope, etc)
     beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
-			//Necesario para devolver lo que queramos que devuelva el servicio mockeado
-      $httpBackend = _$httpBackend_;
 			$routeParams.page = 1;
+			//Necesario para devolver lo que queramos que devuelva el servicio mockeado
+      $httpBackend = _$httpBackend_;			
       $httpBackend.expectGET('http://localhost:3000/stretto/articulos?page='+1).
-      	respond({_links: {}, data:[{name: 'Nexus S'}, {name: 'Motorola DROID'}]});
+      	respond({_links: {}, data:[{nombre: 'Guitarra'}, {nombre: 'Piano'}]});
+			$httpBackend.expectGET('http://localhost:3000/stretto/tipos').
+      	respond([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
 			
 			//Mock de scope
       scope = $rootScope.$new();
@@ -28,13 +30,18 @@ describe('specs de los controladores de strettoControllers', function() {
       ctrl = $controller('ArticulosCtrl2', {$scope: scope});
     }));
 		
-    it('debe crear el modelo de artículos con 2 items', function() {
+    it('debe crear el modelo con 2 artículos y 3 tipos', function() {
      	//Al principio está vacío
 			expect(scope.articulos).toEqual(undefined);
+			expect(scope.tipos).toEqual(undefined);
 			//Al realizarse la petición $http obtendremos los datos
       $httpBackend.flush();
 			//Deben haber estos dos datos en el scope determinado
-      expect(scope.articulos).toEqual([{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
+      expect(scope.articulos).toEqual([{nombre: 'Guitarra'}, {nombre: 'Piano'}]);
+			expect(scope.tipos).toEqual([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
+    });
+		
+		it('al pasar a pagina siguiente', function() {
     });
   });
 });

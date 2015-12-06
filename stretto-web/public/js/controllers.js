@@ -6,15 +6,6 @@ var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','n
 //OTROS ELEMENTOS DE LA VISTA
 /////////////////////////////
 
- // Registers a controller to our module 'calculatorApp'.
-strettoControllers.controller('ArticulosCtrl2', ['$scope', '$routeParams', 'articulosService', 
-																								 function ($scope, $routeParams, articulosService) {
-	articulosService.getArticulos($routeParams.page)
-		.success(function(resultados) {//
-			$scope.articulos = resultados.data;
-    });
-}]);
-
 /* Para la barra de navegación */
 
 strettoControllers.controller('NavCtrl', ['$scope', '$modal',
@@ -49,6 +40,33 @@ strettoControllers.controller('NavCtrl', ['$scope', '$modal',
 ////////////////////////////////////////
 //CONTROLADORES Y FUNCIONES DE ARTICULOS
 ////////////////////////////////////////
+
+ // Registers a controller to our module 'calculatorApp'.
+strettoControllers.controller('ArticulosCtrl2', ['$scope', '$routeParams', 'articulosService', 'tiposService', '$window',
+																								 function ($scope, $routeParams, articulosService, tiposService, $window) {
+	articulosService.getArticulos($routeParams.page)
+		.success(function(resultados) {//
+			$scope.articulos = resultados.data;
+    });
+																									 
+	tiposService.getTipos()
+			.success(function(resultados) {
+      	$scope.tipos = resultados;
+    	})
+			.error(function(resultados) {
+				//Pag error	
+			})
+	
+	//Funcion para pasar de página siguiente
+		$scope.pasarPaginaSiguiente = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined) {
+				$window.location.href = 'articulos?page=2';
+			} else {				
+				var pagina = 1 + parseInt($routeParams.page);
+				$window.location.href = 'articulos?page=' + pagina;	
+			}			
+		}
+}]);
 
 /* Mostramos los artículos de forma general */
 
