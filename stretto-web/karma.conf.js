@@ -18,13 +18,13 @@ module.exports = function(config) {
 			'bower_components/angular-ui/build/angular-ui.js',
 			'bower_components/angular-mocks/angular-mocks.js',
 		
-			{pattern: 'public/js/strettoService.js', watched: false, included: true, served: true},
-			{pattern: 'public/test/strettoService-test.js', watched: false, included: true, served: true},
+			{pattern: 'public/js/strettoService.js', watched: true, included: true, served: true},
+			{pattern: 'public/test/strettoServicesSpec.js', watched: true, included: true, served: true},
 			
-			{pattern: 'public/js/app.js', watched: false, included: true, served: true},
+			{pattern: 'public/js/app.js', watched: true, included: true, served: true},
 			
-			{pattern: 'public/js/controllers.js', watched: false, included: true, served: true},			
-			{pattern: 'public/test/controllers-articulos-test.js', watched: false, included: true, served: true}
+			{pattern: 'public/js/controllers.js', watched: true, included: true, served: true},			
+			{pattern: 'public/test/strettoControllersSpec.js', watched: true, included: true, served: true}
     ],
 
 		preprocessors: {

@@ -7,9 +7,10 @@ var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','n
 /////////////////////////////
 
  // Registers a controller to our module 'calculatorApp'.
-strettoControllers.controller('ArticulosCtrl2', ['$scope', 'articulosService', function ($scope, articulosService) {
-	articulosService.getArticulos(1)
-		.success(function(resultados) {//$routeParams.page
+strettoControllers.controller('ArticulosCtrl2', ['$scope', '$routeParams', 'articulosService', 
+																								 function ($scope, $routeParams, articulosService) {
+	articulosService.getArticulos($routeParams.page)
+		.success(function(resultados) {//
 			$scope.articulos = resultados.data;
     });
 }]);

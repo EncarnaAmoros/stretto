@@ -12,14 +12,15 @@ describe('specs de los controladores de strettoControllers', function() {
 	
 	/* TEST DEL CONTROLADOR ARTICULOSCTRL */
   describe('ArticulosCtrl', function(){
-    var scope, ctrl, $httpBackend;
+    var scope, ctrl, $httpBackend, $routeParams;
 
 		//Para cada test: creación del controlador inyectando mocks necesarios (scope, etc)
-    beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
+    beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
 			//Necesario para devolver lo que queramos que devuelva el servicio mockeado
       $httpBackend = _$httpBackend_;
-      $httpBackend.expectGET('http://localhost:3000/stretto/articulos?page=1').
-          respond({_links: {}, data:[{name: 'Nexus S'}, {name: 'Motorola DROID'}]});
+			$routeParams.page = 1;
+      $httpBackend.expectGET('http://localhost:3000/stretto/articulos?page='+1).
+      	respond({_links: {}, data:[{name: 'Nexus S'}, {name: 'Motorola DROID'}]});
 			
 			//Mock de scope
       scope = $rootScope.$new();
