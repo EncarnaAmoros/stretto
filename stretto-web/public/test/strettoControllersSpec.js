@@ -1,5 +1,7 @@
 'use strict';
 
+var URL_API = 'http://localhost:3000/stretto/';
+
 /* jasmine specs para controladores */
 
 describe('specs de los controladores de strettoControllers', function() {
@@ -58,9 +60,9 @@ describe('specs de los controladores de strettoControllers', function() {
 			$routeParams.page = 1;
 			//Necesario para devolver lo que queramos que devuelva el servicio mockeado
       $httpBackend = _$httpBackend_;			
-      $httpBackend.expectGET('http://localhost:3000/stretto/articulos?page='+$routeParams.page).
+      $httpBackend.expectGET(URL_API + 'articulos?page='+$routeParams.page).
       	respond({_links: {}, data:[{nombre: 'Guitarra'}, {nombre: 'Piano'}]});
-			$httpBackend.expectGET('http://localhost:3000/stretto/tipos').
+			$httpBackend.expectGET(URL_API + 'tipos').
       	respond([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
 			
 			//Mock de scope
@@ -97,7 +99,7 @@ describe('specs de los controladores de strettoControllers', function() {
     beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
 			$routeParams.id = 1;
       $httpBackend = _$httpBackend_;			
-      $httpBackend.expectGET('http://localhost:3000/stretto/articulos/'+$routeParams.id).
+      $httpBackend.expectGET(URL_API + 'articulos/'+$routeParams.id).
       	respond({data: {nombre: 'Guitarra', tipo: 'Cuerda', precio: '125.99'}, 
 								 usuario: {id: 1, nombre: 'Lucas', email: 'lucas@gm.com'}});
 
@@ -133,12 +135,12 @@ describe('specs de los controladores de strettoControllers', function() {
 			$routeParams.id = 1;
 			$routeParams.page = 1;
       $httpBackend = _$httpBackend_;			
-      $httpBackend.expectGET('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos?page='+$routeParams.page).
+      $httpBackend.expectGET(URL_API + 'usuarios/'+$routeParams.id+'/articulos?page='+$routeParams.page).
       	respond({_links: {},
 								 data:	 [{nombre: 'Guitarra', tipo: 'cuerda', precio: '145.50'},
 											 		{nombre: 'Saxofon', tipo: 'viento', precio: '327.99'},
 											 		{nombre: 'Bateria', tipo: 'percusión', precio: '905.49'}]});
-			$httpBackend.expectGET('http://localhost:3000/stretto/tipos').
+			$httpBackend.expectGET(URL_API + 'tipos').
       	respond([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
 			
 			localStorage.id=1;
@@ -191,12 +193,12 @@ describe('specs de los controladores de strettoControllers', function() {
 			$routeParams.id = 1;
 			$routeParams.page = 1;
       $httpBackend = _$httpBackend_;			
-      $httpBackend.expectGET('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos?page='+$routeParams.page).
+      $httpBackend.expectGET(URL_API + 'usuarios/'+$routeParams.id+'/articulos?page='+$routeParams.page).
       	respond({_links: {},
 								 data:	 [{nombre: 'Guitarra', tipo: 'cuerda', precio: '145.50'},
 											 		{nombre: 'Saxofon', tipo: 'viento', precio: '327.99'},
 											 		{nombre: 'Bateria', tipo: 'percusión', precio: '905.49'}]});
-			$httpBackend.expectGET('http://localhost:3000/stretto/tipos').
+			$httpBackend.expectGET(URL_API + 'tipos').
       	respond([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
 			
 			localStorage.id=2;
@@ -222,12 +224,12 @@ describe('specs de los controladores de strettoControllers', function() {
 			$routeParams.id = 1;
 			$routeParams.page = 1;
       $httpBackend = _$httpBackend_;			
-      $httpBackend.expectGET('http://localhost:3000/stretto/usuarios/'+$routeParams.id+'/articulos?page='+$routeParams.page).
+      $httpBackend.expectGET(URL_API + 'usuarios/'+$routeParams.id+'/articulos?page='+$routeParams.page).
       	respond({_links: {},
 								 data:	 [{nombre: 'Guitarra', tipo: 'cuerda', precio: '145.50'},
 											 		{nombre: 'Saxofon', tipo: 'viento', precio: '327.99'},
 											 		{nombre: 'Bateria', tipo: 'percusión', precio: '905.49'}]});
-			$httpBackend.expectGET('http://localhost:3000/stretto/tipos').
+			$httpBackend.expectGET(URL_API + 'tipos').
       	respond([{nombre: 'cuerda'}, {nombre: 'viento'}, {nombre: 'percusion'}]);
 
       scope = $rootScope.$new();
@@ -247,7 +249,7 @@ describe('specs de los controladores de strettoControllers', function() {
     beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
 			$routeParams.id = 1;
       $httpBackend = _$httpBackend_;			
-      $httpBackend.expectGET('http://localhost:3000/stretto/usuarios/'+$routeParams.id).
+      $httpBackend.expectGET(URL_API + 'usuarios/'+$routeParams.id).
       	respond({data: {nombre: 'Lucas', email: 'lucas@gm.com', password: 'l', tlf: '665372812'}, 
 								 articulos: [{nombre: 'Guitarra', tipo: 'cuerda', precio: '145.50', descripcion: 'El mejor articulo'}, 
 														 {nombre: 'Saxofon', tipo: 'viento', precio: '327.99', descripcion: 'El mejor articulo'},
@@ -291,7 +293,7 @@ describe('specs de los controladores de strettoControllers', function() {
     beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
 			$routeParams.id = 2;
       $httpBackend = _$httpBackend_;			
-      $httpBackend.expectGET('http://localhost:3000/stretto/usuarios/'+$routeParams.id).
+      $httpBackend.expectGET(URL_API + 'usuarios/'+$routeParams.id).
       	respond({data: {nombre: 'Lucas', email: 'lucas@gm.com', password: 'l', tlf: '665372812'}, 
 								 articulos: [{nombre: 'Guitarra', tipo: 'cuerda', precio: '145.50', descripcion: 'El mejor articulo'}, 
 														 {nombre: 'Saxofon', tipo: 'viento', precio: '327.99', descripcion: 'El mejor articulo'},
@@ -318,7 +320,7 @@ describe('specs de los controladores de strettoControllers', function() {
     /*beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $routeParams) {
 			$routeParams.id = 1;
       $httpBackend = _$httpBackend_;			
-      $httpBackend.expectGET('http://localhost:3000/stretto/articulos/'+$routeParams.id).
+      $httpBackend.expectGET(URL_API + 'articulos/'+$routeParams.id).
       	respond({data: {nombre: 'Guitarra', tipo: 'Cuerda', precio: '125.99'}, 
 								 usuario: {id: 1, nombre: 'Lucas', email: 'lucas@gm.com'}});
 
@@ -332,8 +334,6 @@ describe('specs de los controladores de strettoControllers', function() {
   });
 	
 });
-
-
 
 //DUDAS:
 /*

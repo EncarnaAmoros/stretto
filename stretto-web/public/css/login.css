@@ -1,6 +1,6 @@
 /* Mensajes */
 
-#mensajelogin, #mensaje2 {
+#mensajelogin, #mensajeregistro {
 	display: block;
 	margin-top: 1em;
   margin-bottom: 0em;
@@ -16,6 +16,6 @@
 }
 
 .mensajedesaparece {
-	transition: opacity 1s ease-out;
 	opacity: 0;
+	transition: opacity 1s ease-out;
 }

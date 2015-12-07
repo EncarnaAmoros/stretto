@@ -44,10 +44,11 @@ strettoControllers.controller('NavCtrl', ['$scope', '$modal', '$window',
  
 /* Mostramos los artículos de forma general */
 
-strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', '$window', 'articulosService', 'tiposService',
-	function ($scope, $http, $routeParams, $window, articulosService, tiposService) {
+strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routeParams', 'articulosService', 'tiposService',
+	function ($scope, $http, $routeParams, articulosService, tiposService) {
 		//Obtenemos los artículos llamando al service y lo mostramos en vista
-    articulosService.getArticulos($routeParams.page)
+    var mostrarArticulos = function () {
+			articulosService.getArticulos($routeParams.page)
 			.success(function(resultados) {
 				$scope.articulos = resultados.data;
 			})
@@ -62,15 +63,20 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 			.error(function(resultados) {
 				//Sin datos	
 			})
+		}
+		mostrarArticulos();
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
 			if($routeParams.page=="" || $routeParams.page==undefined) {
-				$window.location.href = 'articulos?page=2';
+				$routeParams.page = 2;
+				mostrarArticulos();				
 			} else {				
 				var pagina = 1 + parseInt($routeParams.page);
-				$window.location.href = 'articulos?page=' + pagina;	
-			}			
+				$routeParams.page = pagina;
+				mostrarArticulos();
+			}
+			window.scrollTo(0,0);
 		}
 		
 		//Funcion para pasar de página anterior
@@ -79,8 +85,10 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 				console.log("no hay anterior");
 			} else {				
 				var pagina = parseInt($routeParams.page) - 1;
-				$window.location.href = 'articulos?page=' + pagina;	
-			}			
+				$routeParams.page = pagina;
+				mostrarArticulos();
+			}
+			window.scrollTo(0,0);
 		}
   }]);
 
@@ -117,6 +125,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 			$scope.sonmisarticulos=false;
 		
 		//Obtenemos los artículos del usuario
+		var tipos;
 		var actualizararticulos = function() {
 			articulosService.getArticulosUsuario($routeParams.id, $routeParams.page)
 				.success(function(resultados) {
@@ -126,7 +135,6 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 					//Sin datos	
 				})			
 			//Obtenemos los tipos de instrumentos que hay
-			var tipos;
 			tiposService.getTipos()
 				.success(function(resultados) {
 					$scope.tipos = resultados;
@@ -141,11 +149,14 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
 			if($routeParams.page=="" || $routeParams.page==undefined) {
-				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=2';
+				$routeParams.page = 2;
+				actualizararticulos();
 			} else {
 				var pagina = 1 + parseInt($routeParams.page);
-				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
-			}			
+				$routeParams.page = pagina;
+				actualizararticulos();
+			}
+			window.scrollTo(0,0);
 		}
 		
 		//Funcion para pasar de página anterior
@@ -153,8 +164,10 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1) {
 			} else {				
 				var pagina = parseInt($routeParams.page) - 1;
-				$window.location.href = 'usuarios/'+$routeParams.id+'/articulos?page=' + pagina;	
-			}			
+				$routeParams.page = pagina;
+				actualizararticulos();	
+			}
+			window.scrollTo(0,0);
 		}		
 		
 		//Funcion para mostrar articulo en vista editable (si no está logeado modal con login)
@@ -350,7 +363,8 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			usuarioService.deleteUsuario(id)
 			.success(function(data, status, headers, config) {
 				alert("Cuenta eliminada con éxito");
-				actualizarUsuario();
+				//actualizarUsuario();
+				localStorage.clear();
 				$window.location.href = "/";
 			})
 			.error(function(data, status, headers, config) {

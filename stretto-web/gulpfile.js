@@ -13,24 +13,11 @@ var webserver = require('gulp-webserver');
 /*
 * Creamos un servidor indicando el directorio donde está nuestra aplicacion
 */
-/*
-gulp.task('servidor', function() {
- 	gulp.src('./public')
-    .pipe(webserver({
-      livereload: true,
-      path: '/',
-      open: true
-    }));
-});*/
 gulp.task('servidor', function() {
     connect.server({ 
         root: './public', 
         hostname: '0.0.0.0', 
-        port: 4000,
-       	livereload: true, 
-        middleware: function(connect, opt) {
-            return [ historyApiFallback ];
-        }
+        port: 4000
     })
 });
 
@@ -58,15 +45,15 @@ gulp.task('minijs', function () {
 * archivos de js, css y html
 */
 gulp.task('lib', function() {
-        gulp.src('./public/lib/**/*.js') 
+        gulp.src('./public/lib/*.js') 
             .pipe(connect.reload());
 });
 gulp.task('js', function() {
-        gulp.src('./public/js/**/*.js') 
+        gulp.src('./public/js/*.js') 
             .pipe(connect.reload());
 });
 gulp.task('css', function() {
-        gulp.src('./public/css/**/*.css') 
+        gulp.src('./public/css/*.css') 
             .pipe(connect.reload());
 });
 gulp.task('html', function() {

@@ -1,4 +1,5 @@
 var strettoService = angular.module('strettoService', ['ngRoute']);
+var URL_API = 'http://localhost:3000/stretto/';
 
 /* Nota: strettoService.js -> Este es el Service que hace las llamadas a la API */
 
@@ -10,7 +11,7 @@ strettoService.service('tiposService', function($http)
 {
 	return {
 		getTipos: function() {
-			return $http.get('http://localhost:3000/stretto/tipos');
+			return $http.get(URL_API + 'tipos');
 		}
 	}
 });
@@ -23,12 +24,12 @@ strettoService.service('articuloService', function($http)
 {
 	return {
 		getArticulo: function(id) {
-			return $http.get('http://localhost:3000/stretto/articulos/'+id);
+			return $http.get(URL_API + 'articulos/'+id);
 		},
 		addArticulo: function(datos) {
 			return $http({
 				method: "POST",
-				url: 'http://localhost:3000/stretto/articulos',
+				url: URL_API + 'articulos',
 				data: datos,
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			})
@@ -36,14 +37,14 @@ strettoService.service('articuloService', function($http)
 		deleteArticulo: function(id) {
 			return $http({
 				method: "DELETE",
-				url: 'http://localhost:3000/stretto/articulos/'+id,
+				url: URL_API + 'articulos/'+id,
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			});
 		},
 		updateArticulo: function(articulo) {
 			return $http({
 				method: "PUT",
-				url: 'http://localhost:3000/stretto/articulos/'+articulo.id,
+				url: URL_API + 'articulos/'+articulo.id,
 				data: articulo,
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			})
@@ -62,10 +63,10 @@ strettoService.service('articulosService', function($http)
 {
 	return {
 		getArticulos: function(page) {
-			return $http.get('http://localhost:3000/stretto/articulos?page='+page);			
+			return $http.get(URL_API + 'articulos?page='+page);			
 		},
 		getArticulosUsuario: function(id, page) {
-			return $http.get('http://localhost:3000/stretto/usuarios/'+id+'/articulos'+'?page='+page);
+			return $http.get(URL_API + 'usuarios/'+id+'/articulos'+'?page='+page);
 		},
 		mensaje: document.getElementById("mensaje"),
 		divmensaje: document.getElementById("divmensaje"),
@@ -101,19 +102,19 @@ strettoService.service('usuarioService', function($http)
 {
 	return {
 		getUsuario: function(id) {
-			return $http.get('http://localhost:3000/stretto/usuarios/'+id);
+			return $http.get(URL_API + 'usuarios/'+id);
 		},
 		deleteUsuario: function(id) {
 			return $http({
 				method: "DELETE",
-				url: 'http://localhost:3000/stretto/usuarios/'+id,
+				url: URL_API + 'usuarios/'+id,
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			});
   	},
 		updateUsuario: function(usuario) {
 			return $http({
 				method: "PUT",
-				url: 'http://localhost:3000/stretto/usuarios/'+usuario.id,
+				url: URL_API + 'usuarios/'+usuario.id,
 				data: usuario,
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			})
@@ -138,7 +139,7 @@ strettoService.service('loginService', function($http)
 {
 	return {
 		getLogin: function(email, password) {
-			return $http.get('http://localhost:3000/stretto/usuarios/login?email='+email+'&password='+password);
+			return $http.get(URL_API + 'usuarios/login?email='+email+'&password='+password);
 		},		
 		loginBien: function() {
 			var mensaje = document.getElementById("mensajelogin");

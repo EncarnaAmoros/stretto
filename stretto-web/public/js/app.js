@@ -4,7 +4,7 @@ var rutaorigen = '/';
 strettoApp.config(
 	function($locationProvider, $routeProvider) {
 		$routeProvider.
-			when('/registro', {
+			when('/registro', { 
 				templateUrl: rutaorigen + 'partials/registro.html',
 				controller: 'RegistroCtrl'// --> 1 caso de uso sin usar framework
 			}).
