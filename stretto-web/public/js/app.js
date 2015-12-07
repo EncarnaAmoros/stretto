@@ -1,26 +1,27 @@
 var strettoApp = angular.module('strettoApp', ['ngRoute','strettoControllers', 'strettoService']);
+var rutaorigen = '/';
 
 strettoApp.config(
 	function($locationProvider, $routeProvider) {
 		$routeProvider.
 			when('/registro', {
-				templateUrl: '/aplicacion/partials/registro.html',
+				templateUrl: rutaorigen + 'partials/registro.html',
 				controller: 'RegistroCtrl'// --> 1 caso de uso sin usar framework
 			}).
 			when('/articulos', {
-				templateUrl: '/aplicacion/partials/articulos-list.html',
+				templateUrl: rutaorigen + 'partials/articulos-list.html',
 				controller: 'ArticulosCtrl'
 			}).
 			when('/articulos/:id', {
-				templateUrl: '/aplicacion/partials/articulo-detalle.html',
+				templateUrl: rutaorigen + 'partials/articulo-detalle.html',
 				controller: 'ArticuloCtrl'
 			}).
 			when('/usuarios/:id', {
-				templateUrl: '/aplicacion/partials/usuario-detalle.html',
+				templateUrl: rutaorigen + 'partials/usuario-detalle.html',
 				controller: 'UsuarioCtrl'
 			}).
 			when('/usuarios/:id/articulos', {
-				templateUrl: '/aplicacion/partials/articulos-usuario-list.html',
+				templateUrl: rutaorigen + 'partials/articulos-usuario-list.html',
 				controller: 'UsuarioArticulosCtrl'
 			}).
 			otherwise({

@@ -13,7 +13,7 @@ module.exports = function(config) {
 			'bower_components/jquery/dist/jquery.js',
 			'bower_components/jquery-ui/jquery-ui.js',
 			'bower_components/bootstrap/dist/js/bootstrap.js',
-			'public/js/ui-bootstrap-tpls-0.14.3.min.js',
+			'public/lib/ui-bootstrap-tpls-0.14.3.min.js',
 			'bower_components/angular-route/angular-route.js',
 			'bower_components/angular-ui/build/angular-ui.js',
 			'bower_components/angular-mocks/angular-mocks.js',

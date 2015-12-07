@@ -6,7 +6,8 @@ var path = require('path');
 var express = require('express');
 var app = express();
 
-app.use('/aplicacion/', express.static('public'));
+//app.use('/aplicacion/', express.static('public'));
+app.use('/', express.static('public'));
 
 // redirect all others to the index (HTML5 history)
 app.use("*",function(req,res){

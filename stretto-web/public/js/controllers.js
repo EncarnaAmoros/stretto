@@ -1,4 +1,5 @@
 var strettoControllers = angular.module('strettoControllers', ['ui.bootstrap','ngRoute', 'strettoService']);
+var rutaorigen = '/';
 
 /* Nota: controllers.js -> las llamadas a la API se hacen por medio de un Service */
 
@@ -181,7 +182,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 			//Inicializamos
 			$scope.datos = {};
 			var modalInstance = $modal.open({
-				templateUrl: '/aplicacion/partials/add-articulo.html',
+				templateUrl: rutaorigen + 'partials/add-articulo.html',
 				resolve: { 
 					Tipos: function() {
 						return tipos;
@@ -432,7 +433,7 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', '$window', '$moda
 
 var mostrarLogin = function($modal, $window) {
 	var modalInstance = $modal.open({
-		templateUrl: '/aplicacion/partials/login.html',
+		templateUrl: rutaorigen + 'partials/login.html',
 		controller: 'LoginCtrl'
 	});
 	
