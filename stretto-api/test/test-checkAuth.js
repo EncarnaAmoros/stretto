@@ -31,41 +31,4 @@ describe('test de la función para comprobar auth', function(){
 		.expect('Email o contraseña incorrectos.', done);
 	});
 	
-	it('PUT / devuelve 403 cuando accedemos con email antiguo de usuario', function(done){
-		var usuario = { email : 'anaNuevoEmail@gm.com', password: 'a' };
-		//Modificamos email
-		supertest(app)
-		.put('/stretto/usuarios/2')
-		.auth('ana@gm.com', 'a')
-		.send(usuario)
-		.expect(200)
-		.end(function(err, res) {
-			//Miramos si deja entrar con email antiguo
-			supertest(app)
-			.put('/stretto/usuarios/2')
-			.auth('ana@gm.com', 'a')
-			.send(usuario)
-			.expect(403)
-			.expect('Email o contraseña incorrectos.', done);
-		});
-	});
-
-	it('PUT / devuelve 403 cuando accedemos con password antiguo de usuario', function(done){
-		var usuario = { email: 'juan@gm.com', password : 'jjj' };
-		//Modificamos pass
-		supertest(app)
-		.put('/stretto/usuarios/3')
-		.auth('juan@gm.com', 'j')
-		.send(usuario)
-		.expect(200)
-		.end(function(err, res) {
-			//Miramos si deja entrar con email antiguo
-			supertest(app)
-			.put('/stretto/usuarios/3')
-			.auth('juan@gm.com', 'j')
-			.send(usuario)
-			.expect(403)
-			.expect('Email o contraseña incorrectos.', done);
-		});
-	});
 });
