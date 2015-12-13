@@ -7,7 +7,7 @@ var inicializarBD = require('./initializeBD');
 describe('test de la app web usuarios', function(){	
 	//Inicializamos la BD antes de ejecutar los test
 	before(function (done) {
-		inicializarBD.initialize().then(function() {
+		inicializarBD.initialize().finally(function() {
 			done();
 		});
 	});
@@ -104,7 +104,7 @@ describe('test de la app web usuarios', function(){
 		.expect(200)
 		.expect(function(res) {
 			assert(res.text.indexOf('1') != -1);
-			assert(res.text.indexOf('Guitarra') != -1);
+			assert(res.text.indexOf('Ukelele') != -1);
 			assert(res.text.indexOf('3') != -1);
 			assert(res.text.indexOf('Saxofon') != -1);
 		})
@@ -126,7 +126,7 @@ describe('test de la app web usuarios', function(){
 	});
 	
 	it('POST / devuelve 400 al crear usuario con email vacio', function(done) {
-		var usuario = { nombre : 'usuario', email : ''};
+		var usuario = { nombre : 'usuario', email : '', password: 'u'};
 		supertest(app)
 		.post('/stretto/usuarios')
 		.send(usuario)
@@ -135,7 +135,7 @@ describe('test de la app web usuarios', function(){
 	});
 	
 	it('POST / devuelve 400 al crea usuario con email de otro usuario de la BD', function(done) {
-		var usuario = { nombre : 'usuario', email : 'lucas@gm.com'};
+		var usuario = { nombre : 'usuario', email : 'lucas@gm.com', password: 'l'};
 		supertest(app)
 		.post('/stretto/usuarios')
 		.send(usuario)
@@ -144,7 +144,7 @@ describe('test de la app web usuarios', function(){
 	});
 	
 	it('POST / devuelve 201 al crea usuario', function(done) {
-		var usuario = { nombre : 'usuario', email : 'usuario2@gm.com'};
+		var usuario = { nombre : 'usuario', email : 'usuario2@gm.com', password: 'u'};
 		supertest(app)
 		.post('/stretto/usuarios')
 		.send(usuario)
@@ -153,7 +153,7 @@ describe('test de la app web usuarios', function(){
 	});
 		
 	it('PUT / devuelve 400 al actualizar usuario con id no numérico', function(done){
-		var usuario = { nombre : 'usuario', email : 'usuario@gm.com'};
+		var usuario = { nombre : 'usuario', email : 'usuario@gm.com', password: 'u'};
 		supertest(app)
 		.put('/stretto/usuarios/aa')
 		.auth('lucas@gm.com', 'l')
@@ -163,7 +163,7 @@ describe('test de la app web usuarios', function(){
 	});
 	
 	it('PUT / devuelve 404 al actualizar usuario inexistente', function(done){
-		var usuario = { nombre : 'usuario', email : 'usuario@gm.com'};
+		var usuario = { nombre : 'usuario', email : 'usuario@gm.com', password: 'u'};
 		supertest(app)
 		.put('/stretto/usuarios/99999')
 		.auth('lucas@gm.com', 'l')
@@ -173,7 +173,7 @@ describe('test de la app web usuarios', function(){
 	});
 	
 	it('PUT / devuelve 400 al actualizar usuario con email vacio', function(done){
-		var usuario = { nombre : 'usuario', email : ''};
+		var usuario = { nombre : 'usuario', email : '', password: 'u'};
 		supertest(app)
 		.put('/stretto/usuarios/2')
 		.auth('lucas@gm.com', 'l')
@@ -183,7 +183,7 @@ describe('test de la app web usuarios', function(){
 	});
 	
 	it('PUT / devuelve 400 al modificar usuario con email de otro usuario de la BD', function(done) {
-		var usuario = { nombre : 'usuario', email : 'lucas@gm.com'};
+		var usuario = { nombre : 'usuario', email : 'lucas@gm.com', password: 'l'};
 		supertest(app)
 		.put('/stretto/usuarios/2')
 		.auth('ana@gm.com', 'a')
@@ -193,7 +193,7 @@ describe('test de la app web usuarios', function(){
 	});
 	
 	it('PUT / devuelve 204 al actualizar usuario existente', function(done){
-		var usuario = { nombre : 'Ana', email : 'anaNuevoEmail@gm.com'};
+		var usuario = { nombre : 'Ana', email : 'anaNuevoEmail@gm.com', password: 'a'};
 		supertest(app)
 		.put('/stretto/usuarios/2')
 		.auth('ana@gm.com', 'a')

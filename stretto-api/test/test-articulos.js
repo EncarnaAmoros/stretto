@@ -17,14 +17,14 @@ describe('test de la app web articulos', function(){
 		.get('/stretto/articulos')
 		.expect(200)
 		.expect(function(res) {
-			assert(res.text.indexOf('1') != -1);
-			assert(res.text.indexOf('2') != -1);
-			assert(res.text.indexOf('3') != -1);
-			assert(res.text.indexOf('4') != -1);
-			assert(res.text.indexOf('Guitarra') != -1);
-			assert(res.text.indexOf('Bajo') != -1);
-			assert(res.text.indexOf('Saxofon') != -1);
-			assert(res.text.indexOf('Bateria') != -1);
+			assert(res.text.indexOf('21') != -1);
+			assert(res.text.indexOf('20') != -1);
+			assert(res.text.indexOf('19') != -1);
+			assert(res.text.indexOf('18') != -1);
+			assert(res.text.indexOf('Ukelele') != -1);
+			assert(res.text.indexOf('Bandurria') != -1);
+			assert(res.text.indexOf('Caja') != -1);
+			assert(res.text.indexOf('Maracas') != -1);
 		})
 		.end(done);		
 	});
@@ -71,7 +71,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('POST / devuelve 400 al crear artículo con tipo vacio', function(done) {
-		var articulo = { nombre : 'banjo', tipo : '' };
+		var articulo = { nombre : 'banjo', tipo : '', precio: 134 };
 		supertest(app)
 		.post('/stretto/articulos')
 		.auth('lucas@gm.com', 'l')
@@ -81,7 +81,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('POST / devuelve 400 al crear artículo con tipo inexistente', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'Cuerda' };
+		var articulo = { nombre : 'banjo', tipo : 'Cuerda', precio: 134 };
 		supertest(app)
 		.post('/stretto/articulos')
 		.auth('lucas@gm.com', 'l')
@@ -91,7 +91,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('POST / devuelve 201 al crear un artículo', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda' };
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', precio: 134 };
 		supertest(app)
 		.post('/stretto/articulos')
 		.auth('lucas@gm.com', 'l')
@@ -101,7 +101,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('PUT / devuelve 400 al modificar artículo con id no numérico', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda' };
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', precio: 134 };
 		supertest(app)
 		.put('/stretto/articulos/aa')
 		.auth('lucas@gm.com', 'l')
@@ -111,7 +111,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('PUT / devuelve 404 al modificar artículo inexistente', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda' };
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', precio: 134 };
 		supertest(app)
 		.put('/stretto/articulos/99999')
 		.auth('lucas@gm.com', 'l')
@@ -121,7 +121,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('PUT / devuelve 400 al modificar artículo con tipo vacio', function(done) {
-		var articulo = { nombre : 'banjo', tipo : '' };
+		var articulo = { nombre : 'banjo', tipo : '', precio: 134 };
 		supertest(app)
 		.put('/stretto/articulos/3')
 		.auth('lucas@gm.com', 'l')
@@ -131,7 +131,7 @@ describe('test de la app web articulos', function(){
 	});
 	
 	it('PUT / devuelve 400 al modificar artículo con tipo inexistente', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'Cuerda', usuario : '1' };
+		var articulo = { nombre : 'banjo', tipo : 'Cuerda', usuario : '1', precio: 134 };
 		supertest(app)
 		.put('/stretto/articulos/3')
 		.auth('lucas@gm.com', 'l')
@@ -141,7 +141,7 @@ describe('test de la app web articulos', function(){
 	});	
 	
 	it('PUT / devuelve 204 al modificar un artículo', function(done) {
-		var articulo = { nombre : 'banjo', tipo : 'cuerda' };
+		var articulo = { nombre : 'banjo', tipo : 'cuerda', precio: 134 };
 		supertest(app)
 		.put('/stretto/articulos/3')
 		.auth('lucas@gm.com', 'l')
