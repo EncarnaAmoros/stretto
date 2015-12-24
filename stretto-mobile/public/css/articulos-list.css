@@ -1,0 +1,15 @@
+/* Datos del artículo */
+
+#precio {
+	float: right;
+}
+
+#fotos-articulos {
+	width: 14em;
+	height: 13em;
+}
+
+#descripcion {
+	margin-top: 1.5em;
+	min-height: 5em;
+}

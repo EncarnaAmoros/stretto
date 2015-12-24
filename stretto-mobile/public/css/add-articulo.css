@@ -1,0 +1,29 @@
+#divNombre {
+	float: left;
+	width: 31em;
+	margin-right: 1.3em;
+}
+
+#inputPrecio {
+	width: 20%;
+}
+
+/* Mensajes */
+
+#mensaje2 {
+	display: block;
+}
+
+.mensajeoculto {
+	opacity: 0;
+}
+
+.mensajevisible {
+	opacity: 1;
+	transition: opacity 1s ease-out;
+}
+
+.mensajedesaparece {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}

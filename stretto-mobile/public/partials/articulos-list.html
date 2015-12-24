@@ -1,0 +1,46 @@
+<!-- Include estilo css -->
+<link rel="stylesheet" href="/css/articulos-list.css">
+<link rel="stylesheet" href="/css/lista.css">
+
+<div class="container-fluid">
+	<div class="row">
+		
+    <div class="col-md-2">	
+			<!-- Parte izquierda filtros de búsqueda -->
+      <h5>Busca por nombre:</h5>
+			<div class="input-group">
+				<input ng-model="filtronombre" class="form-control" placeholder="Busca por...">
+		 	</div>
+			
+      <h5>Tipo de instrumento:</h5>
+      <select ng-model="filtrotipo" class="form-control">
+				<option value="" id="defaulselect">Selecciona un tipo</option>
+        <option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+      </select>			
+    </div>
+		
+    <div class="col-md-10">			
+			<!-- Parte derecha, lista con artículos y paginado -->
+			<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo"> 
+				<!-- Vista de cada artículo -->
+				<div class="panel panel-default">
+					<div ng-hide="articulo.showdetailedit" class="panel-body">
+						<a href="/articulos/{{articulo.id}}" class="pull-left">
+							<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+					 	</a>
+					 	<div class="media-body">
+							<h4 class="media-heading">{{articulo.nombre}}<i id="precio">{{articulo.precio}} €</i></h4>
+							<p>{{articulo.descripcion}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Paginado -->
+			<ul class="pager">
+				<li><a ng-click=pasarPaginaAnterior()>Anterior</a></li>
+				<li><a ng-click=pasarPaginaSiguiente()>Siguiente</a></li>
+			</ul>
+    </div>
+		
+  </div>
+</div>

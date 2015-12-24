@@ -1,0 +1,76 @@
+<!-- Include estilo css -->
+<link rel="stylesheet" href="/css/usuario-detalle.css">
+<link rel="stylesheet" href="/css/lista.css">
+
+<div id="divUsuarioDetalle">
+	<!-- Vista del usuario en detalle -->
+	<h5 class="titulo" id="tituloprincipal">Datos personales - 
+		<a href="/usuarios/{{usuario.id}}/articulos" class="titulolink">Todos los artículos vendidos por {{usuario.nombre}}</a>
+	</h5>
+	<!-- Vista usuario detalle -->
+	<fieldset ng-hide="showdetailedit" class="marco_principal">
+		<p class="etiqueta">Nombre: </p>
+		<h5 class="datos_u">{{usuario.nombre}}</h5> </br>
+	
+		<p class="etiqueta">Email: </p>
+		<h5 class="datos_u">{{usuario.email}}</h5> </br>
+
+		<p class="etiqueta">Valoración: </p>
+		<h5 class="datos_u">{{usuario.valoracion}}</h5> </br>
+
+		<p class="etiqueta">Teléfono: </p>
+		<h5 class="datos_u">{{usuario.tlf}}</h5> </br>
+
+		<button ng-click="editableView()" class="btn btn-primary">
+			Editar perfil <span class="glyphicon glyphicon-pencil"></span>
+		</button>
+		<button ng-click="deleteUsuario(usuario.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
+			Eliminar cuenta <span class="glyphicon glyphicon-trash"></span>
+		</button>
+	</fieldset>
+
+	<!-- Vista usuario editar -->
+	<fieldset ng-show="showdetailedit" class="marco_principal">
+		<label>Nombre:</label>
+		<input ng-model=usuario.nombre class="form-control" placeholder="Ej: Carlos Álvarez">
+		
+		<label>Email:</label>
+		<input ng-model=usuario.email class="form-control" placeholder="Ej: nombre@servicio.com">
+		
+		<label>Teléfono:</label>
+		<input ng-model=usuario.tlf class="form-control" placeholder="Ej: 667746213">
+		
+		<label>Contraseña:</label>
+		<input ng-model=usuario.password class="form-control" type="password" placeholder="*****">
+
+		<button ng-click="updateUsuario(usuario)" class="btn btn-primary">
+			Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
+		</button>	
+		<button ng-click="cancelarEdit()" class="btn btn-primary" id="botonDetecha">
+			Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
+		</button>
+	</fieldset>
+
+	<div id="divmensaje" class="mensajeoculto"><div class="alert alert-success" id="mensaje">{{mensaje}}</div></div>
+	
+	<!-- Vista de sus últimos artículos -->
+	<h5 class="titulo">Últimos artículos del usuario</h5>
+
+	<div ng-repeat="articulo in last_articulos">
+		<!-- Vista de cada artículo -->
+		<div class="divArticulo">
+				<div >
+					<div>
+						<h4>{{articulo.nombre}}</h4>
+					</div>
+					<a href="/articulos/{{articulo.id}}" class="pull-left">
+							<img src="{{articulo.foto}}" id="fotos-articulos" alt="{{articulo.nombre}}">
+					</a>
+					<p id="descripcion">{{articulo.descripcion}}</p>
+					<h4>
+						<i id="precio">{{articulo.precio}} €</i>
+					</h4>
+				</div>
+			</div>
+	</div>
+</div>

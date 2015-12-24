@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en" ng-app="strettoApp">
+<head>
+	<title>Stretto</title>	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="author" content="encaramorosb@gmail.com">
+	<meta name="description" content="SPA Stretto">
+	<meta name="keywords" content="tienda, instrumentos, musica">
+	<meta name="copyright" content="2015 Stretto">
+	
+	<!-- Include Require -->
+	<!--<script type="text/javascript" src="/aplicacion/lib/require.js"></script>-->
+	<script type="text/javascript" src="/lib/require.js"></script>
+	<!-- Include JQuery -->
+	<script type="text/javascript" src="/lib/jquery-1.11.3.min.js"></script>
+	<!-- Include Bootstrap js y css -->
+	<link rel="stylesheet" href="/lib/bootstrap.min.js">
+ 	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/index.css">
+	<!-- Include Angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+	<!-- Include Angular para rutas -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+	<!-- Include Angular UI -->
+	<script src="/lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
+	<!-- Include App -->
+	<script src="/js/app.js"></script>
+	<!-- Include Controladores -->
+  <script src="/js/controllers.js"></script>
+	<!-- Incluimos servicios -->
+	<script src="/js/strettoService.js"></script>
+</head>
+	
+<body>
+	
+	<!-- header -->
+	<ng-include src="'/partials/navigationbar.html'"></ng-include>
+	
+	<!-- Los partials se incluiran aquí -->
+  <div ng-view></div>
+  <div ng-load-script></div>
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+////////////////////
+
+<!-- PAGINA ARTICULOS DEL USUARIO LOGEADO -->
+
+	<div data-role="page" id="misarticulos">
+			<div data-role="header">
+					<h1>Stretto</h1>
+			</div>
+			<div role="main" class="ui-content">
+					Estos son mis artículos, ir a 
+				<a href="#principal" data-transition="flip"> principal</a>
+				<a href="#perfil" data-transition="flip"> perfil</a>
+			</div>
+				<div ng-controller="UsuarioArticulosCtrl">	
+					<!-- Filtros de búsqueda -->
+					<div>
+						<h5>Busca por nombre:</h5>
+						<div class="input-group">
+							<input ng-model="filtronombre" class="form-control" placeholder="Busca por...">
+						</div>
+
+						<h5>Tipo de instrumento:</h5>
+						<select ng-model="filtrotipo" class="form-control">
+							<option value="" id="defaulselect">Selecciona un tipo</option>
+							<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+						</select>			
+					</div>
+					<!-- Mostramos la lista de los artículos pudiendo editar y eliminar porque son suyos --> 
+					<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">			
+						<div class="panel panel-default">
+
+							<!-- Vista de los artículos en detalle -->
+							<div ng-hide="articulo.showdetailedit" class="panel-body">
+								<a href="/articulos/{{articulo.id}}" class="pull-left">
+									<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+								</a>
+
+								<div class="media-body">
+									<h4 class="media-heading">{{articulo.nombre}}
+										<i id="precio">{{articulo.precio}} €</i>
+									</h4>
+									<p id="descripcion">{{articulo.descripcion}}</p>
+								</div>				
+
+								<!--No los mostramos si los artículos son de un usuario que no es el logeado -->
+								<div ng-show="sonmisarticulos">
+									<button ng-click="editableView(articulo)" class="btn btn-primary">
+										Editar <span class="glyphicon glyphicon-pencil"></span>
+									</button>
+									<button ng-click="deleteArticulo(articulo.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
+										Eliminar <span class="glyphicon glyphicon-trash"></span>
+									</button>
+								</div>
+							</div>
+
+							<!-- Vista de los artículo para editar -->
+							<div ng-show="articulo.showdetailedit" class="panel-body">
+								<a href="" class="pull-left" id="imagenArtEdit">
+									<img src="{{imagenPorDefecto}}" class="media-object" id="fotos-articulos" alt="Imagen por defecto">
+								</a>
+								<label>URL foto:</label>
+								<input ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
+								<div class="media-body">
+									<div id="nombreEdit">
+										<label>Nombre:</label>
+										<input ng-model=articulo.nombre class="form-control" placeholder="Nombre">
+									</div>
+									<div id="precioEdit">
+										<label id="etiquetaPrecioEdit">Precio:</label>
+										<input ng-model=articulo.precio class="form-control" placeholder="Precio">
+									</div>
+									<div>
+										<label id="etiquetaPrecioEdit">Tipo:</label>
+										<select ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
+											<option value="" id="defaulselect">Selecciona un tipo</option>
+											<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+										</select>	
+									</div>
+									<label>Descripción:</label>
+									<textarea rows="3" ng-model=articulo.descripcion class="form-control" 
+														id="inputformArtBig" placeholder="Descripción">
+									</textarea>
+									<button ng-click="updateArticulo(articulo)" class="btn btn-primary">
+										Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
+									</button>	
+									<button ng-click="cancelarEdit(articulo)" class="btn btn-primary" id="botonDetecha">
+										Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
+									</button>
+								</div>						
+							</div>
+							
+						</div>		
+					</div>
+			</div>
+			<div data-role="footer" data-position="fixed">
+					<h2>Esto es el pie</h2>
+			</div>
+	</div>
+		
+	<!-- PAGINA PERFIL DEL USUARIO LOGEADO -->
+	
+	<div data-role="page" id="perfil">
+			<div data-role="header">
+					<h1>Stretto</h1>
+					<a href="#principal" data-rel="back" 
+					data-icon="carat-l">Atrás</a>
+			</div>
+			<div role="main" class="ui-content">
+				<!-- Vista del usuario en detalle -->
+				<h5 class="titulo" id="tituloprincipal">Datos personales - 
+					<a href="#misarticulos" class="titulolink">Todos los artículos vendidos por {{usuario.nombre}}</a>
+					<a href="#perfil" class="titulolink">Tu perfil</a>
+				</h5>
+				<!-- Vista usuario detalle -->
+				<fieldset ng-hide="showdetailedit" class="marco_principal">
+					<p class="etiqueta">Nombre: </p>
+					<h5 class="datos_u">{{usuario.nombre}}</h5> </br>
+
+					<p class="etiqueta">Email: </p>
+					<h5 class="datos_u">{{usuario.email}}</h5> </br>
+
+					<p class="etiqueta">Valoración: </p>
+					<h5 class="datos_u">{{usuario.valoracion}}</h5> </br>
+
+					<p class="etiqueta">Teléfono: </p>
+					<h5 class="datos_u">{{usuario.tlf}}</h5> </br>
+
+					<button ng-click="editableView()" class="btn btn-primary">
+						Editar perfil <span class="glyphicon glyphicon-pencil"></span>
+					</button>
+					<button ng-click="deleteUsuario(usuario.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
+						Eliminar cuenta <span class="glyphicon glyphicon-trash"></span>
+					</button>
+				</fieldset>
+
+				<!-- Vista usuario editar -->
+				<fieldset ng-show="showdetailedit" class="marco_principal">
+					<label>Nombre:</label>
+					<input ng-model=usuario.nombre class="form-control" placeholder="Ej: Carlos Álvarez">
+
+					<label>Email:</label>
+					<input ng-model=usuario.email class="form-control" placeholder="Ej: nombre@servicio.com">
+
+					<label>Teléfono:</label>
+					<input ng-model=usuario.tlf class="form-control" placeholder="Ej: 667746213">
+
+					<label>Contraseña:</label>
+					<input ng-model=usuario.password class="form-control" type="password" placeholder="*****">
+
+					<button ng-click="updateUsuario(usuario)" class="btn btn-primary">
+						Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
+					</button>	
+					<button ng-click="cancelarEdit()" class="btn btn-primary" id="botonDetecha">
+						Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
+					</button>
+				</fieldset>
+				<div id="divmensaje" class="mensajeoculto"><div class="alert alert-success" id="mensaje">{{mensaje}}</div></div>
+			</div>
+			<div data-role="footer" data-position="fixed">
+					<h2>Esto es el pie</h2>
+			</div>
+	</div>

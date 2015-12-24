@@ -1,0 +1,122 @@
+/* Datos del usuario */
+
+/*Contenido detalle usuario*/
+
+#tituloprincipal {
+	font-size: 1.5em;
+}
+
+.titulolink {
+	text-decoration: none;
+	color: #333333;
+	text-decoration: underline;
+}
+
+.titulolink:hover {
+	text-decoration: none;
+	text-decoration: underline;
+	color: #333333;
+}
+
+.titulo {
+	font-size: 1.5em;
+}
+
+.marco_principal {
+	padding-bottom: 12px;
+  margin-left: 40px;
+	width: 30em;
+}
+
+.marco_principal p {
+	width: 7em;
+  font-size: 17px;
+}
+
+.marco_principal h5 {
+  font-size: 18px;
+}
+
+.etiqueta {
+  margin-top: 7px;
+  margin-bottom: 0px;
+  /*font-weight: bold;*/
+  display: inline-block;
+}
+
+.datos_u {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+#divUsuarioDetalle {
+	margin-left: 4em;
+	margin-right: 4em;
+}
+
+/* Botones */
+
+.btn-primary {
+	margin-top: 1em;
+  margin-bottom: 1em;
+	background-color: rgba(198, 150, 102, 0.73) !important;
+	color: #080808 !important;
+	border-color: white !important;
+}
+
+#botonDetecha {
+	margin-left: 1em;
+}
+
+/* Datos de los artículos */
+
+#precio {
+}
+
+#fotos-articulos {
+	width: 14em;
+	height: 13em;
+	margin-top: -1.8em;
+}
+
+#descripcion{
+	padding-top: 0em;
+  text-align: justify;
+	margin-top: 0em;
+	height: 9em;
+	margin-left: 14em;
+}
+
+.divArticulo {
+	border-bottom: 1px solid;
+	border-color: #DDDDDD;
+	float: left;
+	margin-right: 0em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	width: 29em !important;
+}
+
+.divArticulo h4 {
+	margin-left: 10.8em;
+}
+
+/* Mensajes */
+
+#mensaje {
+	display: block;
+}
+
+.mensajeoculto {
+	opacity: 0;
+}
+
+.mensajevisible {
+	opacity: 1;
+	transition: opacity 1s ease-out;
+}
+
+.mensajedesaparece {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}

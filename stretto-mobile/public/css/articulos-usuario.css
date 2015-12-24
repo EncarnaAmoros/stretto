@@ -1,0 +1,77 @@
+/* Datos articulos en detalle */
+
+#precio {
+	float: right;
+}
+
+#fotos-articulos {
+	width: 14em;
+	height: 13em;
+}
+
+#inputformArtSmall {
+	width: 20em;
+	margin-bottom: 0.5em;
+}
+
+#inputformArtBig {
+	width: 55em;
+	margin-bottom: 0.5em;
+}
+
+/* Datos articulos en edicion */
+
+#nombreEdit {
+	position: absolute;
+  text-align: left;
+	width: 15em;
+}
+
+#precioEdit {
+	float: left;
+	margin-right: 2em;
+	width: 5.6em;
+	text-align: right;
+	margin-left: 225px;
+}
+
+#etiquetaPrecioEdit {
+	margin-right: 30px;
+}
+
+#imagenArtEdit {
+	padding-right: 10px;
+}
+
+/* Botones */
+
+.btn-primary {
+	background-color: rgba(198, 150, 102, 0.73) !important;
+	color: #080808 !important;
+	border-color: white !important;
+}
+
+#botonDetecha {
+	margin-left: 1em;
+}
+
+/* Mensajes */
+
+#mensaje {
+	display: block;
+	margin-bottom: -1em;
+}
+
+.mensajeoculto {
+	opacity: 0;
+}
+
+.mensajevisible {
+	opacity: 1;
+	transition: opacity 1s ease-out;
+}
+
+.mensajedesaparece {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}

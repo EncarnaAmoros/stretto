@@ -1,0 +1,62 @@
+/* Barra en general */
+
+.navbar-default {
+	background-color: #D4B28B;
+	border-color: #D6B38C;
+}
+
+.navbar {
+	border-radius: 0px;
+}
+
+/* Logotipo */
+.navbar-default .navbar-brand {
+	border-left: 5px solid;
+	border-right: 3px solid;
+	border-color: rgba(84, 52, 16, 0.19);
+	color: #79562E;
+	font-size: 27px;
+}
+
+.logotipo {
+	margin-left: 1em;
+}
+
+/* Items de la barra */
+
+#enlacesIzquierda {
+	font-size: 17px;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #483015;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #FFF;
+    background-color: #C59A6A;
+}
+
+.primerenlace {
+	margin-left: 1em;
+}
+
+#defaultselect {
+	padding-left: 10px;
+}
+
+#iconousuario {
+	color: #3A2105 !important;
+}
+
+.navbar-default .navbar-text {
+    color: #3A2105;
+}
+
+.navbar-default .navbar-link {
+    color: #3A2105;
+}
+
+#enlacesusuario {
+	margin-right: 0.5em;
+}
