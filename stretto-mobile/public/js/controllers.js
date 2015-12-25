@@ -49,7 +49,7 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 		
 		//Obtenemos los artículos llamando al service y lo mostramos en vista
     var mostrarArticulos = function () {
-			articulosService.getArticulos($routeParams.page)
+			articulosService.getArticulos(1)
 			.success(function(resultados) {
 				$scope.articulos = resultados.data;
 			})
@@ -66,6 +66,12 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 			})
 		}
 		mostrarArticulos();
+		
+		$scope.seleccionarArticulo = function(articulo) {
+			console.log("holaa amigo");
+			localStorage.articuloId = articulo.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
+		}
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
@@ -98,7 +104,7 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams', 'articuloService',
 	function ($scope, $http, $routeParams, articuloService) {
 		//Obtenemos los artículos de Service y mostramos en vista
-    articuloService.getArticulo($routeParams.id)
+    articuloService.getArticulo(localStorage.articuloId)
 			.success(function(resultado) {
 				$scope.articulo = resultado.data;
 				$scope.usuario = resultado.usuario;

@@ -70,7 +70,7 @@
 						<!-- Vista de cada artículo -->
 						<div class="panel panel-default">
 							<div ng-hide="articulo.showdetailedit" class="panel-body">
-								<a href="#articulo{{articulo.id}}" class="pull-left">
+								<a ng-click=seleccionarArticulo(articulo) class="pull-left">
 									<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
 								</a>
 								<div class="media-body">
@@ -83,6 +83,44 @@
 				</div>
 			</div>
 
+			<div data-role="footer" data-position="fixed">
+					<h2>Esto es el pie</h2>
+			</div>
+	</div>
+	
+	<!-- PAGINA ARTICULO EN DETALLE -->
+	<div data-role="page" ng-controller="ArticuloCtrl" id="articulodetalle">
+			<div data-role="header">
+					<h1>Artículo</h1>
+					<a href="#principal" data-rel="back" 
+					data-icon="carat-l">Atrás</a>
+			</div>
+			<div role="main" class="ui-content">
+					Artículo en detalle 
+			</div>
+			<div>
+				<div class="media" id="divArticuloDetalle">		
+					<!-- Vista del artículo en detalle -->
+					<a href="/articulos/{{articulo.id}}" class="pull-left">
+						<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+					</a>
+
+					<div class="media-body">
+						<h4 class="media-heading" id="nombreprecio">{{articulo.nombre}}
+							<i id="precio">{{articulo.precio}} €</i>
+						</h4>
+						<p id="descripcion">{{articulo.descripcion}}</p>
+						<p id="vendedor">Vendedor: <a href="/usuarios/{{usuario.id}}">{{usuario.nombre}} - {{usuario.email}}</a></p>
+
+					</div>	
+
+					<button ng-click="comprarArticulo()" class="btn btn-primary">
+						Comprar <span class="glyphicon glyphicon-shopping-cart"></span>
+					</button>
+
+					<div id="divmensaje" class="mensajeoculto"><div class="alert alert-success" id="mensaje">{{mensaje}}</div></div>
+				</div>
+			</div>
 			<div data-role="footer" data-position="fixed">
 					<h2>Esto es el pie</h2>
 			</div>
