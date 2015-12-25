@@ -30,8 +30,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
 		<!-- Include Angular UI -->
 		<script src="/lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
-		
-	
 	
 		<!-- Incuir los CSS estilos -->
 		<link rel="stylesheet" href="/css/articulos-list.css">
@@ -49,6 +47,7 @@
 					Estos son los ultimos artículos, ir a tus <a href="#misarticulos" data-transition="flip"> articulos</a>
 					Ve a tu <a href="#perfil" data-transition="flip"> perfil</a>
 					o <a href="#login" data-transition="flip">inicia sesión</a>
+					o <a href="#registro" data-transition="flip">Registrate!</a>
 			</div>
 			<div>
 				<div ng-controller="ArticulosCtrl">	
@@ -159,7 +158,8 @@
 			</div>
 	</div>	
 		
-		<!-- PAGINA PERFIL DEL USUARIO LOGEADO -->
+	
+	<!-- PAGINA PERFIL DEL USUARIO LOGEADO -->
 	
 	<div data-role="page" ng-controller="UsuarioCtrl" id="usuariodetalle">
 			<div data-role="header">
@@ -222,6 +222,52 @@
 					<h2>Esto es el pie</h2>
 			</div>
 	</div>
+
+
+	<!-- PAGINA PERFIL DEL USUARIO LOGEADO -->
+	
+	<div data-role="page" id="registro">
+			<div data-role="header">
+					<h1>Stretto</h1>
+					<a href="#principal" data-rel="back" 
+					data-icon="carat-l">Atrás</a>
+			</div>
+			<div role="main" class="ui-content">
+				<p class="text-muted">Crea tu propia cuenta introduciendon los siguientes datos.</p>
+				<div class="modal-body">
+					<form action="" role="form" onsubmit="return false;">
+							<div class="form-group">
+									<label for="nombre">Nombre:</label>
+									<input type="text" id="nombre" ng-model="datos.nombre" placeholder="Ej: Antonio" class="form-control">
+							</div>
+							<div class="form-group">
+									<label for="email">Email:</label>
+									<input type="text" id="email" ng-model="datos.email" placeholder="tucorreo@gmail.com" class="form-control">
+							</div>
+							<div class="form-group">
+									<label for="nombre">Teléfono:</label>
+									<input type="text" id="tlf" ng-model="datos.tlf" placeholder="Ej: 786543211" class="form-control">
+							</div>
+							<div class="form-group">
+									<label for="password">Contraseña:</label>
+									<input type="password" id="password" ng-model="datos.password" class="form-control">
+							</div>
+					</form>
+					<a ng-click="#login">¡Iniciar sesión!</a>
+
+					<div id="divmensajeregistro" class="mensajedesaparece"><div id="mensajeregistro"></div></div>
+				</div>
+				<div class="modal-footer">
+						<button class="btn btn-primary" href="#" id="botonRegistro">Registrarme</button>
+				</div>
+
+				<script type="text/javascript" src="/js/registro-sinframework.js"></script>
+			</div>
+			<div data-role="footer" data-position="fixed">
+					<h2>Esto es el pie</h2>
+			</div>
+	</div>
+
 	
 	<!-- EJEMPLO SECUNDARIA -->
 	<div data-role="page" id="secundaria">

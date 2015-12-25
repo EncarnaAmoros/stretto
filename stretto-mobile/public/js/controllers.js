@@ -395,7 +395,7 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', 'loginService', '
 	function ($scope, $http, loginService, $timeout, $window) {
 		//Inicializamos para logeo
 		$scope.datos = {};
-		console.log("loginnnnn");
+		
 		//Comprobamos login
 		$scope.login = function() {
 			//No hay error al iniciar sesion, guardamos auth

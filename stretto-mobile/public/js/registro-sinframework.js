@@ -65,8 +65,7 @@ function addUsuario() {
 		
 			//Cuando pasen 2 segundos desaparecerá el modal
 			setTimeout(function(){  
-				var cancelar = document.getElementById("cancelar");
-				cancelar.click();
+				$.mobile.pageContainer.pagecontainer('change', '#principal');
 			}, 2000);
 	 	}, 
 		error: function(resultado) {
