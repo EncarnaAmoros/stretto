@@ -113,6 +113,12 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 				//Sin datos	
 			})
 		
+		$scope.seleccionarUsuario = function(usuario) {
+			console.log("holaa amigo");
+			localStorage.usuarioId = usuario.id;
+			$.mobile.pageContainer.pagecontainer('change', '#usuariodetalle');
+		}
+		
 		//Mensaje con compra exitosa
 		$scope.comprarArticulo = function() {
 			$scope.mensaje="Compra realizada con éxito. ¡Gracias por confiar en Stretto!";
@@ -314,7 +320,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			else
 				$scope.showusuario=true;
 			
-			usuarioService.getUsuario($routeParams.id)
+			usuarioService.getUsuario(localStorage.usuarioId)
 				.success(function(resultados) {
 					$scope.usuario = resultados.data;
 					$scope.last_articulos = resultados.articulos;	
