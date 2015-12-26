@@ -39,18 +39,18 @@
 <body>
 	
 	<!-- PAGINA ARTICULOS GENERAL -->
-	<div data-role="page" id="principal">
+	<div data-role="page" ng-controller="ArticulosCtrl" id="principal">
 			<div data-role="header">
 					<h1>Stretto</h1>
 			</div>
 			<div role="main" class="ui-content">
 					Estos son los ultimos artículos, ir a tus <a href="#misarticulos" data-transition="flip"> articulos</a>
-					Ve a tu <a href="#perfil" data-transition="flip"> perfil</a>
+					Ve a tu <a href="#usuariodetalle" data-transition="flip"> perfil</a>
 					o <a href="#login" data-transition="flip">inicia sesión</a>
 					o <a href="#registro" data-transition="flip">Registrate!</a>
 			</div>
 			<div>
-				<div ng-controller="ArticulosCtrl">	
+				<div>	
 					<!-- Filtros de búsqueda -->
 					<div>
 						<h5>Busca por nombre:</h5>
@@ -68,8 +68,8 @@
 					<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo"> 
 						<!-- Vista de cada artículo -->
 						<div class="panel panel-default">
-							<div ng-hide="articulo.showdetailedit" class="panel-body">
-								<a ng-click=seleccionarArticulo(articulo) class="pull-left">
+							<div class="panel-body">
+								<a ng-click="seleccionarArticulo(articulo)" class="pull-left">
 									<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
 								</a>
 								<div class="media-body">
@@ -87,6 +87,125 @@
 			</div>
 	</div>
 	
+	<!-- PAGINA ARTICULOS DEL USUARIO LOGEADO -->
+
+	<div data-role="page" ng-controller="UsuarioArticulosCtrl" id="articulosusuario">
+			<div data-role="header">
+					<h1>Stretto</h1>
+			</div>
+			<div role="main" class="ui-content">
+					Estos son mis artículos, ir a 
+				<a href="#principal" data-transition="flip"> principal</a>
+				<a href="#perfil" data-transition="flip"> perfil</a>
+			</div>
+				<div>	
+					<!-- Filtros de búsqueda -->
+					<div>
+						<h5>Busca por nombre:</h5>
+						<div class="input-group">
+							<input ng-model="filtronombre" class="form-control" placeholder="Busca por...">
+						</div>
+
+						<h5>Tipo de instrumento:</h5>
+						<select ng-model="filtrotipo" class="form-control">
+							<option value="" id="defaulselect">Selecciona un tipo</option>
+							<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+						</select>			
+					</div>
+					<!-- Mostramos la lista de los artículos pudiendo editar y eliminar porque son suyos --> 
+					<div class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">			
+						<div class="panel panel-default">
+
+							<!-- Vista de los artículos en detalle -->
+							<div class="panel-body">
+								<a href="#" ng-click="seleccionarArticulo(articulo)" class="pull-left">
+									<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+								</a>
+
+								<div class="media-body">
+									<h4 class="media-heading">{{articulo.nombre}}
+										<i id="precio">{{articulo.precio}} €</i>
+									</h4>
+									<p id="descripcion">{{articulo.descripcion}}</p>
+								</div>				
+
+								<!--No los mostramos si los artículos son de un usuario que no es el logeado -->
+								<div>
+									<a data-role="button" ng-click="editarArticulo(articulo)" href="#" class="btn btn-primary">
+										Editar <span class="glyphicon glyphicon-pencil"></span>
+									</a>
+									<a data-role="button" ng-click="deleteArticulo(articulo.id)"
+										 id="botonderecha" class="btn btn-primary" id="botonDetecha">
+										Eliminar <span class="glyphicon glyphicon-trash"></span>
+									</a>
+								</div>
+							</div>						
+						</div>		
+					</div>
+			</div>
+			<div data-role="footer" data-position="fixed">
+					<h2>Esto es el pie</h2>
+			</div>
+	</div>
+
+	
+	<!-- PAGINA ARTICULO EDITABLE DEL USUARIO LOGEADO -->
+
+	<div data-role="page" ng-controller="UsuarioArticuloEditarCtrl" id="articuloeditable">
+			<div data-role="header">
+					<h1>Stretto</h1>
+			</div>
+			<div role="main" class="ui-content">
+					Estos son mis artículos, ir a 
+				<a href="#principal" data-transition="flip"> principal</a>
+				<a href="#perfil" data-transition="flip"> perfil</a>
+			</div>			
+				<div class="media">			
+					<div class="panel panel-default">
+
+						<!-- Vista de los artículo para editar -->
+						<div class="panel-body">
+							<a href="" class="pull-left" id="imagenArtEdit">
+								<img src="{{imagenPorDefecto}}" class="media-object" id="fotos-articulos" alt="Imagen por defecto">
+							</a>
+							<label>URL foto:</label>
+							<input ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
+							<div class="media-body">
+								<div id="nombreEdit">
+									<label>Nombre:</label>
+									<input ng-model=articulo.nombre class="form-control" placeholder="Nombre">
+								</div>
+								<div id="precioEdit">
+									<label id="etiquetaPrecioEdit">Precio:</label>
+									<input ng-model=articulo.precio class="form-control" placeholder="Precio">
+								</div>
+								<div>
+									<label id="etiquetaPrecioEdit">Tipo:</label>
+									<select ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
+										<option value="" id="defaulselect">Selecciona un tipo</option>
+										<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+									</select>	
+								</div>
+								<label>Descripción:</label>
+								<textarea rows="3" ng-model=articulo.descripcion class="form-control" 
+													id="inputformArtBig" placeholder="Descripción">
+								</textarea>
+								<a data-role="button" ng-click="updateArticulo(articulo)" class="btn btn-primary">
+									Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
+								</a>	
+								<a data-role="button" href="#articulosusuario" class="btn btn-primary" id="botonDetecha">
+									Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
+								</a>
+							</div>						
+						</div>
+					</div>		
+				</div>
+			<div data-role="footer" data-position="fixed">
+					<h2>Esto es el pie</h2>
+			</div>
+	</div>
+	
+	
 	<!-- PAGINA ARTICULO EN DETALLE -->
 	<div data-role="page" ng-controller="ArticuloCtrl" id="articulodetalle">
 			<div data-role="header">
@@ -100,7 +219,7 @@
 			<div>
 				<div class="media" id="divArticuloDetalle">		
 					<!-- Vista del artículo en detalle -->
-					<a href="/articulos/{{articulo.id}}" class="pull-left">
+					<a ng-click="seleccionarArticulo(articulo)" href="#" class="pull-left">
 						<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
 					</a>
 
@@ -115,9 +234,9 @@
 
 					</div>	
 
-					<button ng-click="comprarArticulo()" class="btn btn-primary">
+					<a ng-click='comprarArticulo()' href="#" data-role="button" class="btn btn-primary">
 						Comprar <span class="glyphicon glyphicon-shopping-cart"></span>
-					</button>
+					</a>
 
 					<div id="divmensaje" class="mensajeoculto"><div class="alert alert-success" id="mensaje">{{mensaje}}</div></div>
 				</div>
@@ -170,11 +289,11 @@
 			<div role="main" class="ui-content">
 				<!-- Vista del usuario en detalle -->
 				<h5 class="titulo" id="tituloprincipal">Datos personales - 
-					<a href="#misarticulos" class="titulolink">Todos los artículos vendidos por {{usuario.nombre}}</a>
+					<a ng-click="seleccionarUsuario(usuario)" href="#" class="titulolink">Todos los artículos vendidos por {{usuario.nombre}}</a>
 					<a href="#perfil" class="titulolink">Tu perfil</a>
 				</h5>
 				<!-- Vista usuario detalle -->
-				<fieldset ng-hide="showdetailedit" class="marco_principal">
+				<fieldset class="marco_principal">
 					<p class="etiqueta">Nombre: </p>
 					<h5 class="datos_u">{{usuario.nombre}}</h5> </br>
 
@@ -196,7 +315,7 @@
 				</fieldset>
 
 				<!-- Vista usuario editar -->
-				<fieldset ng-show="showdetailedit" class="marco_principal">
+				<fieldset class="marco_principal">
 					<label>Nombre:</label>
 					<input ng-model=usuario.nombre class="form-control" placeholder="Ej: Carlos Álvarez">
 
@@ -224,7 +343,7 @@
 	</div>
 
 
-	<!-- PAGINA PERFIL DEL USUARIO LOGEADO -->
+	<!-- PAGINA REGISTRO -->
 	
 	<div data-role="page" id="registro">
 			<div data-role="header">
@@ -293,9 +412,25 @@
 	<script src="/js/strettoService.js"></script>
 	
 	<script type="text/javascript">
-			window.addEventListener('pageshow', function() {
-					console.log("Se muestra la página secundaria")
-			})
+		window.addEventListener('pageshow', function() {
+			console.log("Se muestra la página secundaria");	
+		});
+		/*$('#principal').on('pagebeforeshow', function() {
+			//$scope.actualizar();
+			angular.element('#principal').scope().actualizar();
+		});*/
+		$('#articulosusuario').on('pagebeforeshow', function() {
+			//$scope.actualizar();
+			angular.element('#articulosusuario').scope().actualizar();
+		});
+		/*$('#articulodetalle').on('pagebeforeshow', function() {
+			//$scope.actualizar();
+			angular.element('#articulodetalle').scope().actualizar();
+		});*/
+		$('#usuariodetalle').on('pagebeforeshow', function() {
+			//$scope.actualizar();
+			angular.element('#usuariodetalle').scope().actualizar();
+		});
 	</script>
 	
 </body>	

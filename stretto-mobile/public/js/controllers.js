@@ -12,7 +12,7 @@ var rutaorigen = '/';
 strettoControllers.controller('NavCtrl', ['$scope', '$modal', '$window',
 	function ($scope, $modal, $window) {		
 		//Miramos si el usuario está logeado o no
-		var actualizarNavBar = function () {
+		$scope.actualizar = function () {
 			if(localStorage.email!=undefined) {
 				$scope.showme = false;
 				$scope.usuario = localStorage.email;
@@ -23,7 +23,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$modal', '$window',
 				$scope.mensaje = "Iniciar sesión";
 			}
 		}
-		actualizarNavBar();
+		$scope.actualizar();
 		
 		//Si clica en iniciar sesión abrimos modal para logearse
 		$scope.showModalLogin = function() {
@@ -33,7 +33,7 @@ strettoControllers.controller('NavCtrl', ['$scope', '$modal', '$window',
 		//Si clica en cerrar sesión borramos sus datos
 		$scope.logout = function() {
 			localStorage.clear();
-			actualizarNavBar();
+			$scope.actualizar();
 		}
 
 	}]);
@@ -48,10 +48,18 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 	function ($scope, $http, $routeParams, articulosService, tiposService) {
 		
 		//Obtenemos los artículos llamando al service y lo mostramos en vista
-    var mostrarArticulos = function () {
+    $scope.actualizar = function () {
 			articulosService.getArticulos(1)
 			.success(function(resultados) {
-				$scope.articulos = resultados.data;
+				var listarticulos = resultados.data;
+				articulosService.getArticulos(2)
+				.success(function(resultados2) {
+					var listarticulos2 = resultados2.data;
+					$scope.articulos = listarticulos.concat(listarticulos2);
+				})
+				.error(function(resultados) {
+					//Sin datos					
+				})
 			})
 			.error(function(resultados) {
 				//Sin datos					
@@ -65,10 +73,10 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 				//Sin datos	
 			})
 		}
-		mostrarArticulos();
+		$scope.actualizar();
 		
 		$scope.seleccionarArticulo = function(articulo) {
-			console.log("holaa amigo");
+			console.log("miraa A_"+articulo.id);
 			localStorage.articuloId = articulo.id;
 			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
 		}
@@ -77,11 +85,11 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 		$scope.pasarPaginaSiguiente = function() {
 			if($routeParams.page=="" || $routeParams.page==undefined) {
 				$routeParams.page = 2;
-				mostrarArticulos();				
+				$scope.actualizar();				
 			} else {				
 				var pagina = 1 + parseInt($routeParams.page);
 				$routeParams.page = pagina;
-				mostrarArticulos();
+				$scope.actualizar();
 			}
 			window.scrollTo(0,0);
 		}
@@ -93,7 +101,7 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 			} else {				
 				var pagina = parseInt($routeParams.page) - 1;
 				$routeParams.page = pagina;
-				mostrarArticulos();
+				$scope.actualizar();
 			}
 			window.scrollTo(0,0);
 		}
@@ -104,17 +112,30 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams', 'articuloService',
 	function ($scope, $http, $routeParams, articuloService) {
 		//Obtenemos los artículos de Service y mostramos en vista
-    articuloService.getArticulo(localStorage.articuloId)
-			.success(function(resultado) {
-				$scope.articulo = resultado.data;
-				$scope.usuario = resultado.usuario;
-			})
-			.error(function(resultados) {
-				//Sin datos	
-			})
+		$scope.actualizar = function() {
+			articuloService.getArticulo(localStorage.articuloId)
+				.success(function(resultado) {
+					$scope.articulo = resultado.data;
+					$scope.usuario = resultado.usuario;
+				})
+				.error(function(resultados) {
+					//Sin datos	
+				})
+		}
+		$scope.actualizar();
+		console.log("hola");
+		$('#articulodetalle').on('pagebeforeshow', function() {
+			$scope.actualizar();
+		});
+		
+		$scope.seleccionarArticulo = function(articulo) {
+			console.log("miraaC A_"+articulo.id);
+			localStorage.articuloId = articulo.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articuloeditable');
+		}
 		
 		$scope.seleccionarUsuario = function(usuario) {
-			console.log("holaa amigo");
+			console.log("MIRAC U:"+usuario.id);
 			localStorage.usuarioId = usuario.id;
 			$.mobile.pageContainer.pagecontainer('change', '#usuariodetalle');
 		}
@@ -132,17 +153,15 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 																											 'tiposService', 'articuloService', '$timeout',
 	function ($scope, $http, $routeParams, $window, $modal, articulosService, tiposService, articuloService, $timeout) {
 		//Si son los artículos de otro usuario no se pueden editar o eliminar
-		if($routeParams.id==localStorage.id)
-			$scope.sonmisarticulos=true;
-		else 
-			$scope.sonmisarticulos=false;
-		
-		console.log("mira quien:"+localStorage.email);
-		
-		//Obtenemos los artículos del usuario
-		var tipos;
-		var actualizararticulos = function() {
-			articulosService.getArticulosUsuario($routeParams.id, $routeParams.page)
+		$scope.actualizar = function() {
+			if(localStorage.usuarioId==localStorage.id)
+				$scope.sonmisarticulos=true;
+			else 
+				$scope.sonmisarticulos=false;
+
+			//Obtenemos los artículos del usuario
+			var tipos;
+			articulosService.getArticulosUsuario(localStorage.usuarioId, 1)
 				.success(function(resultados) {
 					$scope.articulos = resultados.data;
 				})
@@ -159,17 +178,29 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 					//Sin datos	
 				})
 		}
-	 	actualizararticulos();
+	 	$scope.actualizar();
+		
+		$scope.seleccionarArticulo = function(articulo) {
+			console.log("miraa A_"+articulo.id);
+			localStorage.articuloId = articulo.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
+		}
+		
+		$scope.editarArticulo = function(articulo) {
+			console.log("miraa A_"+articulo.id);
+			localStorage.articuloId = articulo.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
+		}
 		
 		//Funcion para pasar de página siguiente
 		$scope.pasarPaginaSiguiente = function() {
 			if($routeParams.page=="" || $routeParams.page==undefined) {
 				$routeParams.page = 2;
-				actualizararticulos();
+				$scope.actualizar();
 			} else {
 				var pagina = 1 + parseInt($routeParams.page);
 				$routeParams.page = pagina;
-				actualizararticulos();
+				$scope.actualizar();
 			}
 			window.scrollTo(0,0);
 		}
@@ -180,29 +211,9 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 			} else {				
 				var pagina = parseInt($routeParams.page) - 1;
 				$routeParams.page = pagina;
-				actualizararticulos();	
+				$scope.actualizar();	
 			}
 			window.scrollTo(0,0);
-		}		
-		
-		//Funcion para mostrar articulo en vista editable (si no está logeado modal con login)
-		$scope.editableView = function(articulo) {
-			if(localStorage.email==undefined && localStorage.password==undefined)
-				mostrarLogin($modal, $window);
-			else
-				articulo.showdetailedit=true;
-		}
-		
-		//Si cancela volvemos a la vista de detalle
-		$scope.cancelarEdit = function(articulo) {
-			actualizararticulos();
-			$scope.detailView(articulo);
-			articulosService.modificadoDesaparece();
-		}
-		
-		//Funcion para mostrar artículo en forma detalle
-		$scope.detailView = function(articulo) {
-			articulo.showdetailedit=false;
 		}
 		
 		//Funcion para mostrar modal de añadir artículo
@@ -220,15 +231,113 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 			});
 			//Cuando se cierra el model ejecutamos callback
 			modalInstance.result.then(function (result) {
-				actualizararticulos();
+				$scope.actualizar();
 			});
 		}
 		
+		//Funcion para eliminar un artículo llamando al service
+		$scope.deleteArticulo = function(id) {
+			if(localStorage.email==undefined && localStorage.password==undefined)
+				mostrarLogin($modal, $window);
+			else {
+				articuloService.deleteArticulo(id)
+					.success(function(data, status, headers, config) {
+						$scope.actualizar();
+						$scope.mensaje = "Artículo eliminado con éxito";
+						articulosService.modificadoBien();
+
+						//A los 2 segundos ejecutamos lo que contiene la funcion
+						$timeout(function() {
+							articulosService.modificadoDesaparece();
+						}, 2000);
+					})
+					.error(function(data, status, headers, config) {
+						$scope.mensaje = "Error código: "+status+" "+data;
+						articulosService.modificadoMal();
+
+						//A los 2 segundos ejecutamos lo que contiene la funcion
+						$timeout(function() {
+							articulosService.modificadoDesaparece();
+						}, 2000);
+					})
+			}
+  	}
+	}]);
+
+/* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
+
+strettoControllers.controller('UsuarioArticuloEditarCtrl', ['$scope','$http','$routeParams','$window','$modal','articulosService',
+																											 'tiposService', 'articuloService', '$timeout',
+	function ($scope, $http, $routeParams, $window, $modal, articulosService, tiposService, articuloService, $timeout) {
+		//Si son los artículos de otro usuario no se pueden editar o eliminar
+		$scope.actualizar = function() {
+			if(localStorage.usuarioId==localStorage.id)
+				$scope.sonmisarticulos=true;
+			else 
+				$scope.sonmisarticulos=false;
+
+			//Obtenemos los artículos del usuario
+			var tipos;
+			articulosService.getArticulosUsuario(localStorage.usuarioId, 1)
+				.success(function(resultados) {
+					$scope.articulos = resultados.data;
+				})
+				.error(function(resultados) {
+					//Sin datos	
+				})			
+			//Obtenemos los tipos de instrumentos que hay
+			tiposService.getTipos()
+				.success(function(resultados) {
+					$scope.tipos = resultados;
+					tipos = resultados;
+				})
+				.error(function(resultados) {
+					//Sin datos	
+				})
+		}
+	 	$scope.actualizar();
+		
+		$scope.seleccionarArticulo = function(articulo) {
+			console.log("miraa A_"+articulo.id);
+			localStorage.articuloId = articulo.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
+		}
+		
+		$scope.editarArticulo = function(articulo) {
+			console.log("miraa A_"+articulo.id);
+			localStorage.articuloId = articulo.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
+		}
+		
+		//Funcion para pasar de página siguiente
+		$scope.pasarPaginaSiguiente = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined) {
+				$routeParams.page = 2;
+				$scope.actualizar();
+			} else {
+				var pagina = 1 + parseInt($routeParams.page);
+				$routeParams.page = pagina;
+				$scope.actualizar();
+			}
+			window.scrollTo(0,0);
+		}
+		
+		//Funcion para pasar de página anterior
+		$scope.pasarPaginaAnterior = function() {
+			if($routeParams.page=="" || $routeParams.page==undefined || $routeParams.page==1) {
+			} else {				
+				var pagina = parseInt($routeParams.page) - 1;
+				$routeParams.page = pagina;
+				$scope.actualizar();	
+			}
+			window.scrollTo(0,0);
+		}
+				
 		//Funcion para actualizar un artículo
 		$scope.updateArticulo = function(articulo) {
 			articuloService.updateArticulo(articulo)
 				.success(function(data, status, headers, config) {
-					actualizararticulos();
+					$scope.actualizar();
 					$scope.detailView(articulo);
 					$scope.mensaje="Artículo actualizado con éxito";
 					articulosService.modificadoBien();
@@ -251,7 +360,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 			else {
 				articuloService.deleteArticulo(id)
 					.success(function(data, status, headers, config) {
-						actualizararticulos();
+						$scope.actualizar();
 						$scope.mensaje = "Artículo eliminado con éxito";
 						articulosService.modificadoBien();
 
@@ -313,12 +422,16 @@ strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalIn
 
 strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuarioService', '$timeout',
 	function ($scope, $http, $routeParams, $window, usuarioService, $timeout) {
-		var actualizarUsuario = function() {	
+		$scope.actualizar = function() {	
 			//Según si es su perfil o no, incluimos un html u otro
-			if($routeParams.id==localStorage.id) 
+			if(localStorage.usuarioId==localStorage.id) {
 				$scope.showusuario=false;
-			else
+				console.log("false: "+localStorage.usuarioId+" ,"+localStorage.id)
+			}
+			else {
 				$scope.showusuario=true;
+				console.log("true: "+localStorage.usuarioId+" ,"+localStorage.id)
+			}
 			
 			usuarioService.getUsuario(localStorage.usuarioId)
 				.success(function(resultados) {
@@ -334,7 +447,18 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 					//Sin datos	
 				})
 		}		
-		actualizarUsuario();
+		$scope.actualizar();
+		
+		$scope.seleccionarArticulo = function(articulo) {
+			console.log("miraa A_"+articulo.id);
+			localStorage.articuloId = articulo.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
+		}
+		
+		$scope.seleccionarUsuario = function(usuario) {
+			localStorage.usuarioId = usuario.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articulosusuario');
+		}
 		
 		//Funcion para mostrar usuario en forma editable
 		$scope.editableView = function() {
@@ -343,7 +467,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 		
 		//Función para cancelar la edición y pasar a modo detalle
 		$scope.cancelarEdit = function() {
-			actualizarUsuario();
+			$scope.actualizar();
 			$scope.detailView();
 			usuarioService.modificadoDesaparece();
 		}
@@ -358,7 +482,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			usuarioService.updateUsuario(usuario)
 			.success(function(data, status, headers, config) {
 				$scope.mensaje = "Usuario actualizado con éxito";
-				actualizarUsuario();
+				$scope.actualizar();
 				$scope.detailView();
 				usuarioService.modificadoBien();
 				
@@ -378,7 +502,6 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			usuarioService.deleteUsuario(id)
 			.success(function(data, status, headers, config) {
 				alert("Cuenta eliminada con éxito");
-				//actualizarUsuario();
 				localStorage.clear();
 				$window.location.href = "/";
 			})
@@ -411,7 +534,6 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', 'loginService', '
 					$timeout(function() {
 						loginService.modificadoDesaparece();
 						$.mobile.pageContainer.pagecontainer('change', '#principal');
-						console.log("okk2");
 					}, 2000);
 					
     		})
@@ -422,7 +544,6 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', 'loginService', '
 				
 					$timeout(function() {
 						loginService.modificadoDesaparece();
-						console.log("okkno");
 					}, 2000);
 				});
 		}
