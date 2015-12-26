@@ -121,7 +121,8 @@ strettoService.service('usuarioService', function($http)
 		},
 		mensaje: document.getElementById("mensaje"),
 		divmensaje: document.getElementById("divmensaje"),
-		modificadoBien: function() {			
+		modificadoBien: function() {
+			console.log("que pasa");
 			mensaje.className = "alert alert-success";			
 			divmensaje.className = "mensajevisible";
 		},

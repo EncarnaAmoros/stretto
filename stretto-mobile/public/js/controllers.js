@@ -75,7 +75,7 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 		}
 		$scope.actualizar();
 		
-		$scope.seleccionarArticulo = function(articulo) {
+		$scope.verArticulo = function(articulo) {
 			console.log("miraa A_"+articulo.id);
 			localStorage.articuloId = articulo.id;
 			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
@@ -123,19 +123,16 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 				})
 		}
 		$scope.actualizar();
-		console.log("hola");
 		$('#articulodetalle').on('pagebeforeshow', function() {
 			$scope.actualizar();
 		});
 		
-		$scope.seleccionarArticulo = function(articulo) {
-			console.log("miraaC A_"+articulo.id);
+		$scope.verArticulo = function(articulo) {
 			localStorage.articuloId = articulo.id;
 			$.mobile.pageContainer.pagecontainer('change', '#articuloeditable');
 		}
 		
-		$scope.seleccionarUsuario = function(usuario) {
-			console.log("MIRAC U:"+usuario.id);
+		$scope.verUsuario = function(usuario) {
 			localStorage.usuarioId = usuario.id;
 			$.mobile.pageContainer.pagecontainer('change', '#usuariodetalle');
 		}
@@ -154,16 +151,19 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 	function ($scope, $http, $routeParams, $window, $modal, articulosService, tiposService, articuloService, $timeout) {
 		//Si son los artículos de otro usuario no se pueden editar o eliminar
 		$scope.actualizar = function() {
-			if(localStorage.usuarioId==localStorage.id)
-				$scope.sonmisarticulos=true;
-			else 
-				$scope.sonmisarticulos=false;
-
 			//Obtenemos los artículos del usuario
 			var tipos;
 			articulosService.getArticulosUsuario(localStorage.usuarioId, 1)
 				.success(function(resultados) {
-					$scope.articulos = resultados.data;
+					var listarticulos = resultados.data;
+					articulosService.getArticulosUsuario(localStorage.usuarioId, 2)
+						.success(function(resultados2) {
+							var listarticulos2 = resultados2.data;
+							$scope.articulos = listarticulos.concat(listarticulos2);
+						})
+						.error(function(resultados) {
+							//Sin datos					
+						})
 				})
 				.error(function(resultados) {
 					//Sin datos	
@@ -178,18 +178,19 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 					//Sin datos	
 				})
 		}
-	 	$scope.actualizar();
+	 	$scope.actualizar();		
+		$('#articulosusuario').on('pagebeforeshow', function() {
+			$scope.actualizar();
+		});
 		
-		$scope.seleccionarArticulo = function(articulo) {
-			console.log("miraa A_"+articulo.id);
+		$scope.verArticulo = function(articulo) {
 			localStorage.articuloId = articulo.id;
 			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
 		}
 		
 		$scope.editarArticulo = function(articulo) {
-			console.log("miraa A_"+articulo.id);
 			localStorage.articuloId = articulo.id;
-			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
+			$.mobile.pageContainer.pagecontainer('change', '#articuloeditable');
 		}
 		
 		//Funcion para pasar de página siguiente
@@ -265,7 +266,6 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 	}]);
 
 /* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
-
 strettoControllers.controller('UsuarioArticuloEditarCtrl', ['$scope','$http','$routeParams','$window','$modal','articulosService',
 																											 'tiposService', 'articuloService', '$timeout',
 	function ($scope, $http, $routeParams, $window, $modal, articulosService, tiposService, articuloService, $timeout) {
@@ -297,14 +297,12 @@ strettoControllers.controller('UsuarioArticuloEditarCtrl', ['$scope','$http','$r
 		}
 	 	$scope.actualizar();
 		
-		$scope.seleccionarArticulo = function(articulo) {
-			console.log("miraa A_"+articulo.id);
+		$scope.verArticulo = function(articulo) {
 			localStorage.articuloId = articulo.id;
 			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
 		}
 		
 		$scope.editarArticulo = function(articulo) {
-			console.log("miraa A_"+articulo.id);
 			localStorage.articuloId = articulo.id;
 			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
 		}
@@ -422,17 +420,7 @@ strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', '$modalIn
 
 strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuarioService', '$timeout',
 	function ($scope, $http, $routeParams, $window, usuarioService, $timeout) {
-		$scope.actualizar = function() {	
-			//Según si es su perfil o no, incluimos un html u otro
-			if(localStorage.usuarioId==localStorage.id) {
-				$scope.showusuario=false;
-				console.log("false: "+localStorage.usuarioId+" ,"+localStorage.id)
-			}
-			else {
-				$scope.showusuario=true;
-				console.log("true: "+localStorage.usuarioId+" ,"+localStorage.id)
-			}
-			
+		$scope.actualizar = function() {
 			usuarioService.getUsuario(localStorage.usuarioId)
 				.success(function(resultados) {
 					$scope.usuario = resultados.data;
@@ -449,32 +437,66 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 		}		
 		$scope.actualizar();
 		
-		$scope.seleccionarArticulo = function(articulo) {
-			console.log("miraa A_"+articulo.id);
+		$scope.verArticulo = function(articulo) {
 			localStorage.articuloId = articulo.id;
 			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
 		}
 		
-		$scope.seleccionarUsuario = function(usuario) {
+		$scope.articulosUsuario = function(usuario) {
 			localStorage.usuarioId = usuario.id;
 			$.mobile.pageContainer.pagecontainer('change', '#articulosusuario');
 		}
 		
-		//Funcion para mostrar usuario en forma editable
-		$scope.editableView = function() {
-			$scope.showdetailedit=true;
+		$scope.editarUsuario = function(usuario) {
+			localStorage.usuarioId = usuario.id;
+			$.mobile.pageContainer.pagecontainer('change', '#usuarioeditable');
 		}
 		
-		//Función para cancelar la edición y pasar a modo detalle
-		$scope.cancelarEdit = function() {
-			$scope.actualizar();
-			$scope.detailView();
-			usuarioService.modificadoDesaparece();
+		//Funcion para eliminar un usuario llamando al service
+		$scope.deleteUsuario = function(id) {
+			usuarioService.deleteUsuario(id)
+			.success(function(data, status, headers, config) {
+				alert("Cuenta eliminada con éxito");
+				localStorage.clear();
+				$window.location.href = "/";
+				$.mobile.pageContainer.pagecontainer('change', '#principal');
+			})
+			.error(function(data, status, headers, config) {
+				$scope.mensaje="Error código: "+status+" "+data;
+				usuarioService.modificadoMal();
+			})
+  	}
+  }]);
+
+/* Mostramos un usuario en detalle */
+
+strettoControllers.controller('UsuarioEditarCtrl',  ['$scope', '$http', '$routeParams', '$window', 'usuarioService', '$timeout',
+	function ($scope, $http, $routeParams, $window, usuarioService, $timeout) {
+		$scope.actualizar = function() {			
+			usuarioService.getUsuario(localStorage.usuarioId)
+				.success(function(resultados) {
+					$scope.usuario = resultados.data;
+					$scope.last_articulos = resultados.articulos;	
+					//Acortamos las descripciones
+					if($scope.last_articulos!=undefined)
+						for(i=0;i<$scope.last_articulos.length;i++) {
+							$scope.last_articulos[i].descripcion = $scope.last_articulos[i].descripcion.slice(0,161)+"...";
+						}
+				})
+				.error(function(resultados) {
+					//Sin datos	
+				})
+		}		
+		$scope.actualizar();
+		
+		$scope.verArticulo = function(articulo) {
+			localStorage.articuloId = articulo.id;
+			$.mobile.pageContainer.pagecontainer('change', '#articulodetalle');
 		}
 		
-		//Funcion para mostrar artículo en forma de detalle
-		$scope.detailView = function() {
-			$scope.showdetailedit=false;
+		$scope.verUsuario = function(usuario) {
+			localStorage.usuarioId = usuario.id;
+			$.mobile.pageContainer.pagecontainer('change', '#usuariodetalle');
 		}
 		
 		//Funcion para actualizar un usuario llamando al Service
@@ -482,13 +504,12 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 			usuarioService.updateUsuario(usuario)
 			.success(function(data, status, headers, config) {
 				$scope.mensaje = "Usuario actualizado con éxito";
-				$scope.actualizar();
-				$scope.detailView();
 				usuarioService.modificadoBien();
 				
 				//A los 2 segundos ejecutamos lo que contiene la funcion
 				$timeout(function() {
 					usuarioService.modificadoDesaparece();
+					$.mobile.pageContainer.pagecontainer('change', '#usuariodetalle');
 				}, 2000);				
 			})
 			.error(function(data, status, headers, config) {
@@ -504,6 +525,7 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', '$routeParams'
 				alert("Cuenta eliminada con éxito");
 				localStorage.clear();
 				$window.location.href = "/";
+				$.mobile.pageContainer.pagecontainer('change', '#principal');
 			})
 			.error(function(data, status, headers, config) {
 				$scope.mensaje="Error código: "+status+" "+data;
