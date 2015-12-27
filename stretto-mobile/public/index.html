@@ -12,22 +12,14 @@
 	<meta name="copyright" content="2015 Stretto">
 	
 	<!-- Incuir los CSS estilos -->
-	<!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="/vendor/waves/waves.min.css" />
-	<link rel="stylesheet" href="/vendor/wow/animate.css" />
-	<link rel="stylesheet" href="/css/nativedroid2.css" />-->
-	<!--<meta name="mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
-	
+	<link rel="stylesheet" href="/css/index.css" />
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
 	<link rel="stylesheet" href="/vendor/waves/waves.min.css" />
 	<link rel="stylesheet" href="/css/nativedroid2.css" />
-		
+	
 </head>
 <body>
 	
@@ -73,7 +65,9 @@
 		<div data-role="header">
 				<h1>Stretto</h1>
 		</div>
+		
 		<div role="main" class="ui-content">
+			
 			<!-- Filtros de búsqueda -->
 			<div>
 				<h5>Busca por nombre:</h5>
@@ -86,21 +80,57 @@
 					<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
 				</select>			
 			</div>
+			
 			<!-- Lista con artículos y paginado -->
 			<ul data-role="listview" data-icon="false">
 				<li data-role="list-divider">
 					Artículos
 				</li>
 				<li ng-repeat="articulo in articulos" class="media ui-li-has-thumb ui-last-child ng-scope">
-					<a class="ui-page-theme-a ui-btn ui-bar-a" href="#" ng-click="verArticulo(articulo)">
+					<a id="item" class="ui-page-theme-a ui-btn ui-bar-a oculto"
+						 href="#bottomsheetlist" ng-click="opcionesitem(articulo.id)">
+						
 						<img class="ui-thumbnail ui-thumbnail-circular" src="{{articulo.foto}}" class="ui-thumbnail ui-thumbnail-circular" />
 						<h2>{{articulo.nombre}}</h2>
-						<p>{{articulo.precio}}</p>
+						<p>{{articulo.precio}}</p>	
 					</a>
+						<!--Botones inferiores de cada item-->
+						<div data-role="panel" id="bottomsheetlist{{articulo.id}}"
+								 class="ui-bottom-sheet ui-bottom-sheet-list ui-panel ui-panel-position-bottom ui-panel-display-overlay
+												ui-panel-closed ui-body-inherit" data-animate="false" data-position='bottom' data-display="overlay">
+							<div class='row around-xs'>
+								<div class='col-xs-auto'>
+									<a href='#' ng-click="verArticulo(articulo)"
+									 class='ui-bottom-sheet-link ui-btn ui-btn-inline 
+													waves-effect waves-button waves-effect waves-button opcionesitem' data-ajax='false'>
+										<i class='zmdi zmdi-assignment zmd-2x'></i>
+										<strong>VER EN DETALLE</strong>
+									</a>
+								</div>
+							<div class='col-xs-auto'>
+								<a href='#' ng-click="editarArticulo(articulo)"
+									 class='ui-bottom-sheet-link ui-btn ui-btn-inline 
+													waves-effect waves-button waves-effect waves-button' data-ajax='false'>
+									<i class='zmdi zmdi-assignment zmd-2x'></i>
+									<strong>EDITAR ARTICULO</strong>
+								</a>
+							</div>
+							<div class='col-xs-auto'>
+								<a href='#' ng-click="deleteArticulo(articulo.id)"
+									 class='ui-bottom-sheet-link ui-btn ui-btn-inline
+													waves-effect waves-button waves-effect waves-button' data-ajax='false'>
+									<i class='zmdi zmdi-fire zmd-2x'></i>
+									<strong>ELIMINAR</strong>
+								</a>
+							</div>
+						</div>
+					</div>					
 				</li>
 			</ul>
+			
 			<a data-role="button" class="btn btn-primary" ng-click="addArticulo()">Publicar</a>
 		</div>
+		
 		<div data-role="footer" data-position="fixed">
 				<h2>Esto es el pie</h2>
 		</div>

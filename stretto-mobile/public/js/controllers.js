@@ -139,7 +139,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 				.success(function(resultados) {
 					var listarticulos1 = resultados.data;
 				
-					articulosService.getArticulosUsuario(localStorage.usuarioId, 2)
+					articulosService.getArticulosUsuario(localStorage.usuarioId, 1)
 						.success(function(resultados2) {
 							var listarticulos2 = resultados2.data;
 							$scope.articulos = listarticulos1.concat(listarticulos2);
@@ -168,6 +168,12 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http','$routeP
 			$scope.actualizar();
 			
 		});
+		
+		$scope.opcionesitem = function(id) {
+			var clasescss = "ui-bottom-sheet ui-bottom-sheet-list ui-panel ui-panel-position-bottom ui-panel-display-overlay ";
+			clasescss += " ui-body-inherit ui-panel-open";
+			document.getElementById("bottomsheetlist"+id).className = clasescss;	
+		}
 		
 		$scope.verArticulo = function(articulo) {
 			localStorage.articuloId = articulo.id;

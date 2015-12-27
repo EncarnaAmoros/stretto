@@ -3,5 +3,9 @@
 }*/
 
 .ui-listview>li.ui-li-has-alt>.ui-btn+.ui-btn {
-    width: 3.5em !important;
+   width: 3.5em !important;
+}
+
+.oculto {
+	
 }
