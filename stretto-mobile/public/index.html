@@ -18,20 +18,54 @@
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
 	<link rel="stylesheet" href="/vendor/waves/waves.min.css" />
 	<link rel="stylesheet" href="/css/nativedroid2.css" />
+	<link rel="stylesheet"
+				href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+	
+	<!-- Jquery, ui y mobile -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+	
+	<!-- Native android -->
+	<script src="/vendor/waves/waves.min.js"></script>
+	<script src="/vendor/wow/wow.min.js"></script>
+	<script src="/js/nativedroid2.js"></script>
+	<script src="/nd2settings.js"></script>
+
+	<!-- Include Angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+	<!-- Include Angular para rutas -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+	<!-- Include Angular UI -->
+	<script src="/lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
+
+	<!-- Include App -->
+	<script src="/js/app.js"></script>
+	<!-- Include Controladores -->
+	<script src="/js/controllers.js"></script>
+	<!-- Incluimos servicios -->
+	<script src="/js/strettoService.js"></script>
+	
 </head>
+	
 <body>
 	
 	<!-- PAGINA ARTICULOS GENERAL -->
 	
-	<div data-role="page" ng-controller="ArticulosCtrl" id="principal">
+	<div data-role="page" ng-controller="ArticulosCtrl" id="principal">	
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
 		<div data-role="header">
-				<h1>Stretto</h1>
+			<!-- Mostrar panel-->
+			<a href="#leftpanel" 
+				 class="ui-btn-left ui-btn waves-effect waves-button waves-effect waves-button" data-role="button" role="button">
+				<i class="zmdi zmdi-menu"></i>
+			</a>
+			<h1>Stretto</h1>
 		</div>
 		
 		<div role="main" class="ui-content">
-	
 			<!-- Filtros de búsqueda -->
 			<div>
 				<h5>Busca por nombre:</h5>
@@ -68,12 +102,18 @@
 	<!-- PAGINA ARTICULOS USUARIO -->
 	
 	<div data-role="page" ng-controller="UsuarioArticulosCtrl" id="articulosusuario">
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
 		<div data-role="header">
-				<h1>Stretto</h1>
+			<!-- Mostrar panel-->
+			<a href="#leftpanel" 
+				 class="ui-btn-left ui-btn waves-effect waves-button waves-effect waves-button" data-role="button" role="button">
+				<i class="zmdi zmdi-menu"></i>
+			</a>
+			<h1>Stretto</h1>
 		</div>
 		
-		<div role="main" class="ui-content">
-			
+		<div role="main" class="ui-content">			
 			<!-- Filtros de búsqueda -->
 			<div>
 				<h5>Busca por nombre:</h5>
@@ -93,7 +133,7 @@
 					Artículos
 				</li>
 				<li ng-repeat="articulo in articulos" class="media ui-li-has-thumb ui-last-child ng-scope">
-					<a id="item" class="ui-page-theme-a ui-btn ui-bar-a oculto"
+					<a id="item" class="ui-page-theme-a ui-btn ui-bar-a"
 						 href="#bottomsheetlist" ng-click="opcionesitem(articulo.id)">
 						
 						<img class="ui-thumbnail ui-thumbnail-circular" src="{{articulo.foto}}" class="ui-thumbnail ui-thumbnail-circular" />
@@ -141,8 +181,7 @@
 						</div>
 					</div>					
 				</li>
-			</ul>
-			
+			</ul>			
 			<a data-role="button" href="#articulonuevo">Publicar</a>
 		</div>
 		
@@ -155,304 +194,323 @@
 	<!-- PAGINA ARTICULO EN DETALLE -->
 	
 	<div data-role="page" ng-controller="ArticuloCtrl" id="articulodetalle">
-			<div data-role="header">
-					<h1>Artículo</h1>
-					<a href="#principal" data-rel="back" 
-					data-icon="carat-l">Atrás</a>
-			</div>
-		
-			<div role="main" class="ui-content">
-				Artículo en detalle 
-				<div class="media" id="divArticuloDetalle">	
-					
-					<!-- Vista del artículo en detalle -->
-					<a ng-click="verArticulo(articulo)" href="#" class="pull-left">
-						<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
-					</a>
-					<div class="media-body">
-						<h4 class="media-heading" id="nombreprecio">{{articulo.nombre}}
-							<i id="precio">{{articulo.precio}} €</i>
-						</h4>
-						<p id="descripcion">{{articulo.descripcion}}</p>
-						<p id="vendedor">Vendedor: 
-							<a ng-click="verUsuario(usuario)" href="#">{{usuario.nombre}} - {{usuario.email}}</a>
-						</p>
-					</div>
-					
-					<!-- Comprar -->
-					<a href="#popupDialog" data-rel="popup" data-position-to="window" data-role="button">
-						Open popup dialog
-					</a>
-					<div data-role="popup" id="popupDialog">
-						<div data-role="header">
-							<h1 class='nd-title'>Compra realizada con éxito</h1>
-						</div>
-						<div data-role="content">
-								<p>Compra realizada con éxito. ¡Gracias por confiar en Stretto!</p>
-								<a href="dialog/index.html" data-rel="back" data-role="button" data-inline="true" class="ui-btn ui-btn-primary">
-									<i class="zmdi zmdi-check"></i> Aceptar
-								</a>
-						</div>
-					</div>					
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
+		<div data-role="header">
+			<!-- Mostrar panel-->
+			<a href="#leftpanel" 
+				 class="ui-btn-left ui-btn waves-effect waves-button waves-effect waves-button" data-role="button" role="button">
+				<i class="zmdi zmdi-menu"></i>
+			</a>
+			<h1>Artículo</h1>
+			<a href="#principal" data-rel="back" 
+			data-icon="carat-l">Atrás</a>
+		</div>
+
+		<div role="main" class="ui-content">
+			Artículo en detalle 
+			<div class="media" id="divArticuloDetalle">	
+
+				<!-- Vista del artículo en detalle -->
+				<a ng-click="verArticulo(articulo)" href="#" class="pull-left">
+					<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading" id="nombreprecio">{{articulo.nombre}}
+						<i id="precio">{{articulo.precio}} €</i>
+					</h4>
+					<p id="descripcion">{{articulo.descripcion}}</p>
+					<p id="vendedor">Vendedor: 
+						<a ng-click="verUsuario(usuario)" href="#">{{usuario.nombre}} - {{usuario.email}}</a>
+					</p>
 				</div>
+
+				<!-- Comprar -->
+				<a href="#popupDialog" data-rel="popup" data-position-to="window" data-role="button">
+					Comprar
+				</a>
+				<div data-role="popup" id="popupDialog">
+					<div data-role="header">
+						<h1 class='nd-title'>Compra realizada con éxito</h1>
+					</div>
+					<div data-role="content">
+							<p>Compra realizada con éxito. ¡Gracias por confiar en Stretto!</p>
+							<a href="dialog/index.html" data-rel="back" data-role="button" data-inline="true" class="ui-btn ui-btn-primary">
+								<i class="zmdi zmdi-check"></i> Aceptar
+							</a>
+					</div>
+				</div>					
 			</div>
-		
-			<div data-role="footer" data-position="fixed">
-					<h2>Esto es el pie</h2>
-			</div>
+		</div>
+
+		<div data-role="footer" data-position="fixed">
+				<h2>Esto es el pie</h2>
+		</div>
 	</div>	
 	
 	<!-- PAGINA ARTICULO EDITABLE DEL USUARIO LOGEADO -->
 
 	<div data-role="page" ng-controller="UsuarioArticuloEditarCtrl" id="articuloeditable">
-			<div data-role="header">
-					<h1>Stretto</h1>
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
+		<div data-role="header">
+			<!-- Mostrar panel-->
+			<a href="#leftpanel" 
+				 class="ui-btn-left ui-btn waves-effect waves-button waves-effect waves-button" data-role="button" role="button">
+				<i class="zmdi zmdi-menu"></i>
+			</a>
+			<h1>Stretto</h1>
+		</div>
+		<div role="main" class="ui-content">
+				Editar artículo
+			<div class="media">			
+				<div class="panel panel-default">
+					<!-- Vista de los artículo para editar -->
+						<input ng-model=articulo.foto value="{{articulo.foto}}" placeholder="URL de la foto del artículo">
+						<input ng-model=articulo.nombre value="{{articulo.nombre}}" placeholder="Nombre del artículo">
+						<input ng-model=articulo.precio value="{{articulo.precio}}" placeholder="Precio de venta">
+						<select name="select-choice-1" id="select-choice-1b" data-native-menu="false"  ng-model="articulo.tipo">
+							<option value="" id="defaulselect">Selecciona un tipo</option>
+							<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+							<ul ng-repeat="tipo in tipos" class="ui-selectmenu-list ui-listview" 
+									id="select-choice-1b-menu" role="listbox" aria-labelledby="select-choice-1b-button">
+								<li data-option-index="1" data-icon="false" data-placeholder="true" 
+										class="" role="option" aria-selected="false">
+									<a href="#" tabindex="-1" class="ui-btn">Selecciona un tipo</a>
+								</li>
+							</ul>							
+						</select>
+						<textarea ng-model=articulo.descripcion placeholder="Introduzca aquí la descripción del artículo">
+							articulo.descripcion
+						</textarea>
+						<a data-role="button" ng-click="updateArticulo(articulo)">
+							<i class="zmdi zmdi-check"></i> Guardar
+						</a>	
+						<a data-role="button" href="#articulosusuario">
+							<i class="zmdi zmdi-close"></i> Cancelar
+						</a>						
+					</div>
+				</div>		
 			</div>
-			<div role="main" class="ui-content">
-					Editar artículo
-			</div>			
-				<div class="media">			
-					<div class="panel panel-default">
-						<!-- Vista de los artículo para editar -->
-							<input ng-model=articulo.foto value="{{articulo.foto}}" placeholder="URL de la foto del artículo">
-							<input ng-model=articulo.nombre value="{{articulo.nombre}}" placeholder="Nombre del artículo">
-							<input ng-model=articulo.precio value="{{articulo.precio}}" placeholder="Precio de venta">
-							<select name="select-choice-1" id="select-choice-1b" data-native-menu="false"  ng-model="articulo.tipo">
-								<option value="" id="defaulselect">Selecciona un tipo</option>
-								<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-								<ul ng-repeat="tipo in tipos" class="ui-selectmenu-list ui-listview" 
-										id="select-choice-1b-menu" role="listbox" aria-labelledby="select-choice-1b-button">
-									<li data-option-index="1" data-icon="false" data-placeholder="true" 
-											class="" role="option" aria-selected="false">
-										<a href="#" tabindex="-1" class="ui-btn">Selecciona un tipo</a>
-									</li>
-								</ul>							
-							</select>
-							<textarea ng-model=articulo.descripcion placeholder="Introduzca aquí la descripción del artículo">
-								articulo.descripcion
-							</textarea>
-							<a data-role="button" ng-click="updateArticulo(articulo)">
-								<i class="zmdi zmdi-check"></i> Guardar
-							</a>	
-							<a data-role="button" href="#articulosusuario">
-								<i class="zmdi zmdi-close"></i> Cancelar
-							</a>						
-						</div>
-					</div>		
-				</div>
-			<div data-role="footer" data-position="fixed">
-					<h2>Esto es el pie</h2>
-			</div>
+		<div data-role="footer" data-position="fixed">
+				<h2>Esto es el pie</h2>
+		</div>
 	</div>
 	
 	<!-- PAGINA ARTICULO NUEVO -->
 
 	<div data-role="page" ng-controller="AddArticulosCtrl" id="articulonuevo">
-			<div data-role="header">
-					<h1>Stretto</h1>
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
+		<div data-role="header">
+			<!-- Mostrar panel-->
+			<a href="#leftpanel" 
+				 class="ui-btn-left ui-btn waves-effect waves-button waves-effect waves-button" data-role="button" role="button">
+				<i class="zmdi zmdi-menu"></i>
+			</a>
+			<h1>Stretto</h1>
+		</div>
+		<div role="main" class="ui-content">
+				Nuevo artículo
+			<div class="media">			
+				<div class="panel panel-default">
+						<input ng-model=articulo.foto placeholder="URL de la foto del artículo">
+						<input ng-model=articulo.nombre placeholder="Nombre del artículo">
+						<input ng-model=articulo.precio placeholder="Precio de venta">
+						<select name="select-choice-1" id="select-choice-1b" data-native-menu="false"  ng-model="articulo.tipo">
+							<option value="" id="defaulselect">Selecciona un tipo</option>
+							<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+							<ul ng-repeat="tipo in tipos" class="ui-selectmenu-list ui-listview" 
+									id="select-choice-1b-menu" role="listbox" aria-labelledby="select-choice-1b-button">
+								<li data-option-index="1" data-icon="false" data-placeholder="true" 
+										class="" role="option" aria-selected="false">
+									<a href="#" tabindex="-1" class="ui-btn">Selecciona un tipo</a>
+								</li>
+							</ul>							
+						</select>
+						<textarea ng-model=articulo.descripcion placeholder="Introduzca aquí la descripción del artículo">
+						</textarea>
+						<a data-role="button" ng-click="addArticulo()">
+							<i class="zmdi zmdi-check"></i> Guardar
+						</a>	
+						<a data-role="button" href="#articulosusuario">
+							<i class="zmdi zmdi-close"></i> Cancelar
+						</a>						
+					</div>
+
+					<div id="divmensaje" class="mensajeoculto">
+						<div class="alert alert-success" id="mensaje">{{mensaje}}</div>
+					</div>					
+				</div>		
 			</div>
-			<div role="main" class="ui-content">
-					Nuevo artículo
-			</div>			
-				<div class="media">			
-					<div class="panel panel-default">
-							<input ng-model=articulo.foto placeholder="URL de la foto del artículo">
-							<input ng-model=articulo.nombre placeholder="Nombre del artículo">
-							<input ng-model=articulo.precio placeholder="Precio de venta">
-							<select name="select-choice-1" id="select-choice-1b" data-native-menu="false"  ng-model="articulo.tipo">
-								<option value="" id="defaulselect">Selecciona un tipo</option>
-								<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-								<ul ng-repeat="tipo in tipos" class="ui-selectmenu-list ui-listview" 
-										id="select-choice-1b-menu" role="listbox" aria-labelledby="select-choice-1b-button">
-									<li data-option-index="1" data-icon="false" data-placeholder="true" 
-											class="" role="option" aria-selected="false">
-										<a href="#" tabindex="-1" class="ui-btn">Selecciona un tipo</a>
-									</li>
-								</ul>							
-							</select>
-							<textarea ng-model=articulo.descripcion placeholder="Introduzca aquí la descripción del artículo">
-							</textarea>
-							<a data-role="button" ng-click="addArticulo()">
-								<i class="zmdi zmdi-check"></i> Guardar
-							</a>	
-							<a data-role="button" href="#articulosusuario">
-								<i class="zmdi zmdi-close"></i> Cancelar
-							</a>						
-						</div>
-					
-						<div id="divmensaje" class="mensajeoculto">
-							<div class="alert alert-success" id="mensaje">{{mensaje}}</div>
-						</div>
-					
-					</div>		
-				</div>
-			<div data-role="footer" data-position="fixed">
-					<h2>Esto es el pie</h2>
-			</div>
+
+		<div data-role="footer" data-position="fixed">
+				<h2>Esto es el pie</h2>
+		</div>
 	</div>
 	
 	<!-- PAGINA LOGIN -->
 	
 	<div data-role="page" ng-controller="LoginCtrl" id="login">
-			<div data-role="header">
-					<h1>Stretto</h1>
-					<a href="#principal" data-rel="back" data-icon="carat-l">Atrás</a>
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
+		<div data-role="header">
+				<h1>Stretto</h1>
+				<a href="#principal" data-rel="back" data-icon="carat-l">Atrás</a>
+		</div>
+
+		<div role="main" class="ui-content">
+			Iniciar sesión
+			<h5>Email:</h5>
+			<div class="input-group">
+				<input ng-model="datos.email" type="text" class="form-control" placeholder="usuario@...">
 			</div>
-			<div role="main" class="ui-content">
-				Iniciar sesión 
+			<h5>Contraseña:</h5>
+			<div class="input-group">
+				<input ng-model="datos.password" type="password" class="form-control" placeholder="***...">
 			</div>
-			<div>
-				<div>
-						<h5>Email:</h5>
-						<div class="input-group">
-							<input ng-model="datos.email" type="text" class="form-control" placeholder="usuario@...">
-						</div>
-						<h5>Contraseña:</h5>
-						<div class="input-group">
-							<input ng-model="datos.password" type="password" class="form-control" placeholder="***...">
-						</div>
-						<a ng-click='login()' href="#" data-role="button" data-transition="flip">Iniciar sesión</a>
-						<div id="divmensajelogin" class="mensajeoculto">
-							<div class="alert alert-success" id="mensajelogin">{{mensaje}}</div>
-						</div>
-				</div>
+			<a ng-click='login()' href="#" data-role="button" data-transition="flip">Iniciar sesión</a>
+			<div id="divmensajelogin" class="mensajeoculto">
+				<div class="alert alert-success" id="mensajelogin">{{mensaje}}</div>
 			</div>
-			
-			<div data-role="footer" data-position="fixed">
-					<h2>Esto es el pie</h2>
-			</div>
+		</div>
+
+		<div data-role="footer" data-position="fixed">
+				<h2>Esto es el pie</h2>
+		</div>
 	</div>	
 		
 	
 	<!-- PAGINA PERFIL DEL USUARIO LOGEADO -->
 	
 	<div data-role="page" ng-controller="UsuarioCtrl" id="usuariodetalle">
-			<div data-role="header">
-					<h1>Stretto</h1>
-					<a href="#principal" data-rel="back" 
-					data-icon="carat-l">Atrás</a>
-			</div>
-			<div role="main" class="ui-content">
-				<!-- Vista del usuario en detalle -->
-				<h5 class="titulo" id="tituloprincipal">Datos personales - 
-					<a ng-click="articulosUsuario(usuario)" href="#" class="titulolink">Todos los artículos vendidos por {{usuario.nombre}}</a>
-					<a href="#perfil" class="titulolink">Tu perfil</a>
-				</h5>
-				<!-- Vista usuario detalle -->
-				<fieldset class="marco_principal">
-					<p class="etiqueta">Nombre: </p>
-					<h5 class="datos_u">{{usuario.nombre}}</h5> </br>
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
+		<div data-role="header">
+				<h1>Stretto</h1>
+				<a href="#principal" data-rel="back" 
+				data-icon="carat-l">Atrás</a>
+		</div>
 
-					<p class="etiqueta">Email: </p>
-					<h5 class="datos_u">{{usuario.email}}</h5> </br>
+		<div role="main" class="ui-content">
+			Datos personales
+			<fieldset class="marco_principal">
+				<h3 class="datos_u">Nombre: {{usuario.nombre}}</h3>
+				<h3 class="datos_u">Email: {{usuario.email}}</h3>
+				<h3 class="datos_u">Valoracion: {{usuario.valoracion}}</h3>
+				<h3 class="datos_u">Teléfono: {{usuario.tlf}}</h3>
+				<button ng-click="editarUsuario(usuario)" class="btn btn-primary">
+					<i class="zmdi zmdi-edit"></i> Editar perfil
+				</button>
+				<button ng-click="deleteUsuario(usuario.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
+					<i class="zmdi zmdi-close"></i> Eliminar cuenta
+				</button>
+			</fieldset>
+		</div>
 
-					<p class="etiqueta">Valoración: </p>
-					<h5 class="datos_u">{{usuario.valoracion}}</h5> </br>
-
-					<p class="etiqueta">Teléfono: </p>
-					<h5 class="datos_u">{{usuario.tlf}}</h5> </br>
-
-					<button ng-click="editarUsuario(usuario)" class="btn btn-primary">
-						Editar perfil <span class="glyphicon glyphicon-pencil"></span>
-					</button>
-					<button ng-click="deleteUsuario(usuario.id)" id="botonderecha" class="btn btn-primary" id="botonDetecha">
-						Eliminar cuenta <span class="glyphicon glyphicon-trash"></span>
-					</button>
-				</fieldset>
-			</div>
-			<div data-role="footer" data-position="fixed">
-					<h2>Esto es el pie</h2>
-			</div>
+		<div data-role="footer" data-position="fixed">
+				<h2>Esto es el pie</h2>
+		</div>
 	</div>
-
 
 	<!-- PAGINA PERFIL EDITAR DEL USUARIO LOGEADO -->
 	
-	<div data-role="page" ng-controller="UsuarioEditarCtrl" id="usuarioeditable">
-			<div data-role="header">
-					<h1>Stretto</h1>
-					<a href="#principal" data-rel="back" 
-					data-icon="carat-l">Atrás</a>
-			</div>
-			<div role="main" class="ui-content">
-				<!-- Vista del usuario en detalle -->
-				<h5 class="titulo" id="tituloprincipal">Datos personales - 
-					<a ng-click="verUsuario(usuario)" href="#" class="titulolink">Todos los artículos vendidos por {{usuario.nombre}}</a>
-					<a href="#perfil" class="titulolink">Tu perfil</a>
-				</h5>
-				<!-- Vista usuario editar -->
-				<fieldset class="marco_principal">
-					<label>Nombre:</label>
-					<input ng-model=usuario.nombre class="form-control" placeholder="Ej: Carlos Álvarez">
+	<div data-role="page" ng-controller="UsuarioCtrl" id="usuarioeditable">
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
+		<div data-role="header">
+				<h1>Stretto</h1>
+				<a href="#principal" data-rel="back" 
+				data-icon="carat-l">Atrás</a>
+		</div>
+		
+		<div role="main" class="ui-content">
+			Datos personales
+			
+			<!-- Vista usuario editar -->
+			<fieldset class="marco_principal">
+				<label>Nombre:
+				<input ng-model=usuario.nombre placeholder="Ej: Carlos Álvarez"></label>
+				<label>Email:</label>
+				<input ng-model=usuario.email placeholder="Ej: nombre@servicio.com">
+				<label>Teléfono:</label>
+				<input ng-model=usuario.tlf placeholder="Ej: 667746213">
+				<label>Contraseña:</label>
+				<input ng-model=usuario.password type="password" placeholder="*****">
 
-					<label>Email:</label>
-					<input ng-model=usuario.email class="form-control" placeholder="Ej: nombre@servicio.com">
-
-					<label>Teléfono:</label>
-					<input ng-model=usuario.tlf class="form-control" placeholder="Ej: 667746213">
-
-					<label>Contraseña:</label>
-					<input ng-model=usuario.password class="form-control" type="password" placeholder="*****">
-
-					<div id="divmensaje" class="mensajeoculto">
-						<div class="alert alert-success" id="mensaje">{{mensaje}}</div>
-					</div>
-					
-					<a data-role="button" ng-click="updateUsuario(usuario)" href="#" class="btn btn-primary">
-						Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
+				<div id="divmensaje" class="mensajeoculto">
+					<div class="alert alert-success" id="mensaje">{{mensaje}}</div>
+				</div>
+				<div id="botonesusuario">
+					<link rel="stylesheet" href="/css/index.css" />
+					<a data-role="button" id="botonesusuario1" ng-click="updateUsuario(usuario)" href="#">
+						<i class="zmdi zmdi-check"></i> Guardar
 					</a>	
-					<a data-role="button" ng-click="verUsuario()" class="btn btn-primary" id="botonDetecha">
-						Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
+					<a data-role="button" id="botonesusuario2" href="#usuariodetalle">
+						<i class="zmdi zmdi-close"></i> Cancelar
 					</a>
-				</fieldset>
-			</div>
-			<div data-role="footer" data-position="fixed">
-					<h2>Esto es el pie</h2>
-			</div>
+					<script>
+						if(localStorage.usuarioId!=localStorage.id) {
+							console.log("hola!!");
+							console.log(document.getElementById("botonesusuario1"))
+							document.getElementById("botonesusuario1").addClass = "oculto";
+							console.log(document.getElementById("botonesusuario1").className)
+							document.getElementById("botonesusuario2").addClass = "oculto";
+						}
+					</script>
+				</div>
+			</fieldset>
+		</div>
+		
+		<div data-role="footer" data-position="fixed">
+				<h2>Esto es el pie</h2>
+		</div>
 	</div>
 
 	<!-- PAGINA REGISTRO -->
 	
 	<div data-role="page" id="registro">
-			<div data-role="header">
-					<h1>Stretto</h1>
-					<a href="#principal" data-rel="back" 
-					data-icon="carat-l">Atrás</a>
-			</div>
-			<div role="main" class="ui-content">
-				<p class="text-muted">Crea tu propia cuenta introduciendon los siguientes datos.</p>
-				<div class="modal-body">
-					<form action="" role="form" onsubmit="return false;">
-							<div class="form-group">
-									<label for="nombre">Nombre:</label>
-									<input type="text" id="nombre" ng-model="datos.nombre" placeholder="Ej: Antonio" class="form-control">
-							</div>
-							<div class="form-group">
-									<label for="email">Email:</label>
-									<input type="text" id="email" ng-model="datos.email" placeholder="tucorreo@gmail.com" class="form-control">
-							</div>
-							<div class="form-group">
-									<label for="nombre">Teléfono:</label>
-									<input type="text" id="tlf" ng-model="datos.tlf" placeholder="Ej: 786543211" class="form-control">
-							</div>
-							<div class="form-group">
-									<label for="password">Contraseña:</label>
-									<input type="password" id="password" ng-model="datos.password" class="form-control">
-							</div>
-					</form>
-					<a ng-click="#login">¡Iniciar sesión!</a>
+		<!-- Panel -->
+		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
+		<div data-role="header">
+				<h1>Stretto</h1>
+				<a href="#principal" data-rel="back" 
+				data-icon="carat-l">Atrás</a>
+		</div>
+		<div role="main" class="ui-content">
+			<p class="text-muted">Crea tu propia cuenta introduciendon los siguientes datos.</p>
+			<div class="modal-body">
+				<form action="" role="form" onsubmit="return false;">
+						<div class="form-group">
+								<label for="nombre">Nombre:</label>
+								<input type="text" id="nombre" ng-model="datos.nombre" placeholder="Ej: Antonio" class="form-control">
+						</div>
+						<div class="form-group">
+								<label for="email">Email:</label>
+								<input type="text" id="email" ng-model="datos.email" placeholder="tucorreo@gmail.com" class="form-control">
+						</div>
+						<div class="form-group">
+								<label for="nombre">Teléfono:</label>
+								<input type="text" id="tlf" ng-model="datos.tlf" placeholder="Ej: 786543211" class="form-control">
+						</div>
+						<div class="form-group">
+								<label for="password">Contraseña:</label>
+								<input type="password" id="password" ng-model="datos.password" class="form-control">
+						</div>
+				</form>
+				<a ng-click="#login">¡Iniciar sesión!</a>
 
-					<div id="divmensajeregistro" class="mensajedesaparece"><div id="mensajeregistro"></div></div>
-				</div>
-				<div class="modal-footer">
-						<button class="btn btn-primary" href="#" id="botonRegistro">Registrarme</button>
-				</div>
+				<div id="divmensajeregistro" class="mensajedesaparece"><div id="mensajeregistro"></div></div>
+			</div>
+			<div class="modal-footer">
+					<button class="btn btn-primary" href="#" id="botonRegistro">Registrarme</button>
+			</div>
 
-				<script type="text/javascript" src="/js/registro-sinframework.js"></script>
-			</div>
-			<div data-role="footer" data-position="fixed">
-					<h2>Esto es el pie</h2>
-			</div>
+			<script type="text/javascript" src="/js/registro-sinframework.js"></script>
+		</div>
+		<div data-role="footer" data-position="fixed">
+				<h2>Esto es el pie</h2>
+		</div>
 	</div>
 
 	
@@ -472,30 +530,7 @@
 			</div>
 	</div>
 	
-	<!-- Jquery, ui y mobile -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
 	
-	<!-- Native android -->
-	<script src="/vendor/waves/waves.min.js"></script>
-	<script src="/vendor/wow/wow.min.js"></script>
-	<script src="/js/nativedroid2.js"></script>
-	<script src="/nd2settings.js"></script>
-
-	<!-- Include Angular -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
-	<!-- Include Angular para rutas -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
-	<!-- Include Angular UI -->
-	<script src="/lib/ui-bootstrap-tpls-0.14.3.min.js"></script>
-
-	<!-- Include App -->
-	<script src="/js/app.js"></script>
-	<!-- Include Controladores -->
-	<script src="/js/controllers.js"></script>
-	<!-- Incluimos servicios -->
-	<script src="/js/strettoService.js"></script>
 
 	<script type="text/javascript">
 		window.addEventListener('pageshow', function() {

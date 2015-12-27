@@ -1,0 +1,56 @@
+<!--<div data-role="panel" id="leftpanel" data-display="overlay" data-position-fixed="true" >
+...Your Leftpanel Content.
+</div>-->
+
+<script src="/js/panel.js"></script>
+
+<div data-role="panel" id="leftpanel" data-display="overlay" data-position-fixed="true">
+	
+	<div class='nd2-sidepanel-profile wow fadeInDown'>
+		<img class='profile-background' src="//lorempixel.com/400/200/technics/7/" />
+		<div class="row">
+			<!--<div class='col-xs-4 center-xs'>
+				<div class='box'>
+					<img class="profile-thumbnail" src="//lorempixel.com/400/200/technics/7/" />
+				</div>
+			</div>-->
+			<div class='col-xs-8'>
+				<div class='box profile-text'>
+					<strong id="nombreusuario">Jane Doe</strong>
+					<span class='subline' id=""></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<ul data-role="listview" data-inset="false">
+		<li data-role="list-divider">General</li>
+	</ul>
+	<a href="#principal" class="ui-btn ui-btn-inherit ui-icon-carat-d waves-effect waves-button" 
+		 style="/* position: static; */text-align: justify;margin-left: -15px;">Página principal</a>
+
+	<ul data-role="listview" data-inset="false">
+		<li data-role="list-divider">Artículos</li>
+	</ul>
+	<div data-role="collapsible" data-inset="false"  data-collapsed-icon="carat-d" data-expanded-icon="carat-d" data-iconpos="right">
+		<h3>Mis artículos</h3>
+		<ul data-role="listview" data-inset="false" data-icon="false">
+			<li><a onclick="verMisArticulos()">Ver mis artículos</a></li>
+			<li><a href="#articulonuevo">Añadir un artículo</a></li>
+		</ul>
+	</div>
+
+	<ul data-role="listview" data-inset="false">
+		<li data-role="list-divider">Perfil</li>
+	</ul>
+	<div data-role="collapsible" data-inset="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-d" data-iconpos="right">
+		<h3>Mi perfil</h3>
+		<ul data-role="listview" data-icon="false">
+			<li><a href="#login">Iniciar sesión/Registro</a></li>
+			<li><a onclick="verPerfil()">Mis datos</a></li>
+			<li><a onclick="editarPerfil()">Editar datos</a></li>
+			<li><a onclick="logout()">Cerrar sesión</a></li>
+		</ul>
+	</div>
+
+</div>

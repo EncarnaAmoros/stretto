@@ -7,7 +7,7 @@
 }
 
 .oculto {
-	
+	display: none !important;
 }
 
 /* Mensajes */
