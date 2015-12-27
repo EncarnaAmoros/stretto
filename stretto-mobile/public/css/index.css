@@ -1,3 +1,7 @@
-body {
+/*body {
 	padding-top: 5em;
+}*/
+
+.ui-listview>li.ui-li-has-alt>.ui-btn+.ui-btn {
+    width: 3.5em !important;
 }

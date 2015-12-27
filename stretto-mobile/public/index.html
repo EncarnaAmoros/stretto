@@ -5,8 +5,6 @@
 	<title>Stretto</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="author" content="encaramorosb@gmail.com">
 	<meta name="description" content="SPA Stretto">
@@ -14,21 +12,21 @@
 	<meta name="copyright" content="2015 Stretto">
 	
 	<!-- Incuir los CSS estilos -->
-	<link rel="stylesheet" href="/css/index.css">
-	<link rel="stylesheet" href="/css/articulos-list.css">
-	<!--<link rel="stylesheet" href="/css/login.css">
-	<link rel="stylesheet" href="/css/articulos-list.css">
-	<link rel="stylesheet" href="/css/articulos-usuario.css">
-	<link rel="stylesheet" href="/css/usuario-detalle.css">-->
+	<!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
 	<link rel="stylesheet" href="/vendor/waves/waves.min.css" />
 	<link rel="stylesheet" href="/vendor/wow/animate.css" />
-	<link rel="stylesheet" href="/css/nativedroid2.css" />
-
+	<link rel="stylesheet" href="/css/nativedroid2.css" />-->
 	<!--<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />-->
+	
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+	<link rel="stylesheet" href="/vendor/waves/waves.min.css" />
+	<link rel="stylesheet" href="/css/nativedroid2.css" />
 		
 </head>
 <body>
@@ -58,7 +56,7 @@
 				</li>
 				<li class="media" ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">						
 					<a href="#" ng-click="verArticulo(articulo)">
-						<img src="{{articulo.foto}}" class="ui-thumbnail ui-thumbnail-circular" />
+						<img class="ui-thumbnail ui-thumbnail-circular" src="{{articulo.foto}}"/>
 						<h2>{{articulo.nombre}}</h2>
 						<p>{{articulo.precio}}</p>
 					</a>
@@ -76,19 +74,6 @@
 				<h1>Stretto</h1>
 		</div>
 		<div role="main" class="ui-content">
-			<ul data-role="listview" data-icon="false">
-				<li data-role="list-divider">
-					Friends
-				</li>
-				<li>
-					<a href="#">
-						<img src="//lorempixel.com/150/150/people/1/" class="ui-thumbnail ui-thumbnail-circular" />
-						<h2>Ethel Chancy</h2>
-						<p>ehtel.chancy@example.com</p>
-					</a>
-				</li>
-			</ul>
-
 			<!-- Filtros de búsqueda -->
 			<div>
 				<h5>Busca por nombre:</h5>
@@ -106,26 +91,75 @@
 				<li data-role="list-divider">
 					Artículos
 				</li>
-				<li ng-repeat="articulo in articulos | filter:filtronombre | filter:filtrotipo">
-					<a href="#" ng-click="verArticulo(articulo)">
-						<img src="{{articulo.foto}}" class="ui-thumbnail ui-thumbnail-circular" />
+				<li ng-repeat="articulo in articulos" class="media ui-li-has-thumb ui-last-child ng-scope">
+					<a class="ui-page-theme-a ui-btn ui-bar-a" href="#" ng-click="verArticulo(articulo)">
+						<img class="ui-thumbnail ui-thumbnail-circular" src="{{articulo.foto}}" class="ui-thumbnail ui-thumbnail-circular" />
 						<h2>{{articulo.nombre}}</h2>
 						<p>{{articulo.precio}}</p>
 					</a>
-					<a data-role="button" ng-click="editarArticulo(articulo)" href="#" class="btn btn-primary">
-						Editar <span class="glyphicon glyphicon-pencil"></span>
-					</a>
-					<a data-role="button" ng-click="deleteArticulo(articulo.id)"
-						 id="botonderecha" class="btn btn-primary" id="botonDetecha">
-						Eliminar <span class="glyphicon glyphicon-trash"></span>
-					</a>
 				</li>
 			</ul>
+			<a data-role="button" class="btn btn-primary" ng-click="addArticulo()">Publicar</a>
 		</div>
 		<div data-role="footer" data-position="fixed">
 				<h2>Esto es el pie</h2>
 		</div>
 	</div>
+	
+	
+	<!-- PAGINA ARTICULO EN DETALLE -->
+	
+	<div data-role="page" ng-controller="ArticuloCtrl" id="articulodetalle">
+			<div data-role="header">
+					<h1>Artículo</h1>
+					<a href="#principal" data-rel="back" 
+					data-icon="carat-l">Atrás</a>
+			</div>
+			<div role="main" class="ui-content">
+					Artículo en detalle 
+			</div>
+			<div>
+				<div class="media" id="divArticuloDetalle">		
+					<!-- Vista del artículo en detalle -->
+					<a ng-click="verArticulo(articulo)" href="#" class="pull-left">
+						<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
+					</a>
+
+					<div class="media-body">
+						<h4 class="media-heading" id="nombreprecio">{{articulo.nombre}}
+							<i id="precio">{{articulo.precio}} €</i>
+						</h4>
+						<p id="descripcion">{{articulo.descripcion}}</p>
+						<p id="vendedor">Vendedor: 
+							<a ng-click="verUsuario(usuario)" href="#">{{usuario.nombre}} - {{usuario.email}}</a>
+						</p>
+
+					</div>	
+
+					<a ng-click='comprarArticulo()' href="#" data-role="button" class="btn btn-primary">
+						Comprar <span class="glyphicon glyphicon-shopping-cart"></span>
+					</a>
+					
+					<div data-role="controlgroup horizontal">
+						<a href="#" ng-click="editarArticulo(articulo)" data-icon="gear"
+							 data-role="button" class="ui-btn ui-btn-inline ui-shadow ui-corner-all">
+							Editar
+						</a>
+						<a href="#" ng-click="deleteArticulo(articulo.id)" data-icon="delete"
+							 data-role="button" class="ui-btn ui-btn-inline ui-shadow ui-corner-all">
+							Eliminar
+						</a>
+					</div
+
+					<div id="divmensaje" class="mensajeoculto"><div class="alert alert-success" id="mensaje">{{mensaje}}</div></div>
+				</div>
+			</div>
+			<div data-role="footer" data-position="fixed">
+					<h2>Esto es el pie</h2>
+			</div>
+	</div>
+	
+	
 	
 	<!-- PAGINA ARTICULO EDITABLE DEL USUARIO LOGEADO -->
 
@@ -173,6 +207,10 @@
 								</a>	
 								<a data-role="button" href="#articulosusuario" class="btn btn-primary" id="botonDetecha">
 									Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
+								</a>	
+								<a data-role="button" ng-click="deleteArticulo(articulousuario.id)"
+									 id="botonderecha" class="btn btn-primary ui-link ui-btn ui-shadow ui-corner-all botoneslista" id="botonDetecha">
+									Eliminar <span class="glyphicon glyphicon-trash"></span>
 								</a>
 							</div>						
 						</div>
@@ -184,45 +222,6 @@
 	</div>
 	
 	
-	<!-- PAGINA ARTICULO EN DETALLE -->
-	<div data-role="page" ng-controller="ArticuloCtrl" id="articulodetalle">
-			<div data-role="header">
-					<h1>Artículo</h1>
-					<a href="#principal" data-rel="back" 
-					data-icon="carat-l">Atrás</a>
-			</div>
-			<div role="main" class="ui-content">
-					Artículo en detalle 
-			</div>
-			<div>
-				<div class="media" id="divArticuloDetalle">		
-					<!-- Vista del artículo en detalle -->
-					<a ng-click="verArticulo(articulo)" href="#" class="pull-left">
-						<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
-					</a>
-
-					<div class="media-body">
-						<h4 class="media-heading" id="nombreprecio">{{articulo.nombre}}
-							<i id="precio">{{articulo.precio}} €</i>
-						</h4>
-						<p id="descripcion">{{articulo.descripcion}}</p>
-						<p id="vendedor">Vendedor: 
-							<a ng-click="verUsuario(usuario)" href="#">{{usuario.nombre}} - {{usuario.email}}</a>
-						</p>
-
-					</div>	
-
-					<a ng-click='comprarArticulo()' href="#" data-role="button" class="btn btn-primary">
-						Comprar <span class="glyphicon glyphicon-shopping-cart"></span>
-					</a>
-
-					<div id="divmensaje" class="mensajeoculto"><div class="alert alert-success" id="mensaje">{{mensaje}}</div></div>
-				</div>
-			</div>
-			<div data-role="footer" data-position="fixed">
-					<h2>Esto es el pie</h2>
-			</div>
-	</div>
 	
 	<!-- PAGINA LOGIN -->
 	<div data-role="page" ng-controller="LoginCtrl" id="login">
@@ -408,6 +407,11 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+	
+	<!-- Native android -->
+	<script src="/vendor/waves/waves.min.js"></script>
+	<script src="/js/nativedroid2.js"></script>
+	<script src="/nd2settings.js"></script>
 
 	<!-- Include Angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
@@ -422,11 +426,6 @@
 	<script src="/js/controllers.js"></script>
 	<!-- Incluimos servicios -->
 	<script src="/js/strettoService.js"></script>
-
-	<script src="/vendor/waves/waves.min.js"></script>
-	<script src="/vendor/wow/wow.min.js"></script>
-	<script src="/js/nativedroid2.js"></script>
-	<script src="/nd2settings.js"></script>
 
 	<script type="text/javascript">
 		window.addEventListener('pageshow', function() {
