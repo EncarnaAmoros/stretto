@@ -50,7 +50,7 @@ strettoService.service('articuloService', function($http)
 			})
 		},
 		divmensaje: document.getElementById("divmensaje"),
-		compradoBien: function() {	
+		compradoBien: function() {
 			divmensaje.className = "mensajevisible";
 		},
 		compradoDesaparece: function() {
@@ -70,8 +70,8 @@ strettoService.service('articulosService', function($http)
 		},
 		mensaje: document.getElementById("mensaje"),
 		divmensaje: document.getElementById("divmensaje"),
-		mensaje2: document.getElementById("mensaje"),
-		divmensaje2: document.getElementById("divmensaje"),
+		mensaje: document.getElementById("mensaje"),
+		divmensaje: document.getElementById("divmensaje"),
 		modificadoBien: function() {
 			mensaje.className = "alert alert-success";
 			divmensaje.className = "mensajevisible";
@@ -84,12 +84,12 @@ strettoService.service('articulosService', function($http)
 			divmensaje.className = "mensajedesaparece";
 		}, 
 		addBien: function() {
-			mensaje2.className = "alert alert-success";
-			divmensaje2.className = "mensajevisible";
+			mensaje.className = "alert alert-success";
+			divmensaje.className = "mensajevisible";
 		},
 		addMal: function() {
-			mensaje2.className = "alert alert-danger";
-			divmensaje2.className = "mensajevisible";
+			mensaje.className = "alert alert-danger";
+			divmensaje.className = "mensajevisible";
 		}
 	}
 });

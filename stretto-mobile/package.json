@@ -30,8 +30,7 @@
     "karma-requirejs": "^0.2.2",
     "requirejs": "^2.1.22"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "author": "Encarna Amorós Beneite",
   "license": "ISC"
 }

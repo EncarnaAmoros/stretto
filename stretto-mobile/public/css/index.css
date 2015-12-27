@@ -9,3 +9,25 @@
 .oculto {
 	
 }
+
+/* Mensajes */
+
+#mensaje {
+	display: block;
+	margin-top: 2em;
+	margin-left: 29.7em;
+}
+
+.mensajeoculto {
+	opacity: 0;
+}
+
+.mensajevisible {
+	opacity: 1;
+	transition: opacity 1s ease-out;
+}
+
+.mensajedesaparece {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}

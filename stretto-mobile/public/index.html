@@ -13,22 +13,25 @@
 	
 	<!-- Incuir los CSS estilos -->
 	<link rel="stylesheet" href="/css/index.css" />
-	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
 	<link rel="stylesheet" href="/vendor/waves/waves.min.css" />
 	<link rel="stylesheet" href="/css/nativedroid2.css" />
 	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
 </head>
 <body>
 	
 	<!-- PAGINA ARTICULOS GENERAL -->
+	
 	<div data-role="page" ng-controller="ArticulosCtrl" id="principal">
 		<div data-role="header">
 				<h1>Stretto</h1>
 		</div>
+		
 		<div role="main" class="ui-content">
+	
 			<!-- Filtros de búsqueda -->
 			<div>
 				<h5>Busca por nombre:</h5>
@@ -41,6 +44,7 @@
 					<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
 				</select>			
 			</div>
+			
 			<!-- Lista con artículos y paginado -->
 			<ul data-role="listview" data-icon="false">
 				<li data-role="list-divider">
@@ -55,12 +59,14 @@
 				</li>
 			</ul>
 		</div>
+		
 		<div data-role="footer" data-position="fixed">
 				<h2>Esto es el pie</h2>
 		</div>
 	</div>
 	
 	<!-- PAGINA ARTICULOS USUARIO -->
+	
 	<div data-role="page" ng-controller="UsuarioArticulosCtrl" id="articulosusuario">
 		<div data-role="header">
 				<h1>Stretto</h1>
@@ -94,24 +100,25 @@
 						<h2>{{articulo.nombre}}</h2>
 						<p>{{articulo.precio}}</p>	
 					</a>
-						<!--Botones inferiores de cada item-->
-						<div data-role="panel" id="bottomsheetlist{{articulo.id}}"
-								 class="ui-bottom-sheet ui-bottom-sheet-list ui-panel ui-panel-position-bottom ui-panel-display-overlay
-												ui-panel-closed ui-body-inherit" data-animate="false" data-position='bottom' data-display="overlay">
-							<div class='row around-xs'>
-								<div class='col-xs-auto'>
-									<a href='#' ng-click="verArticulo(articulo)"
-									 class='ui-bottom-sheet-link ui-btn ui-btn-inline 
-													waves-effect waves-button waves-effect waves-button opcionesitem' data-ajax='false'>
-										<i class='zmdi zmdi-assignment zmd-2x'></i>
-										<strong>VER EN DETALLE</strong>
-									</a>
-								</div>
+					
+					<!--Botones inferiores de cada item-->
+					<div data-role="panel" id="bottomsheetlist{{articulo.id}}"
+							 class="ui-bottom-sheet ui-bottom-sheet-list ui-panel ui-panel-position-bottom ui-panel-display-overlay
+											ui-panel-closed ui-body-inherit" data-animate="false" data-position='bottom' data-display="overlay">
+						<div class='row around-xs'>
+							<div class='col-xs-auto'>
+								<a href='#' ng-click="verArticulo(articulo)"
+								 class='ui-bottom-sheet-link ui-btn ui-btn-inline 
+												waves-effect waves-button waves-effect waves-button opcionesitem' data-ajax='false'>
+									<i class='zmdi zmdi-assignment zmd-2x'></i>
+									<strong>VER EN DETALLE</strong>
+								</a>
+							</div>
 							<div class='col-xs-auto'>
 								<a href='#' ng-click="editarArticulo(articulo)"
 									 class='ui-bottom-sheet-link ui-btn ui-btn-inline 
 													waves-effect waves-button waves-effect waves-button' data-ajax='false'>
-									<i class='zmdi zmdi-assignment zmd-2x'></i>
+									<i class='zmdi zmdi-edit zmd-2x'></i>
 									<strong>EDITAR ARTICULO</strong>
 								</a>
 							</div>
@@ -123,12 +130,20 @@
 									<strong>ELIMINAR</strong>
 								</a>
 							</div>
+							<div class='col-xs-auto'>
+								<a href='#' ng-click="cancelarPanel(articulo.id)"
+									 class='ui-bottom-sheet-link ui-btn ui-btn-inline
+													waves-effect waves-button waves-effect waves-button' data-ajax='false'>
+									<i class='zmdi zmdi-fire zmd-2x'></i>
+									<strong>CANCELAR</strong>
+								</a>
+							</div>
 						</div>
 					</div>					
 				</li>
 			</ul>
 			
-			<a data-role="button" class="btn btn-primary" ng-click="addArticulo()">Publicar</a>
+			<a data-role="button" href="#articulonuevo">Publicar</a>
 		</div>
 		
 		<div data-role="footer" data-position="fixed">
@@ -145,16 +160,15 @@
 					<a href="#principal" data-rel="back" 
 					data-icon="carat-l">Atrás</a>
 			</div>
+		
 			<div role="main" class="ui-content">
-					Artículo en detalle 
-			</div>
-			<div>
-				<div class="media" id="divArticuloDetalle">		
+				Artículo en detalle 
+				<div class="media" id="divArticuloDetalle">	
+					
 					<!-- Vista del artículo en detalle -->
 					<a ng-click="verArticulo(articulo)" href="#" class="pull-left">
 						<img src="{{articulo.foto}}" class="media-object" id="fotos-articulos" alt="{{articulo.nombre}}">
 					</a>
-
 					<div class="media-body">
 						<h4 class="media-heading" id="nombreprecio">{{articulo.nombre}}
 							<i id="precio">{{articulo.precio}} €</i>
@@ -163,33 +177,30 @@
 						<p id="vendedor">Vendedor: 
 							<a ng-click="verUsuario(usuario)" href="#">{{usuario.nombre}} - {{usuario.email}}</a>
 						</p>
-
-					</div>	
-
-					<a ng-click='comprarArticulo()' href="#" data-role="button" class="btn btn-primary">
-						Comprar <span class="glyphicon glyphicon-shopping-cart"></span>
-					</a>
+					</div>
 					
-					<div data-role="controlgroup horizontal">
-						<a href="#" ng-click="editarArticulo(articulo)" data-icon="gear"
-							 data-role="button" class="ui-btn ui-btn-inline ui-shadow ui-corner-all">
-							Editar
-						</a>
-						<a href="#" ng-click="deleteArticulo(articulo.id)" data-icon="delete"
-							 data-role="button" class="ui-btn ui-btn-inline ui-shadow ui-corner-all">
-							Eliminar
-						</a>
-					</div
-
-					<div id="divmensaje" class="mensajeoculto"><div class="alert alert-success" id="mensaje">{{mensaje}}</div></div>
+					<!-- Comprar -->
+					<a href="#popupDialog" data-rel="popup" data-position-to="window" data-role="button">
+						Open popup dialog
+					</a>
+					<div data-role="popup" id="popupDialog">
+						<div data-role="header">
+							<h1 class='nd-title'>Compra realizada con éxito</h1>
+						</div>
+						<div data-role="content">
+								<p>Compra realizada con éxito. ¡Gracias por confiar en Stretto!</p>
+								<a href="dialog/index.html" data-rel="back" data-role="button" data-inline="true" class="ui-btn ui-btn-primary">
+									<i class="zmdi zmdi-check"></i> Aceptar
+								</a>
+						</div>
+					</div>					
 				</div>
 			</div>
+		
 			<div data-role="footer" data-position="fixed">
 					<h2>Esto es el pie</h2>
 			</div>
-	</div>
-	
-	
+	</div>	
 	
 	<!-- PAGINA ARTICULO EDITABLE DEL USUARIO LOGEADO -->
 
@@ -198,51 +209,34 @@
 					<h1>Stretto</h1>
 			</div>
 			<div role="main" class="ui-content">
-					Estos son mis artículos, ir a 
-				<a href="#principal" data-transition="flip"> principal</a>
-				<a href="#perfil" data-transition="flip"> perfil</a>
+					Editar artículo
 			</div>			
 				<div class="media">			
 					<div class="panel panel-default">
-
 						<!-- Vista de los artículo para editar -->
-						<div class="panel-body">
-							<a href="" class="pull-left" id="imagenArtEdit">
-								<img src="{{imagenPorDefecto}}" class="media-object" id="fotos-articulos" alt="Imagen por defecto">
-							</a>
-							<label>URL foto:</label>
-							<input ng-model=articulo.foto class="form-control" id="inputformArtBig" placeholder="URL foto del artículo">
-							<div class="media-body">
-								<div id="nombreEdit">
-									<label>Nombre:</label>
-									<input ng-model=articulo.nombre class="form-control" placeholder="Nombre">
-								</div>
-								<div id="precioEdit">
-									<label id="etiquetaPrecioEdit">Precio:</label>
-									<input ng-model=articulo.precio class="form-control" placeholder="Precio">
-								</div>
-								<div>
-									<label id="etiquetaPrecioEdit">Tipo:</label>
-									<select ng-model="articulo.tipo" class="form-control" id="inputformArtSmall">
-										<option value="" id="defaulselect">Selecciona un tipo</option>
-										<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-									</select>	
-								</div>
-								<label>Descripción:</label>
-								<textarea rows="3" ng-model=articulo.descripcion class="form-control" 
-													id="inputformArtBig" placeholder="Descripción">
-								</textarea>
-								<a data-role="button" ng-click="updateArticulo(articulo)" class="btn btn-primary">
-									Guardar <span class="glyphicon glyphicon-floppy-saved"></span>
-								</a>	
-								<a data-role="button" href="#articulosusuario" class="btn btn-primary" id="botonDetecha">
-									Cancelar <span class="glyphicon glyphicon-arrow-left"></span>
-								</a>	
-								<a data-role="button" ng-click="deleteArticulo(articulousuario.id)"
-									 id="botonderecha" class="btn btn-primary ui-link ui-btn ui-shadow ui-corner-all botoneslista" id="botonDetecha">
-									Eliminar <span class="glyphicon glyphicon-trash"></span>
-								</a>
-							</div>						
+							<input ng-model=articulo.foto value="{{articulo.foto}}" placeholder="URL de la foto del artículo">
+							<input ng-model=articulo.nombre value="{{articulo.nombre}}" placeholder="Nombre del artículo">
+							<input ng-model=articulo.precio value="{{articulo.precio}}" placeholder="Precio de venta">
+							<select name="select-choice-1" id="select-choice-1b" data-native-menu="false"  ng-model="articulo.tipo">
+								<option value="" id="defaulselect">Selecciona un tipo</option>
+								<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+								<ul ng-repeat="tipo in tipos" class="ui-selectmenu-list ui-listview" 
+										id="select-choice-1b-menu" role="listbox" aria-labelledby="select-choice-1b-button">
+									<li data-option-index="1" data-icon="false" data-placeholder="true" 
+											class="" role="option" aria-selected="false">
+										<a href="#" tabindex="-1" class="ui-btn">Selecciona un tipo</a>
+									</li>
+								</ul>							
+							</select>
+							<textarea ng-model=articulo.descripcion placeholder="Introduzca aquí la descripción del artículo">
+								articulo.descripcion
+							</textarea>
+							<a data-role="button" ng-click="updateArticulo(articulo)">
+								<i class="zmdi zmdi-check"></i> Guardar
+							</a>	
+							<a data-role="button" href="#articulosusuario">
+								<i class="zmdi zmdi-close"></i> Cancelar
+							</a>						
 						</div>
 					</div>		
 				</div>
@@ -251,9 +245,54 @@
 			</div>
 	</div>
 	
-	
+	<!-- PAGINA ARTICULO NUEVO -->
+
+	<div data-role="page" ng-controller="AddArticulosCtrl" id="articulonuevo">
+			<div data-role="header">
+					<h1>Stretto</h1>
+			</div>
+			<div role="main" class="ui-content">
+					Nuevo artículo
+			</div>			
+				<div class="media">			
+					<div class="panel panel-default">
+							<input ng-model=articulo.foto placeholder="URL de la foto del artículo">
+							<input ng-model=articulo.nombre placeholder="Nombre del artículo">
+							<input ng-model=articulo.precio placeholder="Precio de venta">
+							<select name="select-choice-1" id="select-choice-1b" data-native-menu="false"  ng-model="articulo.tipo">
+								<option value="" id="defaulselect">Selecciona un tipo</option>
+								<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
+								<ul ng-repeat="tipo in tipos" class="ui-selectmenu-list ui-listview" 
+										id="select-choice-1b-menu" role="listbox" aria-labelledby="select-choice-1b-button">
+									<li data-option-index="1" data-icon="false" data-placeholder="true" 
+											class="" role="option" aria-selected="false">
+										<a href="#" tabindex="-1" class="ui-btn">Selecciona un tipo</a>
+									</li>
+								</ul>							
+							</select>
+							<textarea ng-model=articulo.descripcion placeholder="Introduzca aquí la descripción del artículo">
+							</textarea>
+							<a data-role="button" ng-click="addArticulo()">
+								<i class="zmdi zmdi-check"></i> Guardar
+							</a>	
+							<a data-role="button" href="#articulosusuario">
+								<i class="zmdi zmdi-close"></i> Cancelar
+							</a>						
+						</div>
+					
+						<div id="divmensaje" class="mensajeoculto">
+							<div class="alert alert-success" id="mensaje">{{mensaje}}</div>
+						</div>
+					
+					</div>		
+				</div>
+			<div data-role="footer" data-position="fixed">
+					<h2>Esto es el pie</h2>
+			</div>
+	</div>
 	
 	<!-- PAGINA LOGIN -->
+	
 	<div data-role="page" ng-controller="LoginCtrl" id="login">
 			<div data-role="header">
 					<h1>Stretto</h1>
@@ -440,6 +479,7 @@
 	
 	<!-- Native android -->
 	<script src="/vendor/waves/waves.min.js"></script>
+	<script src="/vendor/wow/wow.min.js"></script>
 	<script src="/js/nativedroid2.js"></script>
 	<script src="/nd2settings.js"></script>
 
