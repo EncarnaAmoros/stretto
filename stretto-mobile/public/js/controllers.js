@@ -3,6 +3,18 @@ var rutaorigen = '/';
 
 /* Nota: controllers.js -> las llamadas a la API se hacen por medio de un Service */
 
+//FUNCIONES UTILES
+var mostrarMensaje = function(mensaje, codigo) {
+	new $.nd2Toast({ // The 'new' keyword is important, otherwise you would overwrite the current toast instance
+	 message : codigo+": "+mensaje, // Required
+	 action : { // Optional (Defines the action button on the right)
+		 fn : function() { // function that will be triggered when action clicked
+		 }
+	 },
+	 ttl : 3000 // optional, time-to-live in ms (default: 3000)
+	});
+}
+
 ////////////////////////////////////////
 //CONTROLADORES Y FUNCIONES DE ARTICULOS
 ////////////////////////////////////////
@@ -49,7 +61,6 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http', 'articulosService', 'tiposService', 'articuloService', '$timeout',
 	function ($scope, $http, articulosService, tiposService, articuloService, $timeout) {
 		
-		//Si son los artículos de otro usuario no se pueden editar o eliminar
 		$scope.actualizar = function() {
 			//Obtenemos los artículos del usuario			
 			articulosService.getArticulosUsuario(localStorage.usuarioId, 1)
@@ -62,11 +73,9 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http', 'articu
 							$scope.articulos = listarticulos1.concat(listarticulos2);
 						})
 						.error(function(resultados2) {
-							//Sin datos	
 						})	
 				})
 				.error(function(resultados) {
-					//Sin datos	
 				})	
 			var tipos;
 			//Obtenemos los tipos de instrumentos que hay
@@ -110,8 +119,8 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http', 'articu
 		}
 		
 		$scope.editarArticulo = function(articulo) {
-			if(localStorage.email==undefined && localStorage.password==undefined) {
-				
+			if((localStorage.email==undefined && localStorage.password==undefined) || localStorage.id!=articulo.UsuarioId) {
+				mostrarMensaje("No tienes permiso para reaizar esta acción", "401");
 			}				
 			else {
 				localStorage.articuloId = articulo.id;
@@ -121,30 +130,22 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http', 'articu
 		
 		//Funcion para eliminar un artículo llamando al service
 		$scope.deleteArticulo = function(id) {
-			if(localStorage.email==undefined && localStorage.password==undefined) {
-				
+			if((localStorage.email==undefined && localStorage.password==undefined) || localStorage.id!=articulo.UsuarioId) {
+				mostrarMensaje("No tienes permiso para reaizar esta acción", "401");
 			}				
 			else {
 				articuloService.deleteArticulo(id)
 					.success(function(data, status, headers, config) {
 						$scope.actualizar();
-						$scope.mensaje = "Artículo eliminado con éxito";
-						articulosService.modificadoBien();
+						mostrarMensaje("Artículo eliminado con éxito", status);
 
 						//A los 2 segundos ejecutamos lo que contiene la funcion
 						$timeout(function() {
-							articulosService.modificadoDesaparece();
 							$.mobile.pageContainer.pagecontainer('change', '#articulosusuario');
 						}, 2000);
 					})
 					.error(function(data, status, headers, config) {
-						$scope.mensaje = "Error código: "+status+" "+data;
-						articulosService.modificadoMal();
-
-						//A los 2 segundos ejecutamos lo que contiene la funcion
-						$timeout(function() {
-							articulosService.modificadoDesaparece();
-						}, 2000);
+						mostrarMensaje(data, status);
 					})			
 			}
   	}
@@ -172,19 +173,9 @@ strettoControllers.controller('ArticuloCtrl',  ['$scope', '$http', '$routeParams
 			$scope.actualizar();
 		});
 		
-		$scope.verArticulo = function(articulo) {
-			localStorage.articuloId = articulo.id;
-			$.mobile.pageContainer.pagecontainer('change', '#articuloeditable');
-		}
-		
 		$scope.verUsuario = function(usuario) {
 			localStorage.usuarioId = usuario.id;
 			$.mobile.pageContainer.pagecontainer('change', '#usuariodetalle');
-		}
-		
-		$scope.comprarArticulo = function() {
-			$scope.mensaje="Compra realizada con éxito. ¡Gracias por confiar en Stretto!";
-			articuloService.compradoBien();
 		}
 		
 	}]);
@@ -222,49 +213,43 @@ strettoControllers.controller('UsuarioArticuloEditarCtrl', ['$scope','$http', 'a
 				
 		//Funcion para actualizar un artículo
 		$scope.updateArticulo = function(articulo) {
-			articuloService.updateArticulo(articulo)
-				.success(function(data, status, headers, config) {
-					$scope.mensaje="Artículo actualizado con éxito";
-					articulosService.modificadoBien();
+			if((localStorage.email==undefined && localStorage.password==undefined) || localStorage.id!=articulo.UsuarioId) {
+				mostrarMensaje("No tienes permiso para reaizar esta acción", "401");
+			}				
+			else {
+				articuloService.updateArticulo(articulo)
+					.success(function(data, status, headers, config) {
+						mostrarMensaje("Artículo actualizado con éxito", status);
 
-					//A los 2 segundos ejecutamos lo que contiene la funcion
-					$timeout(function() {
-						articulosService.modificadoDesaparece();
-						$.mobile.pageContainer.pagecontainer('change', '#articulosusuario');
-					}, 2000);
-				})
-				.error(function(data, status, headers, config) {
-					$scope.mensaje = "Error código: "+status+" "+data;
-					articulosService.modificadoMal();
-				})
+						//A los 2 segundos ejecutamos lo que contiene la funcion
+						$timeout(function() {
+							$.mobile.pageContainer.pagecontainer('change', '#articulosusuario');
+						}, 2000);
+					})
+					.error(function(data, status, headers, config) {
+						mostrarMensaje(data, status);
+					})
+			}
   	}
 		
 		//Funcion para eliminar un artículo llamando al service
 		$scope.deleteArticulo = function(id) {
-			if(localStorage.email==undefined && localStorage.password==undefined) {
-				
+			if((localStorage.email==undefined && localStorage.password==undefined) || localStorage.id!=articulo.UsuarioId) {
+				mostrarMensaje("No tienes permiso para reaizar esta acción", "401");
 			}				
 			else {
 				articuloService.deleteArticulo(id)
 					.success(function(data, status, headers, config) {
 						$scope.actualizar();
-						$scope.mensaje = "Artículo eliminado con éxito";
-						articulosService.modificadoBien();
+						mostrarMensaje("Artículo eliminado con éxito", status);
 
 						//A los 2 segundos ejecutamos lo que contiene la funcion
 						$timeout(function() {
-							articulosService.modificadoDesaparece();
 							$.mobile.pageContainer.pagecontainer('change', '#articulosusuario');
 						}, 2000);
 					})
 					.error(function(data, status, headers, config) {
-						$scope.mensaje = "Error código: "+status+" "+data;
-						articulosService.modificadoMal();
-
-						//A los 2 segundos ejecutamos lo que contiene la funcion
-						$timeout(function() {
-							articulosService.modificadoDesaparece();
-						}, 2000);
+						mostrarMensaje(data, status);
 					})
 			}
   	}
@@ -285,20 +270,23 @@ strettoControllers.controller('AddArticulosCtrl',  ['$scope', '$http', 'articulo
 		
 		//Funcion para añadir un nuevo artículo llamando al service
 		$scope.addArticulo = function() {
-			articuloService.addArticulo($scope.articulo)
-			.success(function(data, status, headers, config) {
-				$scope.mensaje = data;
-				articulosService.addBien();
-				
-				//A los 2 segundos ejecutamos lo que contiene la funcion
-				$timeout(function() {
-					$.mobile.pageContainer.pagecontainer('change', '#articulosusuario');
-				}, 2000);
-			})
-			.error(function(data, status, headers, config) {
-				$scope.mensaje = "Error código: "+status+" "+data;
-				articulosService.addMal();
-			})
+			if(localStorage.email==undefined && localStorage.password==undefined) {
+				mostrarMensaje("Debes iniciar sesión", "401");
+			}				
+			else {
+				articuloService.addArticulo($scope.articulo)
+				.success(function(data, status, headers, config) {
+					mostrarMensaje(data, status);
+
+					//A los 2 segundos ejecutamos lo que contiene la funcion
+					$timeout(function() {
+						$.mobile.pageContainer.pagecontainer('change', '#articulosusuario');
+					}, 2000);
+				})
+				.error(function(data, status, headers, config) {
+					mostrarMensaje(data, status);
+				})
+			}
   	}
 	}]);
 
@@ -340,8 +328,8 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', 'usuarioServic
 		}
 		
 		$scope.editarUsuario = function(usuario) {
-			if(localStorage.email==undefined && localStorage.password==undefined) {
-				
+			if((localStorage.email==undefined && localStorage.password==undefined) || localStorage.id!=usuario.id) {
+				mostrarMensaje("No tienes permiso para reaizar esta acción", "401");
 			}				
 			else {
 				localStorage.usuarioId = usuario.id;
@@ -351,43 +339,49 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', 'usuarioServic
 		
 		//Funcion para actualizar un usuario llamando al Service
 		$scope.updateUsuario = function(usuario) {
-			usuarioService.updateUsuario(usuario)
-			.success(function(data, status, headers, config) {
-				$scope.mensaje = "Usuario actualizado con éxito";
-				usuarioService.modificadoBien();
-				
-				//A los 2 segundos ejecutamos lo que contiene la funcion
-				$timeout(function() {
-					usuarioService.modificadoDesaparece();
-					$.mobile.pageContainer.pagecontainer('change', '#usuariodetalle');
-				}, 2000);				
-			})
-			.error(function(data, status, headers, config) {
-				$scope.mensaje="Error código: "+status+" "+data;
-				usuarioService.modificadoMal();
-			})
+			if((localStorage.email==undefined && localStorage.password==undefined) || localStorage.id!=usuario.id) {
+				mostrarMensaje("No tienes permiso para reaizar esta acción", "401");
+			}				
+			else {
+				usuarioService.updateUsuario(usuario)
+				.success(function(data, status, headers, config) {
+					mostrarMensaje("Usuario actualizado con éxito", status);
+					
+					//A los 2 segundos ejecutamos lo que contiene la funcion
+					$timeout(function() {
+						$.mobile.pageContainer.pagecontainer('change', '#usuariodetalle');
+					}, 2000);				
+				})
+				.error(function(data, status, headers, config) {
+					mostrarMensaje(data, status);
+
+				})
+			}
   	}
 		
 		//Funcion para eliminar un usuario llamando al service
 		$scope.deleteUsuario = function(id) {
-			usuarioService.deleteUsuario(id)
-			.success(function(data, status, headers, config) {
-				alert("Cuenta eliminada con éxito");
-				localStorage.clear();
-				$window.location.href = "/";
-				$.mobile.pageContainer.pagecontainer('change', '#principal');
-			})
-			.error(function(data, status, headers, config) {
-				$scope.mensaje="Error código: "+status+" "+data;
-				usuarioService.modificadoMal();
-			})
+			if((localStorage.email==undefined && localStorage.password==undefined) || localStorage.id!=id) {
+				mostrarMensaje("No tienes permiso para reaizar esta acción", "401");
+			}				
+			else {
+				usuarioService.deleteUsuario(id)
+				.success(function(data, status, headers, config) {
+					mostrarMensaje("Cuenta eliminada con éxito", status);
+					localStorage.clear();
+					$.mobile.pageContainer.pagecontainer('change', '#principal');
+				})
+				.error(function(data, status, headers, config) {
+					mostrarMensaje(data, status);
+				})
+			}
   	}
   }]);
 
 /* Login y registro para los usuarios */
 
-strettoControllers.controller('LoginCtrl', ['$scope', '$http', 'loginService', '$timeout', '$window',
-	function ($scope, $http, loginService, $timeout, $window) {
+strettoControllers.controller('LoginCtrl', ['$scope', '$http', 'loginService', '$timeout',
+	function ($scope, $http, loginService, $timeout) {
 		//Inicializamos para logeo
 		$scope.datos = {};
 		
@@ -395,42 +389,21 @@ strettoControllers.controller('LoginCtrl', ['$scope', '$http', 'loginService', '
 		$scope.login = function() {
 			//No hay error al iniciar sesion, guardamos auth
 			loginService.getLogin($scope.datos.email, $scope.datos.password)
-				.success(function(data) {
+				.success(function(data, status) {
 					localStorage.email = $scope.datos.email;
 					localStorage.password = $scope.datos.password;
 					localStorage.id = data.id;
-					$scope.mensaje = data.mensaje;
-					loginService.loginBien();
+					mostrarMensaje("Inicio de sesión correcto", status);
 				
 					//A los 2 segundos ejecutamos lo que contiene la funcion
 					$timeout(function() {
-						loginService.modificadoDesaparece();
 						$.mobile.pageContainer.pagecontainer('change', '#principal');
 					}, 2000);
 					
     		})
 				//Hay error, lo mostramos
-				.error(function(data) {
-					$scope.mensaje="Error código: "+status+" "+data;
-					loginService.loginMal();
-				
-					$timeout(function() {
-						loginService.modificadoDesaparece();
-					}, 2000);
+				.error(function(data, status) {
+					mostrarMensaje(data, status);
 				});
 		}
 	}]);
-
-/* Funcion para mostrar modal con login */
-
-var mostrarLogin = function($modal, $window) {
-	var modalInstance = $modal.open({
-		templateUrl: rutaorigen + 'partials/login.html',
-		controller: 'LoginCtrl'
-	});
-	
-	//Siempre que se cierre el model ejecutamos este callback
-	modalInstance.result.finally(function () {
-		$window.location.href = '/';	
-	});
-}

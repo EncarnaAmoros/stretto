@@ -48,13 +48,6 @@ strettoService.service('articuloService', function($http)
 				data: articulo,
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			})
-		},
-		divmensaje: document.getElementById("divmensaje"),
-		compradoBien: function() {
-			divmensaje.className = "mensajevisible";
-		},
-		compradoDesaparece: function() {
-			divmensaje.className = "mensajedesaparece";
 		}
 	}
 });
@@ -67,29 +60,6 @@ strettoService.service('articulosService', function($http)
 		},
 		getArticulosUsuario: function(id, page) {
 			return $http.get(URL_API + 'usuarios/'+id+'/articulos'+'?page='+page);
-		},
-		mensaje: document.getElementById("mensaje"),
-		divmensaje: document.getElementById("divmensaje"),
-		mensaje: document.getElementById("mensaje"),
-		divmensaje: document.getElementById("divmensaje"),
-		modificadoBien: function() {
-			mensaje.className = "alert alert-success";
-			divmensaje.className = "mensajevisible";
-		},
-		modificadoMal: function() {
-			mensaje.className = "alert alert-danger";
-			divmensaje.className = "mensajevisible";
-		}, 
-		modificadoDesaparece: function() {
-			divmensaje.className = "mensajedesaparece";
-		}, 
-		addBien: function() {
-			mensaje.className = "alert alert-success";
-			divmensaje.className = "mensajevisible";
-		},
-		addMal: function() {
-			mensaje.className = "alert alert-danger";
-			divmensaje.className = "mensajevisible";
 		}
 	}
 });
@@ -118,20 +88,6 @@ strettoService.service('usuarioService', function($http)
 				data: usuario,
 				headers: {'Authorization': 'Basic ' + btoa(localStorage.email+":"+localStorage.password)}
 			})
-		},
-		mensaje: document.getElementById("mensaje"),
-		divmensaje: document.getElementById("divmensaje"),
-		modificadoBien: function() {
-			console.log("que pasa");
-			mensaje.className = "alert alert-success";			
-			divmensaje.className = "mensajevisible";
-		},
-		modificadoMal: function() {
-			mensaje.className = "alert alert-danger";
-			divmensaje.className = "mensajevisible";
-		},
-		modificadoDesaparece: function() {
-			divmensaje.className = "mensajedesaparece";
 		}
 	}
 });
@@ -141,22 +97,6 @@ strettoService.service('loginService', function($http)
 	return {
 		getLogin: function(email, password) {
 			return $http.get(URL_API + 'usuarios/login?email='+email+'&password='+password);
-		},		
-		loginBien: function() {
-			var mensaje = document.getElementById("mensajelogin");
-			var divmensaje = document.getElementById("divmensajelogin");
-			mensaje.className = "alert alert-success";
-			divmensaje.className = "mensajevisible";
-		},
-		loginMal: function() {
-			var mensaje = document.getElementById("mensajelogin");
-			var divmensaje = document.getElementById("divmensajelogin");
-			mensaje.className = "alert alert-danger";
-			divmensaje.className = "mensajevisible";
-		},
-		modificadoDesaparece: function() { 
-			var divmensaje = document.getElementById("divmensajelogin");
-			divmensaje.className = "mensajedesaparece";
 		}
 	}
 });
