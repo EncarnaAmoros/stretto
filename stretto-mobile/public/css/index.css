@@ -13,7 +13,9 @@
 /* Foto artículo */
 
 .ui-popup-container {
-/*    max-width: 679px !important;
-    top: 82px !important;
-    left: 55px !important;*/
+}
+
+.botonatras {
+	/*width: 90px !important;
+	border-radius: 10px !important;*/
 }

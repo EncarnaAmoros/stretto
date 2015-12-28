@@ -111,6 +111,9 @@
 				<i class="zmdi zmdi-menu"></i>
 			</a>
 			<h1>Stretto</h1>
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right botonatras" >
+				<i class="zmdi zmdi-arrow-left"></i>
+			</a>
 		</div>
 		
 		<div role="main" class="ui-content">			
@@ -201,11 +204,8 @@
 				<i class="zmdi zmdi-menu"></i>
 			</a>
 			<h1>Stretto</h1>
-			<!--<a href="#principal" data-rel="back" class="ui-btn-right" data-icon="carat-l">
-				<i class="zmdi zmdi-check"></i>
-			</a>-->
-			<a href="#" data-role="button" data-rel="back" class="ui-btn-right" data-theme="a" data-icon="arrow-l">
-				Back
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right botonatras" >
+				<i class="zmdi zmdi-arrow-left"></i>
 			</a>
 		</div>
 
@@ -272,6 +272,9 @@
 				<i class="zmdi zmdi-menu"></i>
 			</a>
 			<h1>Stretto</h1>
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right botonatras" >
+				<i class="zmdi zmdi-arrow-left"></i>
+			</a>
 		</div>
 		<div role="main" class="ui-content">
 			<h3>Editar artículo</h3>
@@ -314,6 +317,9 @@
 				<i class="zmdi zmdi-menu"></i>
 			</a>
 			<h1>Stretto</h1>
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right botonatras" >
+				<i class="zmdi zmdi-arrow-left"></i>
+			</a>
 		</div>
 		<div role="main" class="ui-content">
 			<h3>Nuevo artículo</h3>
@@ -345,9 +351,15 @@
 		<!-- Panel -->
 		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
 		<div data-role="header">
-				<h1>Stretto</h1>
-				<a href="#principal" data-rel="back" 
-				data-icon="carat-l">Atrás</a>
+			<!-- Mostrar panel-->
+			<a href="#leftpanel" 
+				 class="ui-btn-left ui-btn waves-effect waves-button waves-effect waves-button" data-role="button" role="button">
+				<i class="zmdi zmdi-menu"></i>
+			</a>
+			<h1>Stretto</h1>
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right botonatras" >
+				<i class="zmdi zmdi-arrow-left"></i>
+			</a>
 		</div>
 
 		<div role="main" class="ui-content">
@@ -382,9 +394,15 @@
 		<!-- Panel -->
 		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
 		<div data-role="header">
-				<h1>Stretto</h1>
-				<a href="#principal" data-rel="back" 
-				data-icon="carat-l">Atrás</a>
+			<!-- Mostrar panel-->
+			<a href="#leftpanel" 
+				 class="ui-btn-left ui-btn waves-effect waves-button waves-effect waves-button" data-role="button" role="button">
+				<i class="zmdi zmdi-menu"></i>
+			</a>
+			<h1>Stretto</h1>
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right botonatras" >
+				<i class="zmdi zmdi-arrow-left"></i>
+			</a>
 		</div>
 		
 		<div role="main" class="ui-content">
@@ -417,8 +435,10 @@
 		<!-- Panel -->
 		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
 		<div data-role="header">
-				<h1>Stretto</h1>
-				<a href="#principal" data-rel="back" data-icon="carat-l">Atrás</a>
+			<h1>Stretto</h1>
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right botonatras" >
+				<i class="zmdi zmdi-arrow-left"></i>
+			</a>
 		</div>
 
 		<div role="main" class="ui-content">
@@ -431,7 +451,7 @@
 			<div class="input-group">
 				<input ng-model="datos.password" type="password" class="form-control" placeholder="***...">
 			</div>
-			<a ng-click="#login"><h4>¡Regístrate aquí!</h4></a>
+			<a href="#registro"><h4>¡Regístrate aquí!</h4></a>
 			<a ng-click='login()' href="#" data-role="button" data-transition="flip" class="ui-btn ui-btn-raised clr-primary">
 				Iniciar sesión
 			</a>
@@ -448,9 +468,10 @@
 		<!-- Panel -->
 		<nd2-include data-src="/partials/panel.left.html"></nd2-include>
 		<div data-role="header">
-				<h1>Stretto</h1>
-				<a href="#principal" data-rel="back" 
-				data-icon="carat-l">Atrás</a>
+			<h1>Stretto</h1>
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right botonatras" >
+				<i class="zmdi zmdi-arrow-left"></i>
+			</a>
 		</div>
 		
 		<div role="main" class="ui-content">
@@ -463,7 +484,7 @@
 			<input type="text" id="tlf" ng-model="datos.tlf" placeholder="Ej: 786543211">
 			<label for="password">Contraseña:</label>
 			<input type="password" id="password" ng-model="datos.password">
-			<a ng-click="#login"><h4>¡Iniciar sesión aquí!</h4></a>
+			<a href="#login"><h4>¡Iniciar sesión aquí!</h4></a>
 			<a data-role="button" class="ui-btn ui-btn-raised clr-primary" href="#">Registrarme</a>
 			<script type="text/javascript" src="/js/registro-sinframework.js"></script>
 		</div>
@@ -481,4 +502,3 @@
 	
 </body>	
 </html>
-
