@@ -1,24 +1,25 @@
 /* VISTA */
 
-var mensaje = document.getElementById("mensajeregistro");
-var divmensaje = document.getElementById("divmensajeregistro");
-
-function visible() {
-	divmensaje.className = "mensajevisible";
+//MOSTRAR MENSAJE
+var mostrarMensaje = function(mensaje, codigo) {
+	new $.nd2Toast({ // The 'new' keyword is important, otherwise you would overwrite the current toast instance
+	 message : codigo+": "+mensaje, // Required
+	 action : { // Optional (Defines the action button on the right)
+		 fn : function() { // function that will be triggered when action clicked
+		 }
+	 },
+	 ttl : 3000 // optional, time-to-live in ms (default: 3000)
+	});
 }
 
 //Si se registra bien aparece mensaje verde con transición
-function registroBien(resultado) {
-	mensaje.innerHTML = resultado;
-	mensaje.className = "alert alert-success";
-	visible();
+function registroBien(data, status) {
+	mostrarMensaje(data, status);
 }
 
 //Si se registra bien aparece mensaje rojo con transición
-function registroMal(resultado) {
-	mensaje.innerHTML = resultado;
-	mensaje.className = "alert alert-danger";
-	visible();
+function registroMal(data, status) {
+	mostrarMensaje(data, status);
 }
 
 // Obtiene los datos del usuario de la vista
@@ -60,7 +61,7 @@ function addUsuario() {
 		data : { nombre : nombre, email : email, password : password, tlf : tlf },
 		type: 'POST',
 		success: function(resultado) {
-			registroBien(resultado);
+			registroBien(resultado.responseText, resultado.status);
 			logeoUsuario(email, password);
 		
 			//Cuando pasen 2 segundos desaparecerá el modal
@@ -69,7 +70,7 @@ function addUsuario() {
 			}, 2000);
 	 	}, 
 		error: function(resultado) {
-			registroMal("Error código: "+resultado.status+" "+resultado.responseText);
+			registroMal(resultado.responseText, resultado.status);
 		}
  });
 }

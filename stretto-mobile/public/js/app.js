@@ -1,7 +1,28 @@
 var strettoApp = angular.module('strettoApp', ['ngRoute','strettoControllers', 'strettoService']);
 var rutaorigen = '/';
 
-strettoApp.config(
+strettoApp.directive('myRepeatDirective', function() {
+	return function(scope, element, attrs) {
+		if(scope.$last) {
+			
+			/* Lista artículos de un usuario */
+			if($('#articulos-usuario').hasClass('ui-listview'))
+				$('#articulos-usuario').listview('refresh');		
+			else
+				$('#articulos-usuario').trigger('create');
+			
+			/* Lista tipos al editar artículo */
+			if($('#tipos-editando').hasClass('ui-listview'))
+				$('#tipos-editando').listview('refresh');		
+			else
+				$('#tipos-editando').trigger('create');
+			
+			
+		}
+	};
+});
+
+/*strettoApp.config(
 	function($locationProvider, $routeProvider) {
 		$routeProvider.
 			when('/registro', { 
@@ -33,4 +54,4 @@ strettoApp.config(
 			requireBase: false
 		});
 	}
-);
+);*/

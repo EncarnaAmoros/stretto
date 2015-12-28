@@ -128,15 +128,13 @@
 			</div>
 			
 			<!-- Lista con artículos y paginado -->
-			<ul data-role="listview" data-icon="false">
+			<ul id="articulos-usuario" data-role="listview" data-icon="false">
 				<li data-role="list-divider">
 					Artículos
 				</li>
-				<li ng-repeat="articulo in articulos" class="media ui-li-has-thumb ui-last-child ng-scope">
-					<a id="item" class="ui-page-theme-a ui-btn ui-bar-a"
-						 href="#bottomsheetlist" ng-click="opcionesitem(articulo.id)">
-						
-						<img class="ui-thumbnail ui-thumbnail-circular" src="{{articulo.foto}}" class="ui-thumbnail ui-thumbnail-circular" />
+				<li ng-repeat="articulo in articulos" my-repeat-directive>
+					<a id="item" class="enlacelista" href="#bottomsheetlist" ng-click="opcionesitem(articulo)">						
+						<img class="ui-thumbnail ui-thumbnail-circular" src="{{articulo.foto}}" />
 						<h2>{{articulo.nombre}}</h2>
 						<p>{{articulo.precio}}</p>	
 					</a>
@@ -163,7 +161,7 @@
 								</a>
 							</div>
 							<div class='col-xs-auto'>
-								<a href='#' ng-click="deleteArticulo(articulo.id)"
+								<a href='#' ng-click="deleteArticulo(articulo)"
 									 class='ui-bottom-sheet-link ui-btn ui-btn-inline
 													waves-effect waves-button waves-effect waves-button' data-ajax='false'>
 									<i class='zmdi zmdi-fire zmd-2x'></i>
@@ -179,7 +177,7 @@
 								</a>
 							</div>
 						</div>
-					</div>					
+					</div>		
 				</li>
 			</ul>			
 			<a data-role="button" href="#articulonuevo" class="ui-btn ui-btn-raised clr-primary">Publicar</a>
@@ -203,8 +201,12 @@
 				<i class="zmdi zmdi-menu"></i>
 			</a>
 			<h1>Stretto</h1>
-			<a href="#principal" data-rel="back" 
-			data-icon="carat-l">Atrás</a>
+			<!--<a href="#principal" data-rel="back" class="ui-btn-right" data-icon="carat-l">
+				<i class="zmdi zmdi-check"></i>
+			</a>-->
+			<a href="#" data-role="button" data-rel="back" class="ui-btn-right" data-theme="a" data-icon="arrow-l">
+				Back
+			</a>
 		</div>
 
 		<div role="main" class="ui-content">
@@ -279,16 +281,9 @@
 						<input ng-model=articulo.foto value="{{articulo.foto}}" placeholder="URL de la foto del artículo">
 						<input ng-model=articulo.nombre value="{{articulo.nombre}}" placeholder="Nombre del artículo">
 						<input ng-model=articulo.precio value="{{articulo.precio}}" placeholder="Precio de venta">
-						<select name="select-choice-1" id="select-choice-1b" data-native-menu="false"  ng-model="articulo.tipo">
+						<select ng-model="articulo.tipo">
 							<option value="" id="defaulselect">Selecciona un tipo</option>
 							<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-							<ul ng-repeat="tipo in tipos" class="ui-selectmenu-list ui-listview" 
-									id="select-choice-1b-menu" role="listbox" aria-labelledby="select-choice-1b-button">
-								<li data-option-index="1" data-icon="false" data-placeholder="true" 
-										class="" role="option" aria-selected="false">
-									<a href="#" tabindex="-1" class="ui-btn">Selecciona un tipo</a>
-								</li>
-							</ul>							
 						</select>
 						<textarea ng-model=articulo.descripcion placeholder="Introduzca aquí la descripción del artículo">
 							articulo.descripcion
@@ -325,16 +320,9 @@
 			<input ng-model=articulo.foto placeholder="URL de la foto del artículo">
 			<input ng-model=articulo.nombre placeholder="Nombre del artículo">
 			<input ng-model=articulo.precio placeholder="Precio de venta">
-			<select name="select-choice-1" id="select-choice-1b" data-native-menu="false"  ng-model="articulo.tipo">
+			<select ng-model="articulo.tipo">
 				<option value="" id="defaulselect">Selecciona un tipo</option>
 				<option ng-repeat="tipo in tipos" value={{tipo.nombre}}>{{tipo.nombre}}</option>
-				<ul ng-repeat="tipo in tipos" class="ui-selectmenu-list ui-listview" 
-						id="select-choice-1b-menu" role="listbox" aria-labelledby="select-choice-1b-button">
-					<li data-option-index="1" data-icon="false" data-placeholder="true" 
-							class="" role="option" aria-selected="false">
-						<a href="#" tabindex="-1" class="ui-btn">Selecciona un tipo</a>
-					</li>
-				</ul>							
 			</select>
 			<textarea ng-model=articulo.descripcion placeholder="Introduzca aquí la descripción del artículo">
 			</textarea>
@@ -488,20 +476,6 @@
 	<script type="text/javascript">
 		window.addEventListener('pageshow', function() {
 			console.log("Se muestra la página secundaria");	
-		});
-		/*$('#principal').on('pagebeforeshow', function() {
-			//$scope.actualizar();
-			angular.element('#principal').scope().actualizar();
-		});*/
-		$('#articulosusuario').on('pagebeforeshow', function() {
-			//$scope.actualizar();
-			angular.element('#articulosusuario').scope().actualizar();
-		});
-		$('#articulodetalle').on('pagebeforeshow', function() {
-			angular.element('#articulodetalle').scope().actualizar();
-		});
-		$('#usuariodetalle').on('pagebeforeshow', function() {
-			angular.element('#usuariodetalle').scope().actualizar();
 		});
 	</script>
 	
