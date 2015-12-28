@@ -57,8 +57,8 @@ strettoControllers.controller('ArticulosCtrl',  ['$scope', '$http',  '$routePara
 
 /* Mostramos los artículos de un usuario pudiendo editarlos, eliminarlos y agregar uno nuevo */
 
-strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http', 'articulosService', 'tiposService', 'articuloService', '$timeout',
-	function ($scope, $http, articulosService, tiposService, articuloService, $timeout) {
+strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http', 'articulosService', 'tiposService', 'articuloService', '$timeout', 'usuarioService',
+	function ($scope, $http, articulosService, tiposService, articuloService, $timeout, usuarioService) {
 		
 		//Obtenemos el usuario por parámetro
 		var usuarioId;
@@ -84,6 +84,10 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http', 'articu
 					$scope.tipos = resultados;					
 				})
 				.error(function(resultados) {
+				})
+			usuarioService.getUsuario(usuarioId)
+				.success(function(resultados) {
+					$scope.usuario = resultados.data;
 				})
 		}
 		
@@ -190,7 +194,6 @@ strettoControllers.controller('UsuarioArticuloEditarCtrl', ['$scope','$http', 'a
 		
 		//Obtenemos el artículo a editar y los tipos que hay
 		$scope.actualizar = function(articulo) {
-			console.log(articulo)
 			articuloService.getArticulo(articulo.id)
 				.success(function(resultado) {
 					$scope.articulo = resultado.data;
@@ -303,7 +306,6 @@ strettoControllers.controller('UsuarioCtrl',  ['$scope', '$http', 'usuarioServic
 		$( document ).on( "pagebeforechange" , function ( event, data ) {
 			if(data.toPage[0].id == "usuariodetalle" || data.toPage[0].id == "usuarioeditable") {
 				usuarioId = data.options.usuarioId;
-				console.log("mira::::"+usuarioId)
 				if(usuarioId!=undefined)
 					$scope.actualizar(usuarioId);
 			}
