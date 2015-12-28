@@ -7,7 +7,9 @@
     "angular-bootstrap": "^0.12.2",
     "express": "^4.13.3",
     "hbs": "^4.0.0",
-    "request": "^2.65.0"
+    "request": "^2.65.0",
+    "body-parser": "^1.14.1",
+		"unirest": "^0.4.2"
   },
   "devDependencies": {
     "angular": "^1.4.8",

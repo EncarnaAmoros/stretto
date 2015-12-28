@@ -4,6 +4,8 @@
 <head>
 	<title>Stretto</title>
 	<meta charset="utf-8">
+	<link rel="manifest" href="manifest.json">
+	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="author" content="encaramorosb@gmail.com">
@@ -91,7 +93,7 @@
 		</div>
 		
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
+				
 		</div>
 	</div>
 	
@@ -166,11 +168,13 @@
 					</div>		
 				</li>
 			</ul>			
-			<a data-role="button" href="#articulonuevo" class="ui-btn ui-btn-raised clr-primary">Publicar</a>
+			<a data-role="button" href="#articulonuevo" class="ui-btn ui-btn-raised clr-primary">
+				<i class="zmdi zmdi-plus"></i> Publicar
+			</a>
 		</div>
 		
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
+				
 		</div>
 	</div>
 	
@@ -218,9 +222,10 @@
 			</div>
 			
 			<!-- Comprar -->
-			<a href="#popupDialog" data-rel="popup" data-position-to="window" data-role="button" class="ui-btn ui-btn-raised clr-primary">
+			<a href="#popupDialog" data-rel="popup" data-position-to="window" data-role="button" id="comprar" 
+				 class="ui-btn ui-btn-raised clr-primary">
 				Comprar
-			</a>
+			</a>			
 			<div data-role="popup" id="popupDialog">
 				<div data-role="header">
 					<h1 class='nd-title'>Compra realizada con éxito</h1>
@@ -236,10 +241,18 @@
 			<a ng-click="verUsuario(usuario)" href="#" data-role="button" class="ui-btn ui-btn-raised">
 				Ver vendedor
 			</a>
+			<!-- Push -->
+			<br>
+			<div id="mensaje_suscripcion"></div>
+			<label> Suscribirse a eventos interesantes
+				<input type="checkbox" id="cb_suscripcion">
+			</label>				
+			<a id="sus" href="#" data-role="button" class="ui-btn ui-btn-raised clr-primary">Suscribirse/Desuscribirse</a>
+			<script src="/js/push.js"></script>
+			
 		</div>
 		
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
 		</div>
 	</div>	
 	
@@ -284,7 +297,7 @@
 				</div>		
 			</div>
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
+				
 		</div>
 	</div>
 	
@@ -324,7 +337,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
+				
 		</div>
 	</div>
 	
@@ -360,7 +373,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
+				
 		</div>
 	</div>
 
@@ -401,7 +414,7 @@
 		</div>
 		
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
+				
 		</div>
 	</div>
 	
@@ -434,7 +447,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
+				
 		</div>
 	</div>	
 
@@ -466,7 +479,7 @@
 		</div>
 		
 		<div data-role="footer" data-position="fixed">
-				<h2>Esto es el pie</h2>
+				
 		</div>
 	</div>	
 
