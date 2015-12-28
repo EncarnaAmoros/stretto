@@ -1,0 +1,12 @@
+{
+  "name": "Ejemplo de push con service workers",
+  "short_name": "Ejemplo de Push",
+  "icons": [{
+        "src": "icono.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }],
+  "start_url": "ejemplo_push.html",
+  "display": "standalone",
+  "gcm_sender_id": "847094116305"
+}
