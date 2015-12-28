@@ -61,7 +61,7 @@ function addUsuario() {
 		data : { nombre : nombre, email : email, password : password, tlf : tlf },
 		type: 'POST',
 		success: function(resultado) {
-			registroBien(resultado.responseText, resultado.status);
+			registroBien(resultado, "201");
 			logeoUsuario(email, password);
 		
 			//Cuando pasen 2 segundos desaparecerá el modal

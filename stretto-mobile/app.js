@@ -11,7 +11,7 @@ app.use('/', express.static('public'));
 
 // redirect all others to the index (HTML5 history)
 app.use("*",function(req,res){
-	res.sendFile(path.join(__dirname, '/public', 'index.html'));
+	res.sendFile(path.join(__dirname, '/public', 'movil.html'));
    // res.sendFile(path.join(__dirname,"public/index.html"));
 });
 
