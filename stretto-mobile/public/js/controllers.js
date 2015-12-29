@@ -93,7 +93,7 @@ strettoControllers.controller('UsuarioArticulosCtrl', ['$scope','$http', 'articu
 		
 		//Si son los artículos del usuario logeado mostramos opciones ver, editar y eliminar, si no, solo lo podrá ver
 		$scope.opcionesitem = function(articulo) {
-			if(localStorage.usuarioId==localStorage.id) {
+			if(articulo.UsuarioId==localStorage.id) {
 				var clasescss = "ui-bottom-sheet ui-bottom-sheet-list ui-panel ui-panel-position-bottom ui-panel-display-overlay ";
 				clasescss += " ui-body-inherit ui-panel-open";
 				document.getElementById("bottomsheetlist"+articulo.id).className = clasescss;

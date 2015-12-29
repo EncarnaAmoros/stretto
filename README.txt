@@ -1,3 +1,8 @@
+PRACTICA 6
+Ejecutar el servidor: node ./bin/www
+Ejecutar el cliente (mobile): node app.js
+
+PRACTICA 5
 - Ejecutar parte del API:
 
 Dentro de la carpeta stretto-api ejecutar:
