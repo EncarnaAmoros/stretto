@@ -411,6 +411,7 @@ adi - serv web/node_modules/
 *.json
 *.jshintrc
 stretto-api/node_modules/
+stretto-web/node_modules/
 stretto-web/bower_components/
 stretto-mobile/node_modules/gulp-connect/
 stretto-mobile/node_modules/.bin/gulp
