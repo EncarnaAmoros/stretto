@@ -1,25 +1,29 @@
-PRACTICA 6
-Ejecutar el servidor: node ./bin/www
-Ejecutar el cliente (mobile): node app.js
+# PRACTICA 4: API REST
 
-PRACTICA 5
-- Ejecutar parte del API:
+En stretto-api:
+ node ./bin/www
 
-Dentro de la carpeta stretto-api ejecutar:
-	node ./bin/www
+Test del servidor api:
+ mocha ./test/<nombreArchivoTest>.js
 
-- Ejecutar parte del cliente SPA=servidor web:
+# PRACTICA 5: Cliente web con Angular JS
 
-Dentro de la carpeta stretto-web ejecutar:
-Sin gulp: node app.js
-Con gulp: gulp 
-					o
-					gulp servidor
+API stretto-api:
+ node ./bin/www
 
-- Ejecutar los test del servidor web:
-	npm test
-	
-- Ejecutar los test del servidor api:
-	mocha ./test/<nombreArchivoTest>.js
+En stretto-web:
+ Sin gulp: node app.js
+ Con gulp: gulp o gulp servidor
+
+Test del servidor web:
+ npm test
 
 Nota: Tener el servidor de redis en marcha.
+
+# PRACTICA 6: Cliente Web con JQuery Mobile
+
+API stretto-api:
+ node ./bin/www
+
+Ejecutar el cliente (mobile):
+ node app.js
